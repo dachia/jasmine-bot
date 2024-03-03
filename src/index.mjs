@@ -1,5 +1,9 @@
 import 'dotenv/config'
-import { registerBotCommandHandlers, createBot } from './grammy.mjs';
-const bot = createBot();
-registerBotCommandHandlers(bot)
-bot.start()
+import express from 'express';
+import { startGrammy } from './startGrammy.mjs';
+
+startGrammy()
+
+const app = express()
+app.get('/', (req, res) => { res.send('Hello World!') })
+console.info("Express app started!")

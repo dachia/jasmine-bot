@@ -1,2 +1,2 @@
-import { ChatRepo } from "./chatRepo.mjs";
-export const chatRepo = new ChatRepo(); 
+import { ChatSessionRepo } from "./chatSessionRepo.mjs";
+export const chatSessionRepo = new ChatSessionRepo(); 

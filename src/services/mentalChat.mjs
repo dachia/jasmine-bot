@@ -11,7 +11,7 @@ export class MentalChat {
     this.client = client
   }
 
-  async getTherapy({ message, state, name, history }) {
+  async getTherapy({ state, name, session }) {
     const response = await this.client.createChatCompletion({
       model: 'gpt-4-turbo-preview',
       temperature: 0,
@@ -36,16 +36,13 @@ Respond with following json structure: ${JSON.stringify(structure)}
           role: 'user',
           content: `My name is ${name}`,
         },
-        ...history.map((message) => ({
+        ...session.messages.map((message) => ({
           role: message.role,
           content: message.content
         })),
-        {
-          role: 'user',
-          content: message
-        }
       ],
     });
+    // console.log(response)
     // console.log(response.choices[0].message.content)
     return JSON.parse(response.choices[0].message.content);
   }

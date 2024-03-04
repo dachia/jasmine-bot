@@ -1,6 +1,7 @@
 import { Bot, InlineKeyboard, Keyboard, session } from 'grammy';
 import config from './config.mjs';
 import { mentalChatUseCase } from './useCases/singletones.mjs';
+import { newId } from './utils.mjs';
 
 export function createBot() {
   return new Bot(config.TELEGRAM_API_TOKEN)
@@ -46,8 +47,9 @@ export function registerBotCommandHandlers(bot) {
     }
     if (ctx.session.state === "in-progress") {
       const state = ctx.session.mood;
+      const sessionId = ctx.session.id ?? newId();
       ctx.replyWithChatAction('typing');
-      const response = await mentalChatUseCase.processMessage({ userId: ctx.from.id, message, state, name });
+      const response = await mentalChatUseCase.processMessage({ sessionId, userId: ctx.from.id, message, state, name });
       ctx.reply(response, { ...keyboard });
     }
   })

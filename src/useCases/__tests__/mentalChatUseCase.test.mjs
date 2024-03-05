@@ -2,12 +2,20 @@ import { MentalChatUseCase } from '../mentalChatUseCase.mjs'
 import { MentalChat } from '../../services/mentalChat.mjs';
 import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
 import { expect } from 'chai';
-import e from 'express';
+import { connectToDb, disconnectFromDb } from '../../db.mjs';
+import config from '../../config.mjs';
 
 describe('MentalChatUseCase', () => {
   let mentalChat
   let chatSessionRepo
   let mentalChatUseCase
+  let client
+  before(async () => {
+    client = await connectToDb(config.MONGODB_URI_TEST);
+  })
+  after(async () => {
+    await disconnectFromDb(client);
+  })
   beforeEach(() => {
     mentalChat = new MentalChat({
       createChatCompletion: () => ({
@@ -26,9 +34,12 @@ describe('MentalChatUseCase', () => {
       }
       )
     });
-    chatSessionRepo = new ChatSessionRepo();
+    chatSessionRepo = new ChatSessionRepo(client);
     mentalChatUseCase = new MentalChatUseCase(mentalChat, chatSessionRepo);
   })
+  // afterEach(async () => {
+  //   await chatSessionRepo.collection.deleteMany({});
+  // });
   describe('processMessage', () => {
     let result
     beforeEach(async () => {

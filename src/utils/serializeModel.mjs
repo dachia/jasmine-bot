@@ -12,5 +12,16 @@ export function serializeModel(model) {
       serialized[key] = value;
     }
   }
+  serialized._id = serialized.id;
+  delete serialized.id;
   return serialized;
+}
+
+export function deserializeModel(raw, DomainModelClass) {
+  const { _id, ...restRaw } = raw
+  const model = new DomainModelClass({
+    ...restRaw,
+    id: _id
+  });
+  return model;
 }

@@ -1,13 +1,35 @@
 import 'dotenv/config'
-import express from 'express';
-import { startGrammy } from './startGrammy.mjs';
 import config from './config.mjs';
+import { startGrammy } from './startGrammy.mjs';
+import { startExpress } from './startExpress.mjs';
+import { connectToDb, disconnectFromDb } from './db.mjs';
 
-startGrammy()
 
-const app = express()
-app.get('/', (req, res) => { res.send('Hello World!') })
-app.listen(config.PORT, () => {
-  console.log(`App listening at http://localhost:${config.PORT}`);
-});
-// console.info("Express app started!")
+let client
+async function run() {
+  client = await connectToDb(config.MONGODB_URI);
+  startExpress(client);
+  const grammyServer = startGrammy(client);
+
+  const cleanupAndExit = async () => {
+    console.log('Stopping servers...');
+    grammyServer?.stop();
+    await disconnectFromDb(client);
+    console.log('Servers stopped. Exiting...');
+    process.exit(0);
+  };
+
+  process.on('SIGINT', cleanupAndExit);
+  process.on('uncaughtException', async (err) => {
+    console.error('Uncaught exception:', err);
+    await disconnectFromDb(client);
+    process.exit(1);
+  });
+  process.on('unhandledRejection', async (reason, promise) => {
+    console.error('Unhandled rejection at:', promise, 'reason:', reason);
+    await disconnectFromDb(client);
+    process.exit(1);
+  })
+}
+
+run().catch(console.error);

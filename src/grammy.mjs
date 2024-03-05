@@ -1,7 +1,7 @@
-import { Bot, InlineKeyboard, Keyboard, session } from 'grammy';
+import { Bot, Keyboard, session } from 'grammy';
+import { getMentalChatUseCaseInstance } from './useCases/getInstance.mjs';
 import config from './config.mjs';
-import { mentalChatUseCase } from './useCases/singletones.mjs';
-import { newId } from './utils.mjs';
+import { newId } from './utils/genId.mjs';
 
 export function createBot() {
   return new Bot(config.TELEGRAM_API_TOKEN)
@@ -19,7 +19,8 @@ const stopSessionMessage = "Stop session"
 
 const sessionKeyboard = new Keyboard().text(stopSessionMessage).oneTime().resized()
 
-export function registerBotCommandHandlers(bot) {
+export function registerBotCommandHandlers(bot, client) {
+  const mentalChatUseCase = getMentalChatUseCaseInstance(client);
   bot.use(session())
   bot.command('sad', (ctx) => {
     ctx.reply('Send me a sticker!')

@@ -14,6 +14,7 @@ export class ChatSessionModel extends BaseModel {
     this.data.messages.push(new ChatMessageModel({
       ...messageProps,
       sessionId: this.data.id,
+      userId: this.data.userId,
       orderNumber: this.data.messages.length,
     }));
   }

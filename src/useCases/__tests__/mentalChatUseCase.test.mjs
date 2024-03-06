@@ -9,7 +9,7 @@ describe('MentalChatUseCase', () => {
   let mentalChatUseCase
   beforeEach(() => {
     mentalChat = new MentalChat({
-      createChatCompletion: () => ({
+      processPrompt: () => ({
         choices: [
           {
             message: {

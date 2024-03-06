@@ -7,22 +7,30 @@ export class GenericMongoRepo {
     this.collection = this.client.db().collection(collectionName);
     this.DomainModelClass = DomainModelClass;
   }
+  
+  deserializeModel(rawModel) {
+    return deserializeModel(rawModel, this.DomainModelClass);
+  }
 
-  async getSession(domainId) {
+  async find(query) {
+    const raw = await this.collection.find(query).toArray();
+    return raw.map(this.deserializeModel.bind(this));
+  }
+
+  async getById(domainId) {
     const raw = await this.collection.findOne({ _id: domainId });
     if (raw) {
-      const model = deserializeModel(raw, this.DomainModelClass);
-      return model;
+      return this.deserializeModel(raw);
     }
     return null;
   }
 
-  async saveSession(domainModel) {
+  async save(domainModel) {
     if (domainModel.isNew) {
       domainModel.isNew = false;
       await this.collection.insertOne(serializeModel(domainModel));
     } else if (domainModel.isUpdated) {
-      await this.collection.updateOne({ id: domainModel.id }, { $set: serializeModel(domainModel) });
+      await this.collection.updateOne({ _id: domainModel.id }, { $set: serializeModel(domainModel) });
     }
   }
 }

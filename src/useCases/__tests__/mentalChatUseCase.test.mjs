@@ -1,21 +1,12 @@
 import { MentalChatUseCase } from '../mentalChatUseCase.mjs'
 import { MentalChat } from '../../services/mentalChat.mjs';
 import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
-import { expect } from 'chai';
-import { connectToDb, disconnectFromDb } from '../../db.mjs';
-import config from '../../config.mjs';
+import { client } from '../../utils/testDatabase.mjs';
 
 describe('MentalChatUseCase', () => {
   let mentalChat
   let chatSessionRepo
   let mentalChatUseCase
-  let client
-  before(async () => {
-    client = await connectToDb(config.MONGODB_URI_TEST);
-  })
-  after(async () => {
-    await disconnectFromDb(client);
-  })
   beforeEach(() => {
     mentalChat = new MentalChat({
       createChatCompletion: () => ({
@@ -37,9 +28,6 @@ describe('MentalChatUseCase', () => {
     chatSessionRepo = new ChatSessionRepo(client);
     mentalChatUseCase = new MentalChatUseCase(mentalChat, chatSessionRepo);
   })
-  // afterEach(async () => {
-  //   await chatSessionRepo.collection.deleteMany({});
-  // });
   describe('processMessage', () => {
     let result
     beforeEach(async () => {
@@ -55,7 +43,7 @@ describe('MentalChatUseCase', () => {
       expect(result).to.contain('You need to do the following:');
     });
     it(`should create session`, async () => {
-      const session = await chatSessionRepo.getSession('sessionId')
+      const session = await chatSessionRepo.getById('sessionId')
       expect(session.messages.length).to.eq(2);
     })
   });

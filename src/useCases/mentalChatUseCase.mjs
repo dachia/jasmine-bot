@@ -6,7 +6,7 @@ export class MentalChatUseCase {
   }
   async processMessage({ userId, message, state, name, sessionId }) {
     const message_ = state === "first-message" ? `I am feeling: ${message}` : message
-    let session = await this.chatRepo.getSession(sessionId);
+    let session = await this.chatRepo.getById(sessionId);
     if (session === null) {
       session = new ChatSessionModel({ id: sessionId, userId, problemStatement: message }, { isNew: true });
     }
@@ -22,7 +22,7 @@ To dig deeper, I have the following questions:
 ${response.questions.map((item, index) => `${index + 1}. ${item}`).join("\n")}
 `
     session.addMessage({ content: responseTxt, role: 'assistant', rawResponse: response });
-    this.chatRepo.saveSession(session);
+    await this.chatRepo.save(session);
     return responseTxt
   }
 }

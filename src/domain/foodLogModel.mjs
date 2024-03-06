@@ -19,4 +19,9 @@ export class FoodLogModel extends BaseModel {
     
     createBaseClassGettersAndSetters(this)
   }
+  
+  // Return nutrition information for the food log
+  toString() {
+    return `Protein: ${this.data.protein}, Fat: ${this.data.fat}, Carbs: ${this.data.carbs}, Calories: ${this.data.calories}, Fiber: ${this.data.fiber}, Sugar: ${this.data.sugar}, Grams: ${this.data.grams}, Meal Name: ${this.data.mealName}, Ingredients: ${JSON.stringify(this.data.ingredients)}`
+  }
 }

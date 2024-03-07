@@ -20,10 +20,11 @@ export function getUpdateProfileUseCaseInstance(client) {
 export function getLogFoodUseCaseInstance(client) {
   const chatSessionRepo = new ChatSessionRepo(client);
   const foodLogRepo = new FoodLogRepo(client);
-  return new LogFoodUseCase(nutritionInfoService, chatSessionRepo, foodLogRepo);
+  return new LogFoodUseCase(nutritionInfoService, foodLogRepo, chatSessionRepo);
 }
 
 export function getEstimatedBurnPerDayInstance(client) {
+  const chatSessionRepo = new ChatSessionRepo(client);
   const profileRepo = new ProfileRepo(client);
-  return new EstimateBurnPerDayUseCase(estimatedBurnPerDayService, profileRepo);
+  return new EstimateBurnPerDayUseCase(estimatedBurnPerDayService, profileRepo, chatSessionRepo);
 }

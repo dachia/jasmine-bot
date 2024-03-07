@@ -2,7 +2,7 @@ import { MentalChatUseCase } from '../mentalChatUseCase.mjs'
 import { MentalChat } from '../../services/mentalChat.mjs';
 import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
 import { client } from '../../utils/testDatabase.mjs';
-import { chatGpt } from '../../services/singletones.mjs';
+// import { chatGpt } from '../../services/singletones.mjs';
 
 const mockResponse = {
   id: "chatcmpl-90684WciR7twdQHgN2Tr55OEH1iet",

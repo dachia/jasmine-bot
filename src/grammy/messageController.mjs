@@ -1,13 +1,13 @@
 import { getNextState } from '../utils/nextState.mjs';
 import { getMentalChatUseCaseInstance, getUpdateProfileUseCaseInstance, getEstimatedBurnPerDayInstance, getLogFoodUseCaseInstance } from '../useCases/getInstance.mjs';
-import { DEFAULT_STATE, STATES_EDIT_PROFILE, STATES_LOG_FOOD } from '../domain/states.mjs';
+import { DEFAULT_STATE, STATES_EDIT_PROFILE, STATES_LOG_FOOD, STATES_MENTAL_HEALTH } from '../domain/states.mjs';
 import yup from 'yup';
 import { Keyboard } from 'grammy';
+import { newId } from '../utils/genId.mjs';
 
-const startSessionMessage = "I need with sticking to the diet"
-const stopSessionMessage = "Stop session"
+const startSessionMessage = "Mental health"
+const startLoggingMessage = "Food log"
 
-const sessionKeyboard = new Keyboard().text(stopSessionMessage).oneTime().resized()
 const numberSchema = yup.number().required().positive();
 const birthDateSchema = yup.date().required();
 const genderSchema = yup.string().oneOf(['male', 'female']).required();
@@ -22,7 +22,8 @@ export const messageController = async (ctx, client) => {
     ctx.session = {};
   }
   const state = ctx.session.state ?? DEFAULT_STATE;
-  const foodLogKeyboard = { reply_markup: new Keyboard().text(startSessionMessage, "start-cbt-session").persistent().resized() }
+  const mentalSessionKeyboard = { reply_markup: new Keyboard().text(startLoggingMessage).oneTime().resized() }
+  const foodLogKeyboard = { reply_markup: new Keyboard().text(startSessionMessage).oneTime().resized() }
   const name = ctx.from.first_name;
   const message = ctx.message.text;
   const userId = ctx.from.id;
@@ -32,9 +33,19 @@ export const messageController = async (ctx, client) => {
   //   ctx.reply(`Hello. Describe in one word how are you feeling, ${name}?`, { ...keyboard });
   //   return
   // }
-  if (message === stopSessionMessage) {
-    ctx.session = {};
-    ctx.reply(`Good luck with your day, ${name}!`);
+  // if (message === stopSessionMessage) {
+  //   ctx.session = {};
+  //   ctx.reply(`Good luck with your day, ${name}!`);
+  //   return
+  // }
+  if (message === startLoggingMessage && ctx.session?.state === STATES_MENTAL_HEALTH.WAITING_FOR_MENTAL_INPUT) {
+    ctx.session.state = STATES_LOG_FOOD.WAITING_FOR_FOOD
+    ctx.reply(`Waiting for food log input`, { ...foodLogKeyboard });
+    return
+  }
+  if (message === startSessionMessage && ctx.session?.state !== STATES_MENTAL_HEALTH.WAITING_FOR_MENTAL_INPUT) {
+    ctx.session.state = STATES_MENTAL_HEALTH.WAITING_FOR_MENTAL_INPUT
+    ctx.reply(`Hello. So what is bothering you, ${name}? Let me know how I can help you.`, { ...mentalSessionKeyboard });
     return
   }
   switch (state) {
@@ -108,6 +119,12 @@ export const messageController = async (ctx, client) => {
       date.setHours(0, 0, 0, 0);
       const foodLog = await logFoodUseCase.execute({ userId, prompt: message, date });
       ctx.reply(`${foodLog}`, { ...foodLogKeyboard });
+      break;
+    case STATES_MENTAL_HEALTH.WAITING_FOR_MENTAL_INPUT:
+      ctx.replyWithChatAction('typing');
+      const sessionId = ctx.session.id ?? newId();
+      const response = await mentalChatUseCase.processMessage({ sessionId, userId, message, state, name });
+      ctx.reply(response, { ...mentalSessionKeyboard });
       break;
 
   }

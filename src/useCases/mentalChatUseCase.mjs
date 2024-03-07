@@ -13,14 +13,10 @@ export class MentalChatUseCase {
     session.addMessage({ content: message_, role: 'user' });
     // const history = await this.chatRepo.getSessionMessages(userId);
     const response = await this.mentalChat.getTherapy({ state, name, session });
-    const responseTxt = `${response.message}
+    const responseActionableItems = response.actionableItems?.length ? `\nActions:\n${response.actionableItems.map((item, index) => `${index + 1}. ${item}`).join("\n")}\n` : null
+    const responseQuestions = response.questions?.length ? `\nQuestions:\n${response.questions.map((item, index) => `${index + 1}. ${item}`).join("\n")}\n` : null
 
-You need to do the following:
-${response.actionableItems.map((item, index) => `${index + 1}. ${item}`).join("\n")}
-
-To dig deeper, I have the following questions:
-${response.questions.map((item, index) => `${index + 1}. ${item}`).join("\n")}
-`
+    const responseTxt = [response.message, responseActionableItems, responseQuestions].filter(i => i != null).join('\n')
     session.addMessage({ content: responseTxt, role: 'assistant', rawResponse: response });
     await this.chatRepo.save(session);
     return responseTxt

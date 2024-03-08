@@ -61,6 +61,7 @@ export class FoodLogModel extends BaseModel {
     super(baseProps); // Call to the base class constructor
     this.data.prompt = prompt
     this.data.sessionId = sessionId
+    this.data.date = date
     this.data.totalNutritionFacts = new NutritionFactsModel({ ...totalNutritionFacts, itemName: "Total", ...baseProps })
     this.data.perItemNutritionFacts = perItemNutritionFacts?.map(item => new NutritionFactsEtimationModel({ ...item, ...baseProps }))
 
@@ -71,9 +72,40 @@ export class FoodLogModel extends BaseModel {
     const table = new AsciiTable3()
       .setHeading(...NutritionFactsModel.toHeadingNamesArray())
       .setAlign(3, AlignmentEnum.CENTER)
+      .setStyle('compact')
       .addRowMatrix([
         ...this.data.perItemNutritionFacts.map(item => item.toArray()), 
         this.data.totalNutritionFacts.toArray()
+      ])
+    return table.toString()
+  }
+}
+
+export class FoodLogModelCollection extends Array {
+  constructor(...args) {
+    super(...args)
+  }
+  // Sum all the nutrition fact arrays
+  sum() {
+    return this.reduce((acc, item) => {
+      return acc.map((value, idx) => {
+        const val = item.totalNutritionFacts.toArray()[idx]
+        if (isNaN(val)) return val
+        return value + Number(val)
+      })
+    }, new Array(7).fill(0))
+  }
+  toASCII() {
+    const table = new AsciiTable3()
+      .setHeading(...NutritionFactsModel.toHeadingNamesArray())
+      .setAlign(3, AlignmentEnum.CENTER)
+      .setStyle('compact')
+      .addRowMatrix([
+        ...this.map(i => i.data.perItemNutritionFacts.map(item => item.toArray())).flat(), 
+        this.sum().map(i => {
+          if (typeof i !== 'number') return i
+          return i.toFixed(2)
+        })
       ])
     return table.toString()
   }

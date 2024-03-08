@@ -1,9 +1,9 @@
-import { LogFoodUseCase } from '../logFoodUseCase.mjs'
+import { LogFoodUseCase } from '../../useCases/logFoodUseCase.mjs'
 import { NutritionInfoService } from '../../services/nutritionInfoService.mjs';
-import { chatGpt } from "../../services/singletones.mjs"
 import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
 import { FoodLogRepo } from '../../repos/foodLogRepo.mjs';
 import { client } from '../../utils/testDatabase.mjs';
+import { DailyReportQuery } from '../dailyReportQuery.mjs';
 
 const respNutritionFacts = {
   id: "chatcmpl-90V6A92o8VILBmScCqeoBakpr6NXz",
@@ -53,15 +53,20 @@ const respPortionSize = {
   system_fingerprint: "fp_2b778c6b35",
 }
 
-describe('LogFoodUseCase', () => {
+describe('DailyReportQuery', () => {
   let nutritionInfoService
   let chatSessionRepo
   let logFoodUseCase
   let foodLogRepo
   let idx = 0
+  const userId = 'userId'
+  const date = new Date();
+  // const prompt = '160g Steak lean, basted in butter, medium rare. Standard seasoning';
+  const prompt = `61g oatmeaal
+2 dates
+230g low fat milk`
 
-  beforeEach(() => {
-    // nutritionInfoService = new NutritionInfoService(chatGpt);
+  beforeEach(async () => {
     nutritionInfoService = new NutritionInfoService({
       idx: 0,
       processPrompt: () => {
@@ -74,20 +79,23 @@ describe('LogFoodUseCase', () => {
     chatSessionRepo = new ChatSessionRepo(client);
     foodLogRepo = new FoodLogRepo(client);
     logFoodUseCase = new LogFoodUseCase(nutritionInfoService, foodLogRepo, chatSessionRepo);
+    date.setHours(0, 0, 0, 0);
+    await logFoodUseCase.execute({
+      userId,
+      date,
+      prompt
+    });
+    await logFoodUseCase.execute({
+      userId,
+      date,
+      prompt
+    });
   })
   describe('execute', () => {
     let result
-    const userId = 'userId'
-    const date = new Date();
-    // const prompt = '160g Steak lean, basted in butter, medium rare. Standard seasoning';
-    const prompt = `61g oatmeaal
-2 dates
-230glow fat milk`
-    // const prompt = 'Single mcdonalds cheeseburger, small fries and diet coke';
-    // const prompt = 'Single mcdonalds cheeseburger and diet coke';
-    // const prompt = 'small fries and diet coke';
     beforeEach(async () => {
-      result = await logFoodUseCase.execute({
+      const query = new DailyReportQuery(foodLogRepo);
+      result = await query.execute({
         userId,
         date,
         prompt
@@ -98,13 +106,5 @@ describe('LogFoodUseCase', () => {
       console.log(html)
       expect(html).include('oatmeal');
     });
-    it("should save log", async () => {
-      const logs = await foodLogRepo.find();
-      expect(logs.length).to.eq(1);
-    })
-    it("should save session", async () => {
-      const session = await chatSessionRepo.find();
-      expect(session.length).to.eq(1);
-    })
   });
 });

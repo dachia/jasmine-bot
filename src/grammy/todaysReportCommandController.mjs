@@ -1,10 +1,8 @@
-import { STATES_EDIT_PROFILE } from '../domain/states.mjs';
+import { getDailyReportQueryInstance } from "../queries/getInstance.mjs";
 
-export const todaysReportCommandController = (ctx) => {
-  ctx.reply("Not implemented yet.")
-  if (!ctx.session) {
-    ctx.session = {};
-  }
-
-  // ctx.session.state = getNextState(null, STATES_EDIT_PROFILE)
+export const todaysReportCommandController = async (ctx, client) => {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  const report = await getDailyReportQueryInstance(client).execute({ userId: ctx.from.id, date })
+  ctx.reply(`<pre>${report.toASCII()}</pre>`, { parse_mode: "HTML" });
 }

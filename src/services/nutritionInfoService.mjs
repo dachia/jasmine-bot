@@ -1,15 +1,25 @@
-
-// content: `You are a licensed therapist who practices cognitive-behavioral therapy to help patients reach, maintain, and accept their desired weight. I am your patient. This is our first meeting. Let's begin.`
-const structure = {
+import { parseFirstJson } from "../utils/parseFirstJson.mjs"
+const nutritionFacts = {
   protein: 0,
   fat: 0,
-  carbs: 0,
-  calories: 0,
+  carbohydrates: 0,
+  kcal: 0,
   fiber: 0,
   sugar: 0,
   grams: 0,
-  ingredients: [],
-  mealName: "",
+  input: "",
+  itemName: "",
+}
+const nustritionFactsStructure = {
+  results: [nutritionFacts]
+}
+const portionSizeStructure = {
+  results: [{
+    name: "",
+    userPortionSizeInput: "",
+    estimatedPortionSizeUnits: "",
+    estimatedPortionSizeInGrams: 0
+  }]
 }
 export class NutritionInfoService {
   client
@@ -18,27 +28,96 @@ export class NutritionInfoService {
   }
 
   async getNutritionInfo({ prompt }) {
-// When theres not precise weight, assume do your best educated guess.
-    const response = await this.client.processPrompt(
+    // When theres not precise weight, assume do your best educated guess.
+    // If the prompt does not contain a weight information, assume average
+    // Be precise, return only facts. Nutrition facts should be per 100g or standard portion size.
+
+    // If user didn't provide precise weight in grams, estimate the weight in grams based on the prompt. If the prompt does not contain portion size information, assume average portion size.
+    const portionSizeResponse = await this.client.processPrompt(
       [
         {
           role: 'system',
-          content: `Act as a nutrition service that processes user prompt and returns nutrition information for the whole meal. 
+          content: `Act as a portion size processing from natural language service. Your role is to convert user input to grams.
+Step by step:
+1. To the best of your ability do an educated guess on user input units.
+2. Convert user input units to grams
+Respond with following json structure: ${JSON.stringify(portionSizeStructure)}`
+        },
+        //         {
+        //           role: 'system',
+        //           content: `Act as a food library, process user input and return matching formatted food name.
+        // Respond with following json structure: ${JSON.stringify(foodNameLibraryStructure)}
+        // `
+        //         },
+        {
+          role: 'user',
+          content: `${prompt}`,
+        },
+      ],
+      {
+        model: "gpt-3.5-turbo",
+        // response_format: undefined
+      }
+    )
+    const parsedPortionSize = parseFirstJson(portionSizeResponse.choices[0].message.content);
+    if (!parsedPortionSize) return null
 
-If the prompt does not contain a weight information, assume average
-
-Respond with following json structure: ${JSON.stringify(structure)}
+    const nutritionFactsResponse = await this.client.processPrompt(
+      [
+        {
+          role: 'system',
+          content: `Act as a nutrition facts service. Return food nutrition facts per 100g for each line of input.
+Respond with following json structure: ${JSON.stringify(nustritionFactsStructure)}
 `
         },
         {
           role: 'user',
-          content: prompt,
+          content: `${parsedPortionSize.results.map(p => p.name).join("\n")}`,
         },
-      ]
+      ],
+      {
+        model: "gpt-3.5-turbo",
+        // response_format: undefined
+      }
     )
 
-    // console.log(response)
-    // console.log(response.choices[0].message.content)
-    return JSON.parse(response.choices[0].message.content);
+    const parsedNutritionFacts = parseFirstJson(nutritionFactsResponse.choices[0].message.content);
+    if (!parsedNutritionFacts) return null
+
+    const nutritionFactsPerPortion = []
+    for (const item of parsedNutritionFacts.results) {
+      const portionSize = parsedPortionSize.results.find(p => p.name === item.input)
+      const portionSizeG = portionSize.estimatedPortionSizeInGrams
+      // calculate per portion
+      nutritionFactsPerPortion.push(Object.fromEntries(
+        [
+          ...Object.entries(item).map(([key, value]) => {
+            if (typeof value !== 'number') return [key, value]
+
+            return [key, value * portionSizeG / item.grams]
+          }),
+          
+          ["portionSizeUnits", portionSize.estimatedPortionSizeUnits],
+          ["portionSize", portionSize.userPortionSizeInput]
+        ]
+      ))
+    }
+  
+    const nutritionFactsTotal = nutritionFactsPerPortion.reduce((acc, item) => {
+      for (const key of Object.keys(item)) {
+        const value = item[key]
+        if (typeof value !== 'number') {
+          acc[key] = [acc[key], value].filter(i => !!i).join(", ")
+        } else {
+          acc[key] = (acc[key] ?? 0) + value
+        }
+      }
+      return acc
+    }, {})
+
+    return {
+      nutritionFactsPerPortion,
+      nutritionFactsTotal
+    }
   }
 }

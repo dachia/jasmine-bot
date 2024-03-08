@@ -117,8 +117,9 @@ export const messageController = async (ctx, client) => {
     case STATES_LOG_FOOD.WAITING_FOR_FOOD:
       const date = new Date();
       date.setHours(0, 0, 0, 0);
+      ctx.replyWithChatAction('typing');
       const foodLog = await logFoodUseCase.execute({ userId, prompt: message, date });
-      ctx.reply(`${foodLog}`, { ...foodLogKeyboard });
+      ctx.reply(`<pre>${foodLog.toASCII()}</pre>`, { parse_mode: "HTML", ...foodLogKeyboard });
       break;
     case STATES_MENTAL_HEALTH.WAITING_FOR_MENTAL_INPUT:
       ctx.replyWithChatAction('typing');

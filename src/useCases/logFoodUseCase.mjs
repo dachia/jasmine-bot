@@ -12,8 +12,15 @@ export class LogFoodUseCase {
     session.addMessage({ content: prompt, role: 'user' });
 
     const nutritionInfo = await this.nutritionInfoService.getNutritionInfo({ prompt });
-    session.addMessage({ content: "", role: 'assistant', rawResponse: nutritionInfo});
-    const foodLog = new FoodLogModel({ userId, prompt, ...nutritionInfo, date, sessionId: session.id});
+    session.addMessage({ content: "", role: 'assistant', rawResponse: nutritionInfo });
+    const foodLog = new FoodLogModel({
+      userId,
+      prompt,
+      date,
+      sessionId: session.id,
+      totalNutritionFacts: nutritionInfo.nutritionFactsTotal, 
+      perItemNutritionFacts: nutritionInfo.nutritionFactsPerPortion
+    });
     await this.foodLogRepo.save(foodLog);
     await this.chatRepo.save(session);
     return foodLog

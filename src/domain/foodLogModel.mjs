@@ -23,9 +23,9 @@ export class NutritionFactsModel extends BaseModel {
       "Kcal",
       "Grams",
       "Protein",
-      "Fat",
-      "Carbohydrates",
-      "Fiber",
+      // "Fat",
+      // "Carbohydrates",
+      // "Fiber",
       // "Sugar",
     ]
   }
@@ -36,9 +36,9 @@ export class NutritionFactsModel extends BaseModel {
       this.data.kcal.toFixed(2),
       this.data.grams.toFixed(2),
       this.data.protein.toFixed(2),
-      this.data.fat.toFixed(2),
-      this.data.carbohydrates.toFixed(2),
-      this.data.fiber.toFixed(2),
+      // this.data.fat.toFixed(2),
+      // this.data.carbohydrates.toFixed(2),
+      // this.data.fiber.toFixed(2),
       // this.data.sugar.toFixed(2),
     ]
   }
@@ -93,7 +93,7 @@ export class FoodLogModelCollection extends Array {
         if (isNaN(val)) return val
         return value + Number(val)
       })
-    }, new Array(7).fill(0))
+    }, new Array(NutritionFactsModel.toHeadingNamesArray().length).fill(0))
   }
   toASCII() {
     const table = new AsciiTable3()

@@ -86,6 +86,7 @@ describe('LogFoodUseCase', () => {
     // const prompt = 'Single mcdonalds cheeseburger, small fries and diet coke';
     // const prompt = 'Single mcdonalds cheeseburger and diet coke';
     // const prompt = 'small fries and diet coke';
+    // const prompt = 'lean steak basted in butter'
     beforeEach(async () => {
       result = await logFoodUseCase.execute({
         userId,
@@ -98,7 +99,7 @@ describe('LogFoodUseCase', () => {
       console.log(html)
       expect(html).include('oatmeal');
     });
-    it("should save log", async () => {
+    it.only("should save log", async () => {
       const logs = await foodLogRepo.find();
       expect(logs.length).to.eq(1);
     })

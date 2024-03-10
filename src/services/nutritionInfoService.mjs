@@ -37,10 +37,13 @@ export class NutritionInfoService {
       [
         {
           role: 'system',
-          content: `Act as a portion size processing from natural language service. Your role is to convert user input to grams.
+          content: `Act as a portion size processing from natural language service. 
+Your role is to split input into foods and convert user input to grams.
+
 Step by step:
-1. To the best of your ability do an educated guess on user input units.
-2. Convert user input units to grams
+1. Do an educated guess on user input units, which can be grams, pieces(if number provided assume pieces), cups, etc.
+2. If not information about portion size, assume average portion size. If pieces are provided, assume average weight for that food multipled by pieces.
+3. Convert portion size to grams
 Respond with following json structure: ${JSON.stringify(portionSizeStructure)}`
         },
         //         {
@@ -56,7 +59,6 @@ Respond with following json structure: ${JSON.stringify(portionSizeStructure)}`
       ],
       {
         model: "gpt-3.5-turbo",
-        // response_format: undefined
       }
     )
     const parsedPortionSize = parseFirstJson(portionSizeResponse.choices[0].message.content);

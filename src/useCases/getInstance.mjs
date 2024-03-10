@@ -6,6 +6,12 @@ import { UpdateProfileUseCase } from "./updateProfileUseCase.mjs";
 import { FoodLogRepo } from "../repos/foodLogRepo.mjs";
 import { LogFoodUseCase } from "./logFoodUseCase.mjs";
 import { EstimateBurnPerDayUseCase } from "./estimeBurnPerDayUseCase.mjs";
+import { DeleteLogUseCase} from "./deleteLogUseCase.mjs";
+
+export function getDeleteLogUseCaseInstance(client) {
+  const foodLogRepo = new FoodLogRepo(client);
+  return new DeleteLogUseCase(foodLogRepo);
+}
 
 export function getMentalChatUseCaseInstance(client) {
   const chatSessionRepo = new ChatSessionRepo(client);

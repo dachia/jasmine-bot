@@ -10,6 +10,7 @@ import { chooseGenderController } from './grammy/chooseGenderController.mjs';
 import { GENDER_CHOICES } from './domain/genders.mjs';
 import { ACTION_USER, DEFAULT_FLOW, getStateConfig } from './domain/states.mjs';
 import { setCtxState, setFlow } from './grammy/utils/flowManagement.mjs';
+import { deleteLogCommandController } from './grammy/deleteLogCommandController.mjs';
 
 
 export function createBot() {
@@ -60,5 +61,12 @@ export function registerBotCommandHandlers(bot, client) {
     bot.callbackQuery(gender.value, executeNextWrapper(chooseGenderController, client))
   }
   bot.on("message", executeNextWrapper(processStateController, client))
+  bot.on('callback_query:data', async (ctx) => {
+    if (ctx.callbackQuery.data.includes("deleteLog")) {
+      const id = ctx.callbackQuery.data.split(":")[1]
+      await deleteLogCommandController(ctx, client, id)
+      return
+    }
+  })
   // bot.on('sticker', (ctx) => ctx.reply('👍'));
 }

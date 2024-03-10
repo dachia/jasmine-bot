@@ -16,6 +16,10 @@ export class GenericMongoRepo {
     const raw = await this.collection.find(query).toArray();
     return raw.map(this.deserializeModel.bind(this));
   }
+  
+  async remove({ userId, id }) {
+    await this.collection.deleteOne({ userId, _id: id});
+  }
 
   async getById(domainId) {
     const raw = await this.collection.findOne({ _id: domainId });

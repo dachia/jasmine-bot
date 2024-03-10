@@ -2,7 +2,7 @@ import { BaseModel } from './baseModel.mjs';
 import { createBaseClassGettersAndSetters } from '../utils/baseClassSetter.mjs';
 // Derived class
 export class NutritionFactsModel extends BaseModel {
-  constructor({ protein, fat, carbohydrates, kcal, fiber, sugar, grams, date, input, itemName, ...baseProps }) {
+  constructor({ protein, fat, carbohydrates, kcal, fiber, sugar, grams, date, input, shortName, itemName, portionSize, portionSizeUnits, ...baseProps }) {
     super(baseProps); // Call to the base class constructor
     this.data.protein = protein
     this.data.fat = fat
@@ -12,6 +12,9 @@ export class NutritionFactsModel extends BaseModel {
     this.data.sugar = sugar
     this.data.grams = grams
     this.data.itemName = itemName || input
+    this.data.shortName = shortName || this.data.itemName
+    this.data.portionSizeUnits = portionSizeUnits
+    this.data.portionSize = portionSize
 
     createBaseClassGettersAndSetters(this)
   }
@@ -26,17 +29,6 @@ export class NutritionFactsModel extends BaseModel {
       grams: this.data.grams + other.data.grams,
       itemName: [this.data.itemName, other.data.itemName].join(' + ')
     })
-  }
-}
-
-export class NutritionFactsEtimationModel extends NutritionFactsModel {
-  constructor({ portionSizeUnits, portionSize, ...baseProps }) {
-    super(baseProps);
-
-    this.data.portionSizeUnits = portionSizeUnits
-    this.data.portionSize = portionSize
-
-    createBaseClassGettersAndSetters(this)
   }
 }
 
@@ -56,7 +48,7 @@ export class FoodLogModel extends BaseModel {
     this.data.sessionId = sessionId
     this.data.date = date
     this.data.totalNutritionFacts = new NutritionFactsModel({ ...totalNutritionFacts, itemName: "Total", ...baseProps })
-    this.data.perItemNutritionFacts = new NutritionFactsCollection(...perItemNutritionFacts?.map(item => new NutritionFactsEtimationModel({ ...item, ...baseProps })))
+    this.data.perItemNutritionFacts = new NutritionFactsCollection(...perItemNutritionFacts?.map(item => new NutritionFactsModel({ ...item, ...baseProps })))
 
     createBaseClassGettersAndSetters(this)
   }

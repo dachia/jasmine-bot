@@ -81,13 +81,13 @@ describe('LogFoodUseCase', () => {
     const userId = 'userId'
     const date = new Date();
     // const prompt = '160g Steak lean, basted in butter, medium rare. Standard seasoning';
-    const prompt = `61g oatmeaal
-2 dates
-230glow fat milk`
+//     const prompt = `61g oatmeaal
+// 2 dates
+// 230glow fat milk`
     // const prompt = 'Single mcdonalds cheeseburger, small fries and diet coke';
     // const prompt = 'Single mcdonalds cheeseburger and diet coke';
     // const prompt = 'small fries and diet coke';
-    // const prompt = 'lean steak basted in butter'
+    const prompt = 'lean steak basted in butter'
     beforeEach(async () => {
       result = await logFoodUseCase.execute({
         userId,

@@ -5,7 +5,7 @@ export function mapNutritionFactsCollectionToAsciiTable(nutritionFactsCollection
   const rowMatrix = [
     // ['Item', 'Protein', 'Fat', 'Carbohydrates', 'Kcal', 'Fiber', 'Sugar', 'Grams'],
     ...nutritionFactsCollection.map(nutritionFacts => [
-      AsciiTable3.truncateString(nutritionFacts.itemName, 8),
+      AsciiTable3.truncateString(nutritionFacts.shortName, 10),
       nutritionFacts.kcal,
       nutritionFacts.grams,
       nutritionFacts.protein,
@@ -17,7 +17,7 @@ export function mapNutritionFactsCollectionToAsciiTable(nutritionFactsCollection
     ['Total', sum?.kcal ?? 0, sum?.grams ?? 0, sum?.protein ?? 0]
   ]
   const table = new AsciiTable3()
-  table.setHeading('Item', 'Kcal', 'Grams', 'Protein')
+  table.setHeading('Item', 'Kcal', 'G', 'Prot')
   table.addRowMatrix(rowMatrix)
   table.setAlignCenter(3)
   table.setStyle('none')

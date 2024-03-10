@@ -9,6 +9,7 @@ const nutritionFacts = {
   grams: 0,
   input: "",
   itemName: "",
+  shortName: "",
 }
 const nustritionFactsStructure = {
   results: [nutritionFacts]

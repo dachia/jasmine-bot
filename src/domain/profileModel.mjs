@@ -15,6 +15,9 @@ export class ProfileModel extends BaseModel {
     createBaseClassGettersAndSetters(this)
   }
   
+  get recommendedProtein() {
+    return this.weight;
+  }
   get age() {
     return new Date().getFullYear() - this.data.birthDate.getFullYear();
   }

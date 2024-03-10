@@ -5,6 +5,9 @@ export const todaysReportCommandController = async (ctx, client) => {
   const date = new Date();
   date.setHours(0, 0, 0, 0);
   const report = await getDailyReportQueryInstance(client).execute({ userId: ctx.from.id, date })
-  const text = mapNutritionFactsCollectionToAsciiTable(report.asNutritionFactsCollection()).toString()
-  ctx.reply(`<pre>${text}</pre>`, { parse_mode: "HTML" });
+  const text = mapNutritionFactsCollectionToAsciiTable(report.logs.asNutritionFactsCollection()).toString()
+  ctx.reply(`<pre>${text}</pre>
+calorie deficit: <b>${report.balance.calorieDeficit}</b>
+protein deficit: <b>${report.balance.proteinDeficit}</b>
+`, { parse_mode: "HTML" });
 }

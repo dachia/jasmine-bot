@@ -14,7 +14,7 @@ export function mapNutritionFactsCollectionToAsciiTable(nutritionFactsCollection
       // nutritionFacts.fiber,
       // nutritionFacts.sugar,
     ]),
-    ['Total', sum.kcal, sum.grams, sum.protein]
+    ['Total', sum?.kcal ?? 0, sum?.grams ?? 0, sum?.protein ?? 0]
   ]
   const table = new AsciiTable3()
   table.setHeading('Item', 'Kcal', 'Grams', 'Protein')

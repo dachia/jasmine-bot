@@ -4,6 +4,7 @@ import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
 import { FoodLogRepo } from '../../repos/foodLogRepo.mjs';
 import { client } from '../../utils/testDatabase.mjs';
 import { DailyReportQuery } from '../dailyReportQuery.mjs';
+import { mapNutritionFactsCollectionToAsciiTable } from '../../mappers/mapNutritionFactsCollectionToAsciiTable.mjs';
 
 const respNutritionFacts = {
   id: "chatcmpl-90V6A92o8VILBmScCqeoBakpr6NXz",
@@ -102,9 +103,11 @@ describe('DailyReportQuery', () => {
       });
     });
     it('should process message', () => {
-      const html = result.toASCII();
-      console.log(html)
-      expect(html).include('oatmeal');
+      const colletion = result.asNutritionFactsCollection();
+      const table = mapNutritionFactsCollectionToAsciiTable(colletion);
+      const text = table.toString()
+      console.log(text)
+      expect(text).include('oatmeal');
     });
   });
 });

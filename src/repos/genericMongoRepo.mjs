@@ -2,9 +2,10 @@ import { deserializeModel, serializeModel } from '../utils/serializeModel.mjs';
 // import { ChatMessageModel } from '../models/chatMessageModel.mjs';
 
 export class GenericMongoRepo {
-  constructor(mongoClient, collectionName, DomainModelClass) {
+  constructor(mongoClient, collectionName, DomainModelClass, DomainCollectionClass) {
     this.client = mongoClient;
     this.collection = this.client.db().collection(collectionName);
+    this.DomainCollectionClass = DomainCollectionClass;
     this.DomainModelClass = DomainModelClass;
   }
   
@@ -14,6 +15,9 @@ export class GenericMongoRepo {
 
   async find(query) {
     const raw = await this.collection.find(query).toArray();
+    if (this.DomainCollectionClass) {
+      return new this.DomainCollectionClass(...raw.map(this.deserializeModel.bind(this)));
+    }
     return raw.map(this.deserializeModel.bind(this));
   }
   

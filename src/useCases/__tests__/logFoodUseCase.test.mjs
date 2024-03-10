@@ -4,6 +4,7 @@ import { chatGpt } from "../../services/singletones.mjs"
 import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
 import { FoodLogRepo } from '../../repos/foodLogRepo.mjs';
 import { client } from '../../utils/testDatabase.mjs';
+import { mapNutritionFactsCollectionToAsciiTable} from '../../mappers/mapNutritionFactsCollectionToAsciiTable.mjs';
 
 const respNutritionFacts = {
   id: "chatcmpl-90V6A92o8VILBmScCqeoBakpr6NXz",
@@ -95,11 +96,13 @@ describe('LogFoodUseCase', () => {
       });
     });
     it('should process message', () => {
-      const html = result.toASCII();
-      console.log(html)
-      expect(html).include('oatmeal');
+      const colletion = result.perItemNutritionFacts;
+      const table = mapNutritionFactsCollectionToAsciiTable(colletion);
+      const text = table.toString()
+      console.log(text)
+      expect(text).include('oatmeal');
     });
-    it.only("should save log", async () => {
+    it("should save log", async () => {
       const logs = await foodLogRepo.find();
       expect(logs.length).to.eq(1);
     })

@@ -9,7 +9,7 @@ let client
 async function run() {
   client = await connectToDb(config.MONGODB_URI);
   startExpress(client);
-  const grammyServer = startGrammy(client);
+  const grammyServer = await startGrammy(client);
 
   const cleanupAndExit = async () => {
     console.log('Stopping servers...');

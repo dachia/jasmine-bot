@@ -11,6 +11,7 @@ import { GENDER_CHOICES } from './domain/genders.mjs';
 import { ACTION_USER, DEFAULT_FLOW, getStateConfig } from './domain/states.mjs';
 import { setCtxState, setFlow } from './grammy/utils/flowManagement.mjs';
 import { deleteLogCommandController } from './grammy/deleteLogCommandController.mjs';
+import { downloadDataCommand } from './grammy/downloadDataCommand.mjs';
 
 
 export function createBot() {
@@ -50,12 +51,22 @@ const executeNextWrapper = (command, client) => async (ctx) => {
   await command(ctx, client)
   await stateMachine(ctx, client)
 }
+export async function registerBotCommands(bot) {
+  await bot.api.setMyCommands([
+    { command: "mental", description: "Having trouble sticking to the diet?" },
+    { command: "food", description: "Log food" },
+    { command: "report", description: "Daily report" },
+    { command: "export", description: "Export data" },
+  ]);
+
+}
 export function registerBotCommandHandlers(bot, client) {
   bot.use(session({}))
   bot.command('start', executeNextWrapper(startCommandController, client))
   bot.command('report', executeNextWrapper(todaysReportCommandController, client))
   bot.command('mental', executeNextWrapper(mentalHealthCommandController, client))
   bot.command('food', executeNextWrapper(logFoodCommandController, client))
+  bot.command('export', executeNextWrapper(downloadDataCommand, client))
   bot.callbackQuery('skip-state', executeNextWrapper(skipButtonController, client))
   for (const gender of GENDER_CHOICES) {
     bot.callbackQuery(gender.value, executeNextWrapper(chooseGenderController, client))

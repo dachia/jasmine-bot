@@ -1,10 +1,15 @@
 import { Bot, session } from 'grammy';
 import config from './config.mjs';
 import { startCommandController } from "./grammy/startCommandController.mjs"
-import { messageController } from "./grammy/messageController.mjs"
+import { processStateController } from "./grammy/processStateController.mjs"
 import { logFoodCommandController } from './grammy/logFoodCommandController.mjs';
 import { mentalHealthCommandController } from './grammy/mentalHealthCommandController.mjs';
 import { todaysReportCommandController } from './grammy/todaysReportCommandController.mjs';
+import { skipButtonController } from './grammy/skipButtonController.mjs';
+import { chooseGenderController } from './grammy/chooseGenderController.mjs';
+import { GENDER_CHOICES } from './domain/genders.mjs';
+import { ACTION_USER, DEFAULT_FLOW, getNextState, getStateConfig } from './domain/states.mjs';
+import { setCtxState, setFlow } from './grammy/utils/flowManagement.mjs';
 
 
 export function createBot() {
@@ -20,15 +25,40 @@ export function botContextToContext(ctx) {
 }
 
 
+const executeNextWrapper = (command, client) => async (ctx, next) => {
+  await command(ctx, client)
+  await next()
+}
 export function registerBotCommandHandlers(bot, client) {
   bot.use(session({}))
-  bot.command('start', (ctx) => startCommandController(ctx, client))
-// mental-health - Seek mental coaching to achieve your fitness goals
-// food-logging - Log food and track calories
-// todays-report - Calories in/Calories out
-  bot.command('report', (ctx) => todaysReportCommandController(ctx, client))
-  bot.command('mental', (ctx) => mentalHealthCommandController(ctx, client))
-  bot.command('food', (ctx) => logFoodCommandController(ctx, client))
-  bot.on("message", (ctx) => messageController(ctx, client))
+  bot.command('start', executeNextWrapper(startCommandController, client))
+  bot.command('report', executeNextWrapper(todaysReportCommandController, client))
+  bot.command('mental', executeNextWrapper(mentalHealthCommandController, client))
+  bot.command('food', executeNextWrapper(logFoodCommandController, client))
+  bot.callbackQuery('skip-state', executeNextWrapper(skipButtonController, client))
+  for (const gender of GENDER_CHOICES) {
+    bot.callbackQuery(gender.value, executeNextWrapper(chooseGenderController, client))
+  }
+  bot.on("message", executeNextWrapper(processStateController, client))
+  bot.use(async (ctx, next) => {
+    let action
+    while (action !== ACTION_USER) {
+      if (ctx.session?.currentFlow == null) {
+        setFlow(ctx, DEFAULT_FLOW)
+      }
+      setCtxState(ctx)
+      const state = ctx.session.state
+      if (state == null) {
+        setFlow(ctx, DEFAULT_FLOW)
+        setCtxState(ctx)
+      }
+      action = getStateConfig(ctx.session.state).action
+      if (action === ACTION_USER) {
+        break
+      }
+      await processStateController(ctx, client)
+    }
+    await next()
+  })
   // bot.on('sticker', (ctx) => ctx.reply('👍'));
 }

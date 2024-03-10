@@ -1,10 +1,11 @@
-import { STATES_EDIT_PROFILE } from '../domain/states.mjs';
+import { ONBOARDING_FLOW } from '../domain/states.mjs';
+import { setCtxState, setFlow } from './utils/flowManagement.mjs';
 
 export const startCommandController = (ctx) => {
-  ctx.reply("Hi. Let's gather get your biometric data so I can help you better.\nWhat is your birth date? (YYYY-MM-DD)")
+  ctx.reply("Hi. Let's gather get your biometric data so I can help you better")
   if (!ctx.session) {
     ctx.session = {};
   }
 
-  ctx.session.state = getNextState(null, STATES_EDIT_PROFILE)
+  setFlow(ctx, ONBOARDING_FLOW)
 }

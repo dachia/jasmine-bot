@@ -50,7 +50,7 @@ export const processStateController = async (ctx, client) => {
       ctx.replyWithChatAction('typing');
       await estimatedBurnPerDayUseCase.execute({ userId });
       const estimatedBurnPerDay = await estimatedBurnPerDayUseCase.execute({ userId });
-      ctx.reply(`Thank you for the information. I will use this to help you better.\nYour estimated burn per day is ${estimatedBurnPerDay.estimatedBurnPerDay}.`);
+      ctx.reply(`Your estimated burn per day is ${estimatedBurnPerDay.estimatedBurnPerDay}.`);
       break;
     case WAITING_FOR_FOOD:
       await logFoodController(ctx, client);

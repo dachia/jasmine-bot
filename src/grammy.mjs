@@ -8,12 +8,32 @@ import { todaysReportCommandController } from './grammy/todaysReportCommandContr
 import { skipButtonController } from './grammy/skipButtonController.mjs';
 import { chooseGenderController } from './grammy/chooseGenderController.mjs';
 import { GENDER_CHOICES } from './domain/genders.mjs';
-import { ACTION_USER, DEFAULT_FLOW, getNextState, getStateConfig } from './domain/states.mjs';
+import { ACTION_USER, DEFAULT_FLOW, getStateConfig } from './domain/states.mjs';
 import { setCtxState, setFlow } from './grammy/utils/flowManagement.mjs';
 
 
 export function createBot() {
   return new Bot(config.TELEGRAM_API_TOKEN)
+}
+
+export async function stateMachine(ctx, client) {
+  let action
+  while (action !== ACTION_USER) {
+    if (ctx.session?.currentFlow == null) {
+      setFlow(ctx, DEFAULT_FLOW)
+    }
+    setCtxState(ctx)
+    const state = ctx.session.state
+    if (state == null) {
+      setFlow(ctx, DEFAULT_FLOW)
+      setCtxState(ctx)
+    }
+    action = getStateConfig(ctx.session.state).action
+    if (action === ACTION_USER) {
+      break
+    }
+    await processStateController(ctx, client)
+  }
 }
 
 export function botContextToContext(ctx) {
@@ -25,9 +45,9 @@ export function botContextToContext(ctx) {
 }
 
 
-const executeNextWrapper = (command, client) => async (ctx, next) => {
+const executeNextWrapper = (command, client) => async (ctx) => {
   await command(ctx, client)
-  await next()
+  await stateMachine(ctx, client)
 }
 export function registerBotCommandHandlers(bot, client) {
   bot.use(session({}))
@@ -40,25 +60,5 @@ export function registerBotCommandHandlers(bot, client) {
     bot.callbackQuery(gender.value, executeNextWrapper(chooseGenderController, client))
   }
   bot.on("message", executeNextWrapper(processStateController, client))
-  bot.use(async (ctx, next) => {
-    let action
-    while (action !== ACTION_USER) {
-      if (ctx.session?.currentFlow == null) {
-        setFlow(ctx, DEFAULT_FLOW)
-      }
-      setCtxState(ctx)
-      const state = ctx.session.state
-      if (state == null) {
-        setFlow(ctx, DEFAULT_FLOW)
-        setCtxState(ctx)
-      }
-      action = getStateConfig(ctx.session.state).action
-      if (action === ACTION_USER) {
-        break
-      }
-      await processStateController(ctx, client)
-    }
-    await next()
-  })
   // bot.on('sticker', (ctx) => ctx.reply('👍'));
 }

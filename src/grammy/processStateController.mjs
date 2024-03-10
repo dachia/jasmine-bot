@@ -45,7 +45,6 @@ export const processStateController = async (ctx, client) => {
       break;
     case WAITING_FOR_STEPS:
       await setStepsController(ctx, client);
-      await processStateController(ctx, client);
       break;
     case ESTIMATE_BURN_PER_DAY:
       ctx.replyWithChatAction('typing');

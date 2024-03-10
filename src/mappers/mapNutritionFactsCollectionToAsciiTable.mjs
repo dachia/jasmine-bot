@@ -6,15 +6,15 @@ export function mapNutritionFactsCollectionToAsciiTable(nutritionFactsCollection
     // ['Item', 'Protein', 'Fat', 'Carbohydrates', 'Kcal', 'Fiber', 'Sugar', 'Grams'],
     ...nutritionFactsCollection.map(nutritionFacts => [
       AsciiTable3.truncateString(nutritionFacts.shortName, 10),
-      nutritionFacts.kcal,
-      nutritionFacts.grams,
-      nutritionFacts.protein,
+      nutritionFacts.kcal.toFixed(2),
+      nutritionFacts.grams.toFixed(2),
+      nutritionFacts.protein.toFixed(2),
       // nutritionFacts.fat,
       // nutritionFacts.carbohydrates,
       // nutritionFacts.fiber,
       // nutritionFacts.sugar,
     ]),
-    ['Total', sum?.kcal ?? 0, sum?.grams ?? 0, sum?.protein ?? 0]
+    ['Total', sum?.kcal.toFixed(2) ?? 0, sum?.grams.toFixed(2) ?? 0, sum?.protein.toFixed(2) ?? 0]
   ]
   const table = new AsciiTable3()
   table.setHeading('Item', 'Kcal', 'G', 'Prot')

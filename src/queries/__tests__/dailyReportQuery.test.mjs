@@ -5,6 +5,7 @@ import { FoodLogRepo } from '../../repos/foodLogRepo.mjs';
 import { client } from '../../utils/testDatabase.mjs';
 import { DailyReportQuery } from '../dailyReportQuery.mjs';
 import { mapNutritionFactsCollectionToAsciiTable } from '../../mappers/mapNutritionFactsCollectionToAsciiTable.mjs';
+import { ProfileRepo } from '../../repos/profileRepo.mjs';
 
 const respNutritionFacts = {
   id: "chatcmpl-90V6A92o8VILBmScCqeoBakpr6NXz",
@@ -58,6 +59,7 @@ describe('DailyReportQuery', () => {
   let nutritionInfoService
   let chatSessionRepo
   let logFoodUseCase
+  let profileRepo
   let foodLogRepo
   let idx = 0
   const userId = 'userId'
@@ -80,6 +82,7 @@ describe('DailyReportQuery', () => {
     chatSessionRepo = new ChatSessionRepo(client);
     foodLogRepo = new FoodLogRepo(client);
     logFoodUseCase = new LogFoodUseCase(nutritionInfoService, foodLogRepo, chatSessionRepo);
+    profileRepo = new ProfileRepo(client);
     date.setHours(0, 0, 0, 0);
     await logFoodUseCase.execute({
       userId,
@@ -95,7 +98,7 @@ describe('DailyReportQuery', () => {
   describe('execute', () => {
     let result
     beforeEach(async () => {
-      const query = new DailyReportQuery(foodLogRepo);
+      const query = new DailyReportQuery(foodLogRepo, profileRepo);
       result = await query.execute({
         userId,
         date,
@@ -103,7 +106,7 @@ describe('DailyReportQuery', () => {
       });
     });
     it('should process message', () => {
-      const colletion = result.asNutritionFactsCollection();
+      const colletion = result.logs.asNutritionFactsCollection();
       const table = mapNutritionFactsCollectionToAsciiTable(colletion);
       const text = table.toString()
       console.log(text)

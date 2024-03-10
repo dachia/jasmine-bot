@@ -12,6 +12,7 @@ import { ACTION_USER, DEFAULT_FLOW, getStateConfig } from './domain/states.mjs';
 import { setCtxState, setFlow } from './grammy/utils/flowManagement.mjs';
 import { deleteLogCommandController } from './grammy/deleteLogCommandController.mjs';
 import { downloadDataCommand } from './grammy/downloadDataCommand.mjs';
+import { updateWeightCommandController } from './grammy/updateWeightCommandController.mjs';
 
 
 export function createBot() {
@@ -56,6 +57,7 @@ export async function registerBotCommands(bot) {
     { command: "mental", description: "Having trouble sticking to the diet?" },
     { command: "food", description: "Log food" },
     { command: "report", description: "Daily report" },
+    { command: "set_weight", description: "Update weight" },
     { command: "export", description: "Export data" },
   ]);
 
@@ -67,6 +69,7 @@ export function registerBotCommandHandlers(bot, client) {
   bot.command('mental', executeNextWrapper(mentalHealthCommandController, client))
   bot.command('food', executeNextWrapper(logFoodCommandController, client))
   bot.command('export', executeNextWrapper(downloadDataCommand, client))
+  bot.command('set_weight', executeNextWrapper(updateWeightCommandController, client))
   bot.callbackQuery('skip-state', executeNextWrapper(skipButtonController, client))
   for (const gender of GENDER_CHOICES) {
     bot.callbackQuery(gender.value, executeNextWrapper(chooseGenderController, client))

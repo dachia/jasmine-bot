@@ -7,6 +7,7 @@ import { FoodLogRepo } from "../repos/foodLogRepo.mjs";
 import { LogFoodUseCase } from "./logFoodUseCase.mjs";
 import { EstimateBurnPerDayUseCase } from "./estimeBurnPerDayUseCase.mjs";
 import { DeleteLogUseCase} from "./deleteLogUseCase.mjs";
+import { ProfileStatsLogRepo } from "../repos/profileStatsLogRepo.mjs";
 
 export function getDeleteLogUseCaseInstance(client) {
   const foodLogRepo = new FoodLogRepo(client);
@@ -20,7 +21,8 @@ export function getMentalChatUseCaseInstance(client) {
 
 export function getUpdateProfileUseCaseInstance(client) {
   const profileRepo = new ProfileRepo(client);
-  return new UpdateProfileUseCase(profileRepo);
+  const profileStatsLogRepo = new ProfileStatsLogRepo(client);
+  return new UpdateProfileUseCase(profileRepo, profileStatsLogRepo);
 }
 
 export function getLogFoodUseCaseInstance(client) {

@@ -12,11 +12,15 @@ export const STEPS_GREETING = "steps-greeting"
 export const WAITING_FOR_STEPS = "waiting-for-steps"
 export const ESTIMATE_BURN_PER_DAY = "estimate-burn-per-day"
 
+export const UPDATE_WEIGHT_FLOW = [
+  WEIGHT_GREETING,
+  WAITING_FOR_WEIGHT,
+]
+
 export const ONBOARDING_FLOW = [
   BIRTH_DATE_GREETING,
   WAITING_FOR_BIRTH_DATE,
-  WEIGHT_GREETING,
-  WAITING_FOR_WEIGHT,
+  ...UPDATE_WEIGHT_FLOW,
   HEIGHT_GREETING,
   WAITING_FOR_HEIGHT,
   GENDER_GREETING,

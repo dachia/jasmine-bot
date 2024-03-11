@@ -12,6 +12,9 @@ export class LogFoodUseCase {
     session.addMessage({ content: prompt, role: 'user' });
 
     const nutritionInfo = await this.nutritionInfoService.getNutritionInfo({ prompt });
+    if (nutritionInfo == null) {
+      return null;
+    }
     session.addMessage({ content: "", role: 'assistant', rawResponse: nutritionInfo });
     const foodLog = new FoodLogModel({
       userId,

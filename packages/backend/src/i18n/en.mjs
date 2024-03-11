@@ -15,6 +15,7 @@ export default {
     "total_fat_consumed": "Total fat consumed",
     "total_carbohydrates_consumed": "Total carbohydrates consumed",
     "delete_success": "Deleted successfully",
+    "not_found": "I'm sorry, I can't find that food. Are you sure you didn't eat a rock? 😂"
   },
   "export": {
     "error_generating_csv": "Error generating CSV"
@@ -38,7 +39,7 @@ export default {
     "questions": "Questions",
     "commands": {
       "mental": "Having trouble sticking to the diet?",
-      "log_food": "Log food",
+      "food_log": "Log food",
       "report": "Daily report",
       "weight": "Update weight",
       "export": "Export data",

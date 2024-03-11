@@ -64,6 +64,7 @@ Respond with following json structure: ${JSON.stringify(portionSizeStructure)}`
     )
     const parsedPortionSize = parseFirstJson(portionSizeResponse.choices[0].message.content);
     if (!parsedPortionSize) return null
+    if (parsedPortionSize.results.every(p => !p.estimatedPortionSizeInGrams || !p.name)) return null
 
     const nutritionFactsResponse = await this.client.processPrompt(
       [
@@ -86,9 +87,11 @@ Respond with following json structure: ${JSON.stringify(nustritionFactsStructure
 
     const parsedNutritionFacts = parseFirstJson(nutritionFactsResponse.choices[0].message.content);
     if (!parsedNutritionFacts) return null
+    const filteredParsedNutritionFacts = parsedNutritionFacts.results.filter(p => p.grams)
+    if (!filteredParsedNutritionFacts.length) return null
 
     const nutritionFactsPerPortion = []
-    for (const item of parsedNutritionFacts.results) {
+    for (const item of filteredParsedNutritionFacts) {
       const portionSize = parsedPortionSize.results.find(p => p.name === item.input)
       const portionSizeG = portionSize.estimatedPortionSizeInGrams
       // calculate per portion

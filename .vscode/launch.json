@@ -8,7 +8,7 @@
       "internalConsoleOptions": "neverOpen",
       "console": "integratedTerminal",
       "name": "Node launch",
-      "program": "${workspaceFolder}/src/index.mjs",
+      "program": "${workspaceFolder}/packages/backend/src/index.mjs",
       "request": "launch",
       "skipFiles": [
         "<node_internals>/**"

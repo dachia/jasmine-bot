@@ -17,7 +17,7 @@ export function mapNutritionFactsCollectionToAsciiTable(nutritionFactsCollection
   const sum = nutritionFactsCollection.sum()
   const rowMatrix = [
     ...nutritionFactsCollection.map(nutritionFacts => [
-      AsciiTable3.truncateString(nutritionFacts.shortName, 8),
+      AsciiTable3.truncateString(nutritionFacts.shortName, 12),
       ...mapNutritionFactsRowToDisplayArray(nutritionFacts)
     ]),
     ['Total', ...mapNutritionFactsRowToDisplayArray(sum)]

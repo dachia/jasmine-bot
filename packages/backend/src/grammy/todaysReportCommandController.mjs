@@ -1,13 +1,19 @@
+import { mapNumberToDisplay } from "../mappers/mapNumberToDisplay.mjs";
 import { mapNutritionFactsCollectionToAsciiTable } from "../mappers/mapNutritionFactsCollectionToAsciiTable.mjs";
 import { getDailyReportQueryInstance } from "../queries/getInstance.mjs";
+import { translationService } from "../services/singletones.mjs";
 
 export const todaysReportCommandController = async (ctx, client) => {
+  const trans = translationService.en;
   const date = new Date();
   date.setHours(0, 0, 0, 0);
   const report = await getDailyReportQueryInstance(client).execute({ userId: ctx.from.id, date })
-  const text = mapNutritionFactsCollectionToAsciiTable(report.logs.asNutritionFactsCollection()).toString()
+  const text = mapNutritionFactsCollectionToAsciiTable(report.logs.asNutritionFactsCollection(), trans).toString()
   ctx.reply(`<pre>${text}</pre>
-calorie deficit: <b>${report.balance.calorieDeficit?.toFixed(2)}</b>
-protein deficit: <b>${report.balance.proteinDeficit?.toFixed(2)}</b>
+${trans.t("food_log.total_calories_consumed")}: <i>${mapNumberToDisplay(report.computed.total?.kcal)}</i>
+${trans.t("food_log.total_calories_left")}: <b>${mapNumberToDisplay(report.computed.calorieDeficit)}</b>
+${trans.t("food_log.total_protein_consumed")}: <i>${mapNumberToDisplay(report.computed.total?.protein)}</i>
+${trans.t("food_log.total_fat_consumed")}: <i>${mapNumberToDisplay(report.computed.total?.fat)}</i>
+${trans.t("food_log.total_carbohydrates_consumed")}: <i>${mapNumberToDisplay(report.computed.total?.carbohydrates)}</i>
 `, { parse_mode: "HTML" });
 }

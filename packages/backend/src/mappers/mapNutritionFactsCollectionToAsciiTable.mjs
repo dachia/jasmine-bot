@@ -13,17 +13,17 @@ export function mapNutritionFactsRowToDisplayArray(nutritionFact) {
   ]
 }
 
-export function mapNutritionFactsCollectionToAsciiTable(nutritionFactsCollection) {
+export function mapNutritionFactsCollectionToAsciiTable(nutritionFactsCollection, trans) {
   const sum = nutritionFactsCollection.sum()
   const rowMatrix = [
     ...nutritionFactsCollection.map(nutritionFacts => [
       AsciiTable3.truncateString(nutritionFacts.shortName, 12),
       ...mapNutritionFactsRowToDisplayArray(nutritionFacts)
     ]),
-    ['Total', ...mapNutritionFactsRowToDisplayArray(sum)]
+    [trans.t("food_log.total"), ...mapNutritionFactsRowToDisplayArray(sum)]
   ]
   const table = new AsciiTable3()
-  table.setHeading('', 'Kcal', 'Pr', 'Ft', 'Cb')
+  table.setHeading('', trans.t("food_log.short.kcal"), trans.t("food_log.short.protein"), trans.t("food_log.short.fat"), trans.t("food_log.short.carbohydrates"))
   table.addRowMatrix(rowMatrix)
   // table.setAlignCenter(3)
   table.setStyle('none')

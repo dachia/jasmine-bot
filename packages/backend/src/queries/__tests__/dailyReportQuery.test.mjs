@@ -5,6 +5,7 @@ import { FoodLogRepo } from '../../repos/foodLogRepo.mjs';
 import { client } from '../../utils/testDatabase.mjs';
 import { DailyReportQuery } from '../dailyReportQuery.mjs';
 import { mapNutritionFactsCollectionToAsciiTable } from '../../mappers/mapNutritionFactsCollectionToAsciiTable.mjs';
+import { translationService } from '../../services/singletones.mjs';
 import { ProfileRepo } from '../../repos/profileRepo.mjs';
 
 const respNutritionFacts = {
@@ -107,7 +108,7 @@ describe('DailyReportQuery', () => {
     });
     it('should process message', () => {
       const colletion = result.logs.asNutritionFactsCollection();
-      const table = mapNutritionFactsCollectionToAsciiTable(colletion);
+      const table = mapNutritionFactsCollectionToAsciiTable(colletion, translationService.en);
       const text = table.toString()
       console.log(text)
       expect(text).include('oatmeal');

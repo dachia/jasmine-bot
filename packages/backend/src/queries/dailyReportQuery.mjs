@@ -9,14 +9,13 @@ export class DailyReportQuery {
     const profile = (await this.profileRepo.find({ userId }))[0];
     const total = logs.asNutritionFactsCollection().sum()
     const estimatedBurnPerDay = profile?.estimatedBurnPerDay ?? null
-    const recommendedProtein = profile?.recommendedProtein ?? null
-    const calorieDeficit = estimatedBurnPerDay - (total.kcal ?? 0)
-    const proteinDeficit = recommendedProtein - (total.protein ?? 0)
+    const calorieDeficit = estimatedBurnPerDay - (total?.kcal ?? 0)
     return {
       logs,
-      balance: {
-        proteinDeficit,
+      profile,
+      computed: {
         calorieDeficit,
+        total,
       }
     }
   }

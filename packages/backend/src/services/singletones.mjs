@@ -2,6 +2,7 @@ import { ChatGpt } from "./chatGpt.mjs";
 import { MentalChat } from "./mentalChat.mjs";
 import { NutritionInfoService } from "./nutritionInfoService.mjs";
 import { EstimatedBurnPerDayService } from "./estimateBurnPerDayService.mjs";
+import { TranslationService } from "./translations.mjs";
 import config from "../config.mjs";
 
 export const chatGpt = new ChatGpt({
@@ -11,3 +12,4 @@ export const chatGpt = new ChatGpt({
 export const mentalChat = new MentalChat(chatGpt);
 export const nutritionInfoService = new NutritionInfoService(chatGpt);
 export const estimatedBurnPerDayService = new EstimatedBurnPerDayService(chatGpt);
+export const translationService = new TranslationService();

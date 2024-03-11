@@ -5,6 +5,7 @@ import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
 import { FoodLogRepo } from '../../repos/foodLogRepo.mjs';
 import { client } from '../../utils/testDatabase.mjs';
 import { mapNutritionFactsCollectionToAsciiTable} from '../../mappers/mapNutritionFactsCollectionToAsciiTable.mjs';
+import { translationService } from '../../services/singletones.mjs';
 
 const respNutritionFacts = {
   id: "chatcmpl-90V6A92o8VILBmScCqeoBakpr6NXz",
@@ -97,7 +98,7 @@ describe('LogFoodUseCase', () => {
     });
     it('should process message', () => {
       const colletion = result.perItemNutritionFacts;
-      const table = mapNutritionFactsCollectionToAsciiTable(colletion);
+      const table = mapNutritionFactsCollectionToAsciiTable(colletion, translationService.en);
       const text = table.toString()
       console.log(text)
       expect(text).include('oatmeal');

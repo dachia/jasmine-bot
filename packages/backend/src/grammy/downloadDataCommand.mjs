@@ -2,7 +2,9 @@ import { FoodLogRepo } from "../repos/foodLogRepo.mjs";
 import { InputFile } from "grammy";
 import { stringify } from 'csv-stringify';
 import { extractGrammyCtxData } from "../utils/extractGrammyCtxData.mjs";
+import { translationService } from "../services/singletones.mjs";
 export async function downloadDataCommand(ctx, client) {
+  const trans = translationService.en
   const { userId } = extractGrammyCtxData(ctx);
   const foodLogRepo = new FoodLogRepo(client);
   const logs = await foodLogRepo.find({ userId });
@@ -39,7 +41,7 @@ export async function downloadDataCommand(ctx, client) {
     })]
   stringify(dataMatrix, (err, output) => {
     if (err) {
-      ctx.reply('Error generating CSV');
+      ctx.reply(trans.t("export.error_generating_csv"));
       return;
     }
 

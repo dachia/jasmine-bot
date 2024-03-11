@@ -18,6 +18,6 @@ export class EstimateBurnPerDayUseCase {
     profile.estimatedBurnPerDay = estimatedBurn.estimatedBurnPerDay;
     await this.profileRepo.save(profile);
     // await this.chatRepo.save(session);
-    return estimatedBurn
+    return profile
   }
 }

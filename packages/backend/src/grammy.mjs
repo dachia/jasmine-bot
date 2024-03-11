@@ -13,6 +13,7 @@ import { setCtxState, setFlow } from './grammy/utils/flowManagement.mjs';
 import { deleteLogCommandController } from './grammy/deleteLogCommandController.mjs';
 import { downloadDataCommand } from './grammy/downloadDataCommand.mjs';
 import { updateWeightCommandController } from './grammy/updateWeightCommandController.mjs';
+import { translationService } from "./services/singletones.mjs";
 
 
 export function createBot() {
@@ -53,12 +54,14 @@ const executeNextWrapper = (command, client) => async (ctx) => {
   await stateMachine(ctx, client)
 }
 export async function registerBotCommands(bot) {
+  const trans = translationService.en
   await bot.api.setMyCommands([
-    { command: "mental", description: "Having trouble sticking to the diet?" },
-    { command: "food", description: "Log food" },
-    { command: "report", description: "Daily report" },
-    { command: "set_weight", description: "Update weight" },
-    { command: "export", description: "Export data" },
+
+    { command: "mental", description: trans.t("general.commands.mental") },
+    { command: "food", description: trans.t("general.commands.food_log") },
+    { command: "report", description: trans.t("general.commands.report") },
+    { command: "set_weight", description: trans.t("general.commands.weight") },
+    { command: "export", description: trans.t("general.commands.export") },
   ]);
 
 }

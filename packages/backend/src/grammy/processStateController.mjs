@@ -22,9 +22,11 @@ import {
 } from '../domain/states.mjs';
 import { InlineKeyboard } from "grammy";
 import { GENDER_FEMAIL, GENDER_MALE } from "../domain/genders.mjs";
+import { translationService } from "../services/singletones.mjs";
 
 
 export const processStateController = async (ctx, client) => {
+  const trans = translationService.en
   const estimatedBurnPerDayUseCase = getEstimatedBurnPerDayInstance(client);
   const { userId, state, name } = extractGrammyCtxData(ctx);
   switch (state) {
@@ -49,8 +51,11 @@ export const processStateController = async (ctx, client) => {
     case ESTIMATE_BURN_PER_DAY:
       ctx.replyWithChatAction('typing');
       await estimatedBurnPerDayUseCase.execute({ userId });
-      const estimatedBurnPerDay = await estimatedBurnPerDayUseCase.execute({ userId });
-      ctx.reply(`Your estimated burn per day is ${estimatedBurnPerDay.estimatedBurnPerDay}.`);
+      const profile = await estimatedBurnPerDayUseCase.execute({ userId });
+      ctx.reply(trans.t("profile.estimated_tdd_explanation", {
+        kcal: profile.estimatedBurnPerDay,
+        weight: profile.weight,
+      }));
       break;
     case WAITING_FOR_FOOD:
       await logFoodController(ctx, client);
@@ -59,9 +64,9 @@ export const processStateController = async (ctx, client) => {
       await sendMentalChatMessageController(ctx, client);
       break;
     case ACTIVITY_LEVEL_GREETING:
-      ctx.reply("What is your activity level?", {
+      ctx.reply(trans.t("profile.activity_level_question"), {
         reply_markup: new InlineKeyboard()
-          .text("Skip", "skip-state")
+          .text(trans.t("general.skip_button"), "skip-state")
         // .text("Sedentary")
         // .text("Lightly active")
         // .text("Moderately active")
@@ -70,25 +75,25 @@ export const processStateController = async (ctx, client) => {
       });
       break
     case BIRTH_DATE_GREETING:
-      ctx.reply("What is your birth date? (YYYY-MM-DD)");
+      ctx.reply(trans.t("profile.birth_date_question"));
       break
     case MENTAL_INPUT_GREETING:
-      ctx.reply(`Hello. So what is bothering you, ${name}? Let me know how I can help you.`);
+      ctx.reply(trans.t("mental.greeting_question", { name }));
       break
     case FOOD_INPUT_GREETING:
-      ctx.reply("Message me the food you ate")
+      ctx.reply(trans.t("food_log.greeting_question"));
       break
     case WEIGHT_GREETING:
-      ctx.reply("What is your weight in kg?");
+      ctx.reply(trans.t("profile.weight_question"));
       break;
     case HEIGHT_GREETING:
-      ctx.reply("What is your height in cm?");
+      ctx.reply(trans.t("profile.height_question"));
       break
     case GENDER_GREETING:
-      ctx.reply("What is your gender?", { reply_markup: new InlineKeyboard().text(GENDER_MALE.name, GENDER_MALE.value).text(GENDER_FEMAIL.name, GENDER_FEMAIL.value) });
+      ctx.reply(trans.t("profile.gender_question"), { reply_markup: new InlineKeyboard().text(GENDER_MALE.name, GENDER_MALE.value).text(GENDER_FEMAIL.name, GENDER_FEMAIL.value) });
       break;
     case STEPS_GREETING:
-      ctx.reply("How many steps do you take per day?", { reply_markup: new InlineKeyboard().text("Skip", "skip-state") });
+      ctx.reply(trans.t("profile.steps_question"), { reply_markup: new InlineKeyboard().text(trans.t("general.skip_button"), "skip-state") });
       break
     default:
       return;

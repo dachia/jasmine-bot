@@ -4,7 +4,7 @@ import { getDailyReportQueryInstance } from "../queries/getInstance.mjs";
 import { translationService } from "../services/singletones.mjs";
 
 export const todaysReportCommandController = async (ctx, client) => {
-  const trans = translationService.en;
+  const trans = translationService.getTranslationsInstance(ctx)
   const date = new Date();
   date.setHours(0, 0, 0, 0);
   const report = await getDailyReportQueryInstance(client).execute({ userId: ctx.from.id, date })

@@ -48,7 +48,7 @@ export class FoodLogModel extends BaseModel {
     this.data.sessionId = sessionId
     this.data.date = date
     this.data.totalNutritionFacts = new NutritionFactsModel({ ...totalNutritionFacts, itemName: "Total", ...baseProps })
-    this.data.perItemNutritionFacts = new NutritionFactsCollection(...perItemNutritionFacts?.map(item => new NutritionFactsModel({ ...item, ...baseProps })))
+    this.data.perItemNutritionFacts = new NutritionFactsCollection(...(perItemNutritionFacts?.map(item => new NutritionFactsModel({ ...item, ...baseProps })) ?? []))
 
     createBaseClassGettersAndSetters(this)
   }

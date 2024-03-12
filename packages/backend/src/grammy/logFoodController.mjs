@@ -5,7 +5,7 @@ import { mapNutritionFactsCollectionToAsciiTable } from "../mappers/mapNutrition
 import { translationService } from '../services/singletones.mjs';
 
 export async function logFoodController(ctx, client) {
-  const trans = translationService.en;
+  const trans = translationService.getTranslationsInstance(ctx)
   const logFoodUseCase = getLogFoodUseCaseInstance(client);
   const { message, userId } = extractGrammyCtxData(ctx);
   const date = new Date();

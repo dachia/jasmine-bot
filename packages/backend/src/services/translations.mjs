@@ -5,4 +5,8 @@ export class TranslationService {
   constructor() {
     this.en = new polyglot.default({ locale: 'en', phrases: en })
   }
+  
+  getTranslationsInstance(opts) {
+    return this.en
+  }
 }

@@ -6,7 +6,7 @@ import yup from 'yup';
 const birthDateSchema = yup.date().required();
 
 export async function setBirthDateController(ctx, client) {
-  const trans = translationService.en
+  const trans = translationService.getTranslationsInstance(ctx)
   const { message,userId } = extractGrammyCtxData(ctx);
   const updateProfileUseCase = getUpdateProfileUseCaseInstance(client);
   try {

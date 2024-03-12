@@ -5,7 +5,7 @@ import { extractGrammyCtxData } from '../utils/extractGrammyCtxData.mjs';
 
 export const startCommandController = (ctx) => {
   const { name } = extractGrammyCtxData(ctx)
-  const trans = translationService.en
+  const trans = translationService.getTranslationsInstance(ctx)
   ctx.reply(trans.t("profile.onboarding_start", { name }))
   if (!ctx.session) {
     ctx.session = {};

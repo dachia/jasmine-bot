@@ -5,8 +5,8 @@ export class MentalChatUseCase {
     this.mentalChat = mentalChat;
     this.chatRepo = chatRepo;
   }
-  async processMessage({ userId, message, state, name, sessionId }) {
-    const trans = translationService.en
+  async processMessage({ userId, message, state, name, sessionId, ctx }) {
+    const trans = translationService.getTranslationsInstance(ctx)
     const message_ = state === "first-message" ? `I am feeling: ${message}` : message
     let session = await this.chatRepo.getById(sessionId);
     if (session === null) {

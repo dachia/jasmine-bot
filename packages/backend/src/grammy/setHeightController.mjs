@@ -5,7 +5,7 @@ import { translationService } from "../services/singletones.mjs";
 
 
 export async function setHeightController(ctx, client) {
-  const trans = translationService.en
+  const trans = translationService.getTranslationsInstance(ctx)
   const { message, userId } = extractGrammyCtxData(ctx);
   const updateProfileUseCase = getUpdateProfileUseCaseInstance(client);
 

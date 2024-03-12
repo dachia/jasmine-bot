@@ -54,7 +54,7 @@ const executeNextWrapper = (command, client) => async (ctx) => {
   await stateMachine(ctx, client)
 }
 export async function registerBotCommands(bot) {
-  const trans = translationService.en
+  const trans = translationService.getTranslationsInstance(bot)
   await bot.api.setMyCommands([
 
     { command: "mental", description: trans.t("general.commands.mental") },

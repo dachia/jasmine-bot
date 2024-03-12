@@ -26,7 +26,7 @@ import { translationService } from "../services/singletones.mjs";
 
 
 export const processStateController = async (ctx, client) => {
-  const trans = translationService.en
+  const trans = translationService.getTranslationsInstance(ctx)
   const estimatedBurnPerDayUseCase = getEstimatedBurnPerDayInstance(client);
   const { userId, state, name } = extractGrammyCtxData(ctx);
   switch (state) {

@@ -4,7 +4,7 @@ import { stringify } from 'csv-stringify';
 import { extractGrammyCtxData } from "../utils/extractGrammyCtxData.mjs";
 import { translationService } from "../services/singletones.mjs";
 export async function downloadDataCommand(ctx, client) {
-  const trans = translationService.en
+  const trans = translationService.getTranslationsInstance(ctx)
   const { userId } = extractGrammyCtxData(ctx);
   const foodLogRepo = new FoodLogRepo(client);
   const logs = await foodLogRepo.find({ userId });

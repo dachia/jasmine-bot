@@ -4,15 +4,19 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import { RequireAuth } from 'src/utils/components/require-auth';
 
 import AuthLayout from 'src/layouts/auth';
+import LegalLayout from 'src/layouts/legal';
 import DashboardLayout from 'src/layouts/dashboard';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
+export const BillingPage = lazy(() => import('src/pages/billing'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const UserPage = lazy(() => import('src/pages/user'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const SignUpPage = lazy(() => import('src/pages/sign-up'));
+export const TermsPage = lazy(() => import('src/pages/terms'));
+export const PrivacyPage = lazy(() => import('src/pages/privacy'));
 
 // ----------------------------------------------------------------------
 
@@ -29,10 +33,10 @@ export default function Router() {
         </RequireAuth>
       ),
       children: [
-        { element: <IndexPage />, index: true },
-        { path: 'user', element: <UserPage /> },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
+        { element: <BillingPage />, index: true },
+        // { path: 'user', element: <UserPage /> },
+        // { path: 'products', element: <ProductsPage /> },
+        // { path: 'blog', element: <BlogPage /> },
       ],
     },
     {
@@ -50,6 +54,19 @@ export default function Router() {
           <LoginPage />
         </AuthLayout>
       ),
+    },
+    {
+      path: "terms",
+      element: <LegalLayout>
+        <TermsPage />
+      </LegalLayout>
+    },
+    {
+      path: "privacy",
+      element: <LegalLayout>
+        <PrivacyPage />
+
+      </LegalLayout>
     },
     {
       path: '404',

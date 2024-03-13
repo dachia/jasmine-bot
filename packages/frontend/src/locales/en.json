@@ -10,6 +10,12 @@
     "get_started": "Get started",
     "button_login": "Login"
   },
+  "billing": {
+    "page_title": "Billing"
+  },
+  "dashboard": {
+    "page_title": "Dashboard"
+  },
   "sign_up": {
     "page_title": "Sign up",
     "title": "Sign up to %{name}",
@@ -21,5 +27,13 @@
     "email_address": "Email address",
     "password": "Password",
     "repeat_password": "Repeat password"
+  },
+  "terms": {
+    "page_title": "Terms and conditions",
+    "title": "Jasmine Telegram Bot Terms and Conditions"
+  },
+  "privacy": {
+    "page_title": "Privacy policy",
+    "title": "Jasmine Telegram Bot Privacy Policy"
   }
 }

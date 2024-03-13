@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useTranslate } from 'react-polyglot';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import Card from '@mui/material/Card';
@@ -9,12 +9,16 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
+import FormControl from '@mui/material/FormControl';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -26,6 +30,7 @@ const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().min(8).required(),
   'repeat-password': yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required(),
+  'terms-and-privacy': yup.boolean().oneOf([true], 'You must accept the terms and conditions and privacy policy'),
 });
 
 // ----------------------------------------------------------------------
@@ -85,6 +90,30 @@ export default function SignUpView() {
           component={TextField}
           errors={errors}
         />
+
+        <Controller
+          name="terms-and-privacy"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <FormControl required error={!!errors["terms-and-privacy"]}>
+              <FormControlLabel
+                control={<Checkbox />}
+                {...field}
+                label={<Typography variant='body2'>
+                  I agree to the{' '}
+                  <Link href="/privacy" target="_blank">
+                    Privacy Policy
+                  </Link>{' '}
+                  and{' '}
+                  <Link href="/terms" target="_blank">
+                    Terms and Conditions
+                  </Link>
+                </Typography>}
+              />
+              {!!errors["terms-and-privacy"] && <FormHelperText>{errors["terms-and-privacy"].message}</FormHelperText>}
+            </FormControl>
+          )} />
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }} />

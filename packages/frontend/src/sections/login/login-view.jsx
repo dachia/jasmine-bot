@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslate } from 'react-polyglot';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -23,6 +24,7 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
+  const t = useTranslate();
   const theme = useTheme();
 
   const router = useRouter();
@@ -99,7 +101,7 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in to Minimal</Typography>
+          <Typography variant="h4">{t("login.title", { name: t("app.name") })}</Typography>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?

@@ -1,0 +1,8 @@
+{
+  "app": {
+    "name": "Jasmine"
+  },
+  "login": {
+    "title": "Sign in to %{name}"
+  }
+}

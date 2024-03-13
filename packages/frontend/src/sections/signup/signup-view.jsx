@@ -47,7 +47,7 @@ export default function SignUpView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = () => {
-    router.push('/dashboard');
+    router.push('/');
   };
 
   const handleLoginClick = () => {
@@ -96,7 +96,7 @@ export default function SignUpView() {
           control={control}
           defaultValue=""
           render={({ field }) => (
-            <FormControl required error={!!errors["terms-and-privacy"]}>
+            <FormControl required error={errors["terms-and-privacy"]}>
               <FormControlLabel
                 control={<Checkbox />}
                 {...field}

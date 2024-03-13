@@ -25,7 +25,6 @@ import Iconify from 'src/components/iconify';
 const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().min(8).required(),
-  'repeat-password': yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required(),
 });
 // ----------------------------------------------------------------------
 
@@ -41,7 +40,7 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = () => {
-    router.push('/dashboard');
+    router.push('/');
   };
 
   const handleSignUpClick = () => {

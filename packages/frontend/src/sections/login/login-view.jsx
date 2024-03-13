@@ -1,8 +1,8 @@
 import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useTranslate } from 'react-polyglot';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
@@ -18,8 +18,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
-import Iconify from 'src/components/iconify';
 import { ValidatedInput } from 'src/utils/components/validated-input';
+
+import Iconify from 'src/components/iconify';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),

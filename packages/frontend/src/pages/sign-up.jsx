@@ -1,19 +1,19 @@
 import { Helmet } from 'react-helmet-async';
 import { useTranslate } from 'react-polyglot';
 
-import { LoginView } from 'src/sections/login';
+import { SignUpView } from 'src/sections/signup';
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const t = useTranslate();
   return (
     <>
       <Helmet>
-        <title> { t("login.page_title") } | { t("app.name") } </title>
+        <title> { t("sign_up.page_title") } | { t("app.name") } </title>
       </Helmet>
 
-      <LoginView />
+      <SignUpView />
     </>
   );
 }

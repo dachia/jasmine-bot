@@ -3,6 +3,23 @@
     "name": "Jasmine"
   },
   "login": {
-    "title": "Sign in to %{name}"
+    "page_title": "Login",
+    "title": "Sign in to %{name}",
+    "forgot_password": "Forgot your password?",
+    "dont_have_account": "Don't have an account?",
+    "get_started": "Get started",
+    "button_login": "Login"
+  },
+  "sign_up": {
+    "page_title": "Sign up",
+    "title": "Sign up to %{name}",
+    "already_have_an_account": "Already have an account?",
+    "login_link": "Sign in",
+    "button_signup": "Sign up"
+  },
+  "general": {
+    "email_address": "Email address",
+    "password": "Password",
+    "repeat_password": "Repeat password"
   }
 }

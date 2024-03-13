@@ -3,8 +3,7 @@ import { Navigate } from 'react-router-dom';
 
 
 export const RequireAuth = ({ children, redirectTo }) => {
-  const isAuthenticated = false // getAuth(); // Implement getAuth() to check user authentication status
-  console.timeLog(isAuthenticated)
+  const isAuthenticated = true // getAuth(); // Implement getAuth() to check user authentication status
   return isAuthenticated ? children : <Navigate to={redirectTo} />;
 }
 

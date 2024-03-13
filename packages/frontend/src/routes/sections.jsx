@@ -1,8 +1,9 @@
 import { lazy, Suspense } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
-import { RequireAuth } from 'src/utils/require-auth';
+import { RequireAuth } from 'src/utils/components/require-auth';
 
+import AuthLayout from 'src/layouts/auth';
 import DashboardLayout from 'src/layouts/dashboard';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
@@ -11,6 +12,7 @@ export const UserPage = lazy(() => import('src/pages/user'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
+export const SignUpPage = lazy(() => import('src/pages/sign-up'));
 
 // ----------------------------------------------------------------------
 
@@ -18,13 +20,13 @@ export default function Router() {
   const routes = useRoutes([
     {
       element: (
-        <DashboardLayout>
-          <RequireAuth redirectTo="/login">
+        <RequireAuth redirectTo="/login">
+          <DashboardLayout>
             <Suspense>
               <Outlet />
             </Suspense>
-          </RequireAuth>
-        </DashboardLayout>
+          </DashboardLayout>
+        </RequireAuth>
       ),
       children: [
         { element: <IndexPage />, index: true },
@@ -34,8 +36,20 @@ export default function Router() {
       ],
     },
     {
+      path: 'sign-up',
+      element: (
+        <AuthLayout>
+          <SignUpPage />
+        </AuthLayout>
+      ),
+    },
+    {
       path: 'login',
-      element: <LoginPage />,
+      element: (
+        <AuthLayout>
+          <LoginPage />
+        </AuthLayout>
+      ),
     },
     {
       path: '404',

@@ -1,41 +1,44 @@
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { useTranslate } from 'react-polyglot';
 
-import Link from '@mui/material/Link';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { alpha, useTheme } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
+import Typography from '@mui/material/Typography';
+import { alpha, useTheme } from '@mui/material/styles';
 
 import { useRouter } from 'src/routes/hooks';
 
-import Iconify from 'src/components/iconify';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import { ValidatedInput } from 'src/utils/components/validated-input';
+
+import Iconify from 'src/components/iconify';
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().min(8).required(),
   'repeat-password': yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required(),
 });
+
 // ----------------------------------------------------------------------
 
-export default function LoginView() {
+export default function SignUpView() {
   const t = useTranslate();
   const theme = useTheme();
 
+  const router = useRouter();
   const { handleSubmit, control, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
   })
-  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,19 +46,19 @@ export default function LoginView() {
     router.push('/dashboard');
   };
 
-  const handleSignUpClick = () => {
-    router.push('/sign-up');
+  const handleLoginClick = () => {
+    router.push('/login');
   }
 
   const renderForm = (
     <>
       <Stack spacing={3}>
-
         <ValidatedInput
-          errors={errors}
           component={TextField}
-          name="email" label={t("general.email_address")}
+          name="email"
+          errors={errors}
           control={control}
+          label={t("general.email_address")}
         />
         <ValidatedInput
           control={control}
@@ -67,20 +70,25 @@ export default function LoginView() {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} eggdge="end">
+                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
                   <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                 </IconButton>
               </InputAdornment>
             ),
           }}
         />
+
+        <ValidatedInput
+          control={control}
+          name="repeat-password"
+          label={t("general.repeat_password")}
+          type={showPassword ? 'text' : 'password'}
+          component={TextField}
+          errors={errors}
+        />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
-          {t("login.forgot_password")}
-        </Link>
-      </Stack>
+      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }} />
 
       <LoadingButton
         fullWidth
@@ -90,7 +98,7 @@ export default function LoginView() {
         color="inherit"
         onClick={handleSubmit(handleClick)}
       >
-        {t("login.button_login")}
+        {t("sign_up.button_signup")}
       </LoadingButton>
     </>
   );
@@ -103,12 +111,12 @@ export default function LoginView() {
         maxWidth: 420,
       }}
     >
-      <Typography variant="h4">{t("login.title", { name: t("app.name") })}</Typography>
+      <Typography variant="h4">{t("sign_up.title", { name: t("app.name") })}</Typography>
 
       <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-        {t("login.dont_have_account")}
-        <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleSignUpClick}>
-          {t("login.get_started")}
+        {t("sign_up.already_have_an_account")}
+        <Link variant="subtitle2" sx={{ ml: 0.5 }} onClick={handleLoginClick}>
+          {t("sign_up.login_link")}
         </Link>
       </Typography>
 

@@ -4,5 +4,6 @@ export default {
   MONGODB_URI_TEST: process.env.MONGODB_URI_TEST ?? "mongodb://localhost:27017/test-db",
   OPENAI_ORG_ID: process.env.OPENAI_ORG_ID,
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
-  PORT: process.env.PORT ?? 3000
+  PORT: process.env.PORT ?? 3000,
+  JWT_SECRET: process.env.JWT_SECRET ?? "test-secret",
 }

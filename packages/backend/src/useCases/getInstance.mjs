@@ -10,6 +10,13 @@ import { DeleteLogUseCase} from "./deleteLogUseCase.mjs";
 import { ProfileStatsLogRepo } from "../repos/profileStatsLogRepo.mjs";
 import { SignupUseCase } from "./signupUseCase.mjs";
 import { UserRepo } from "../repos/userRepo.mjs";
+import { LoginUseCase } from "./loginUseCase.mjs";
+import { authService } from "../services/singletones.mjs";
+
+export function getLoginUseCase(client) {
+  const userRepo = new UserRepo(client);
+  return new LoginUseCase(userRepo, authService);
+}
 
 export function getSignupUseCase(client) {
   const userRepo = new UserRepo(client);

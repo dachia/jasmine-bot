@@ -12,6 +12,13 @@ export const STEPS_GREETING = "steps-greeting"
 export const WAITING_FOR_STEPS = "waiting-for-steps"
 export const ESTIMATE_BURN_PER_DAY = "estimate-burn-per-day"
 
+export const REGISTRATION_GREETING = "registration-greeting"
+export const WAITING_FOR_EMAIL = "waiting-for-email"
+export const EMAIL_VALIDATION_GREETING = "email-validation-greeting"
+export const WAITING_FOR_EMAIL_VALIDATION = "waiting-for-email-validation"
+export const REGISTRATION_FLOW = [
+]
+
 export const UPDATE_WEIGHT_FLOW = [
   WEIGHT_GREETING,
   WAITING_FOR_WEIGHT,

@@ -18,7 +18,6 @@ export function ValidatedInput({ errors, control, name, component: Component, co
           />
         )}
       />
-      {/* {errors[name] && <p>{errors[name].message}</p>} */}
     </>
   );
 }

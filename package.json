@@ -4,8 +4,8 @@
   "description": "Health and fitness monorepo",
   "private": true,
   "scripts": {
-    "start": "npm run build -w @jasmine-app/frontend && npm start -w @jasmine-app/backend",
-    "start:dev": "npm start -w @jasmine-app/backend",
+    "build": "npm run build -w @jasmine-app/frontend",
+    "start": "npm start -w @jasmine-app/backend",
     "start:frontend": "npm run dev -w @jasmine-app/frontend",
     "test": "npm test -w @jasmine-app/backend"
   },

@@ -3,22 +3,20 @@ import { Controller } from 'react-hook-form';
 
 export function ValidatedInput({ errors, control, name, component: Component, componentProps, ...props }) {
   return (
-    <>
-      <Controller
-        name={name}
-        control={control}
-        defaultValue=""
-        render={({ field }) => (
-          <Component
-            {...field}
-            {...props}
-            {...componentProps}
-            error={!!errors[name]}
-            helperText={errors[name] ? errors[name].message : ''}
-          />
-        )}
-      />
-    </>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue=""
+      render={({ field }) => (
+        <Component
+          {...field}
+          {...props}
+          {...componentProps}
+          error={!!errors[name]}
+          helperText={errors[name] ? errors[name].message : ''}
+        />
+      )}
+    />
   );
 }
 ValidatedInput.propTypes = {

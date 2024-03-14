@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSetRecoilState } from 'recoil';
 import { useTranslate } from 'react-polyglot';
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -20,6 +21,9 @@ import { useRouter } from 'src/routes/hooks';
 
 import { ValidatedInput } from 'src/utils/components/validated-input';
 
+import { authAtom } from 'src/state/authState';
+import { loginUser } from 'src/services/authService';
+
 import Iconify from 'src/components/iconify';
 
 const schema = yup.object().shape({
@@ -31,6 +35,8 @@ const schema = yup.object().shape({
 export default function LoginView() {
   const t = useTranslate();
   const theme = useTheme();
+  const setAuthState = useSetRecoilState(authAtom);
+
 
   const { handleSubmit, control, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
@@ -39,7 +45,9 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = async (data) => {
+    const token = await loginUser(data);
+    setAuthState(token);
     router.push('/');
   };
 

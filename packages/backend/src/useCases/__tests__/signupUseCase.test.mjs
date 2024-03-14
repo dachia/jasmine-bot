@@ -13,7 +13,7 @@ describe('SignupUseCase', () => {
     const email = 'email@email.com'
     // const userId = 'userId'
     beforeEach(async () => {
-      result = await supertest(app).post('/api/signup').send({ password, email });
+      result = await supertest(app).post('/api/sign-up').send({ password, email });
     });
     it('should create user', () => {
       expect(result.status).to.eq(200);

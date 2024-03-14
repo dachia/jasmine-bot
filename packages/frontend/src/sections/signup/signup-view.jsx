@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import { useTranslate } from 'react-polyglot';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -24,7 +25,11 @@ import { useRouter } from 'src/routes/hooks';
 
 import { ValidatedInput } from 'src/utils/components/validated-input';
 
+import { authAtom } from 'src/state/authState';
+import { registerUser } from 'src/services/authService';
+
 import Iconify from 'src/components/iconify';
+
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
@@ -38,6 +43,7 @@ const schema = yup.object().shape({
 export default function SignUpView() {
   const t = useTranslate();
   const theme = useTheme();
+  const setAuthState = useSetRecoilState(authAtom);
 
   const router = useRouter();
   const { handleSubmit, control, formState: { errors } } = useForm({
@@ -46,7 +52,9 @@ export default function SignUpView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
+  const handleClick = async (data) => {
+    const token = await registerUser(data);
+    setAuthState(token);
     router.push('/');
   };
 

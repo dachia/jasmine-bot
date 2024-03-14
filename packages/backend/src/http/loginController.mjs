@@ -8,6 +8,7 @@ export async function loginController(req, res, client) {
     return res.json({ token });
 
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: error.message });
   }
 }

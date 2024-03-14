@@ -7,6 +7,7 @@ export async function userQueryController(req, res, client) {
     return res.json({ user });
 
   } catch (error) {
+    console.error(error);
     return res.status(500).json({ message: error.message });
   }
 }

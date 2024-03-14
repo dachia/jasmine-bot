@@ -13,7 +13,7 @@ describe('UserQuery', () => {
     const email = 'email@email.com'
     // const userId = 'userId'
     beforeEach(async () => {
-      await supertest(app).post('/api/signup').send({ password, email });
+      await supertest(app).post('/api/sign-up').send({ password, email });
       const tokenRes = await supertest(app).post('/api/login').send({ password, email });
       result = await supertest(app).get('/api/current-user').set('Authorization', `Bearer ${tokenRes.body.token}`);
     });

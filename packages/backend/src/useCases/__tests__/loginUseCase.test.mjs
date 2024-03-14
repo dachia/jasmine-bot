@@ -13,7 +13,7 @@ describe('LoginUseCase', () => {
     const email = 'email@email.com'
     // const userId = 'userId'
     beforeEach(async () => {
-      await supertest(app).post('/api/signup').send({ password, email });
+      await supertest(app).post('/api/sign-up').send({ password, email });
       result = await supertest(app).post('/api/login').send({ password, email });
     });
     it('should login user', () => {

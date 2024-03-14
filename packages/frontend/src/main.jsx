@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { RecoilRoot } from 'recoil';
 import { I18n } from 'react-polyglot';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -17,14 +18,15 @@ const messages = {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <I18n locale={locale} messages={messages[locale]}>
-    <HelmetProvider>
-      <BrowserRouter>
-        <Suspense>
-          <App />
-        </Suspense>
-      </BrowserRouter>
-    </HelmetProvider>
-
-  </I18n>
+  <RecoilRoot>
+    <I18n locale={locale} messages={messages[locale]}>
+      <HelmetProvider>
+        <BrowserRouter>
+          <Suspense>
+            <App />
+          </Suspense>
+        </BrowserRouter>
+      </HelmetProvider>
+    </I18n>
+  </RecoilRoot>
 );

@@ -8,7 +8,13 @@ import { LogFoodUseCase } from "./logFoodUseCase.mjs";
 import { EstimateBurnPerDayUseCase } from "./estimeBurnPerDayUseCase.mjs";
 import { DeleteLogUseCase} from "./deleteLogUseCase.mjs";
 import { ProfileStatsLogRepo } from "../repos/profileStatsLogRepo.mjs";
+import { SignupUseCase } from "./signupUseCase.mjs";
+import { UserRepo } from "../repos/userRepo.mjs";
 
+export function getSignupUseCase(client) {
+  const userRepo = new UserRepo(client);
+  return new SignupUseCase(userRepo);
+}
 export function getDeleteLogUseCaseInstance(client) {
   const foodLogRepo = new FoodLogRepo(client);
   return new DeleteLogUseCase(foodLogRepo);

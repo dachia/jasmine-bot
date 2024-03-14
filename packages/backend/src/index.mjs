@@ -8,8 +8,8 @@ import { connectToDb, disconnectFromDb } from './db.mjs';
 let client
 async function run() {
   client = await connectToDb(config.MONGODB_URI);
-  startExpress(client);
   const grammyServer = await startGrammy(client);
+  startExpress(client);
 
   const cleanupAndExit = async () => {
     console.log('Stopping servers...');

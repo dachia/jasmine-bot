@@ -1,9 +1,8 @@
 import config from "./config.mjs";
-import { creteExpressApp, registerExpressRoutes } from "./express.mjs";
+import { buildExpressApp } from "./express.mjs";
 
-export function startExpress() {
-  const app = creteExpressApp();
-  registerExpressRoutes(app);
+export function startExpress(client) {
+  const app = buildExpressApp(client);
   app.listen(config.PORT, () => {
     console.log(`App listening at http://localhost:${config.PORT}`);
   });

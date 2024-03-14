@@ -11,13 +11,13 @@ export function creteExpressApp() {
 }
 
 export function registerExpressRoutes(app) {
-  app.get('/', (req, res) => {
-    res.json({ message: 'Hello from server!' });
-  });
-  // const staticPath = path.join(__dirname, '../../frontend/dist')
-  // app.use(express.static(staticPath));
-  // app.get('*', (req, res) => {
-  //   res.type('html')
-  //   res.sendFile(path.join(__dirname, '../../frontend/dist', 'index.html'));
+  // app.get('/', (req, res) => {
+  //   res.json({ message: 'Hello from server!' });
   // });
+  const staticPath = path.join(__dirname, '../../frontend/dist')
+  app.use(express.static(staticPath));
+  app.get('*', (req, res) => {
+    res.type('html')
+    res.sendFile(path.join(__dirname, '../../frontend/dist', 'index.html'));
+  });
 }

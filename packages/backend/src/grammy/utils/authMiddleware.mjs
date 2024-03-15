@@ -1,5 +1,7 @@
 import { UserRepo } from "../../repos/userRepo.mjs";
 import { extractGrammyCtxData } from "../../utils/extractGrammyCtxData.mjs";
+import config from "../../config.mjs";
+
 export async function authMiddleware(ctx, client, next) {
   const userRepo = new UserRepo(client);
   if (!ctx.session) {
@@ -9,7 +11,7 @@ export async function authMiddleware(ctx, client, next) {
     const { telegramId } = extractGrammyCtxData(ctx)
     const user = await userRepo.getByAccountId(telegramId);
     if (user == null) {
-      ctx.reply("You are not authorized to use this bot. Please contact the bot owner to get access.")
+      ctx.reply(`Sign up in <a href="${config.FRONTEND_URL}">${config.FRONTEND_URL}</a> to start using the bot`, { parse_mode: "HTML" });
       return
     }
     ctx.session.userId = user.id;

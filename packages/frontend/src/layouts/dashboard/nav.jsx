@@ -38,6 +38,9 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const upLg = useResponsive('up', 'lg');
   const [user,] = useRecoilState(userAtom);
+  const hasTelegramIntegration = user?.accounts?.find(account => account.data.accountType === 'telegram');
+  const telegramLink = !hasTelegramIntegration ? `${config.TELEGRAM_BOT_ENDPOINT}?start=${user?.id}` : config.TELEGRAM_BOT_ENDPOINT;
+  const telegramButtonText = !hasTelegramIntegration ? 'Connect Telegram' : 'Open Telegram';
 
   useEffect(() => {
     if (openNav) {
@@ -59,8 +62,8 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <a href={`${config.TELEGRAM_BOT_ENDPOINT}?start=${user?.id}`} rel='noreferrer' target="_blank" style={{ textDecoration: 'none', width: '100%' }}>
-        <Button startIcon={<TelegramIcon />} variant="contained" size='large' fullWidth>Open App</Button>
+      <a href={telegramLink} rel='noreferrer' target="_blank" style={{ textDecoration: 'none', width: '100%' }}>
+        <Button startIcon={<TelegramIcon />} variant="contained" size='large' fullWidth>{telegramButtonText}</Button>
       </a>
     </Box>
   )

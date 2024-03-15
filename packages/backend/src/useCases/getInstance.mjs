@@ -12,6 +12,12 @@ import { SignupUseCase } from "./signupUseCase.mjs";
 import { UserRepo } from "../repos/userRepo.mjs";
 import { LoginUseCase } from "./loginUseCase.mjs";
 import { authService } from "../services/singletones.mjs";
+import { AddTelegramAccountUseCase } from "./addTelegramAccountUseCase.mjs";
+
+export function getAddTelegramAccountUseCaseInstance(client) {
+  const userRepo = new UserRepo(client);
+  return new AddTelegramAccountUseCase(userRepo);
+}
 
 export function getLoginUseCase(client) {
   const userRepo = new UserRepo(client);

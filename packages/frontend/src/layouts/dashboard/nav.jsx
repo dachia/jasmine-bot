@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useRecoilState } from 'recoil';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -21,6 +22,9 @@ import { useResponsive } from 'src/hooks/use-responsive';
 // import { account } from 'src/_mock/account';
 import TelegramIcon from '@mui/icons-material/Telegram';
 
+import config from 'src/config';
+import { userAtom } from 'src/state/userState';
+
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
 
@@ -33,6 +37,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
 
   const upLg = useResponsive('up', 'lg');
+  const [user,] = useRecoilState(userAtom);
 
   useEffect(() => {
     if (openNav) {
@@ -54,19 +59,11 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Button startIcon={<TelegramIcon />} variant="contained" size='large' fullWidth>Open App</Button>
-      {/* <Avatar src={account.photoURL} alt="photoURL" />
-
-      <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
-
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
-        </Typography>
-      </Box> */}
+      <a href={`${config.TELEGRAM_BOT_ENDPOINT}?start=${user?.id}`} rel='noreferrer' target="_blank" style={{ textDecoration: 'none', width: '100%' }}>
+        <Button startIcon={<TelegramIcon />} variant="contained" size='large' fullWidth>Open App</Button>
+      </a>
     </Box>
-  );
-
+  )
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfig.map((item) => (

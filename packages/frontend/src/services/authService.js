@@ -60,7 +60,7 @@ export const getCurrentUser = async () => {
   });
 
   if (!response.ok) {
-    throw new Error('Login failed');
+    logoutUser();
   }
   // Update the auth state with the logged-in user
   const body = await response.json()

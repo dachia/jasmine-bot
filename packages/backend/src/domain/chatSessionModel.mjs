@@ -11,6 +11,7 @@ export class ChatSessionModel extends BaseModel {
   }
   
   addMessage(messageProps) {
+    this.isUpdated = true;
     this.data.messages.push(new ChatMessageModel({
       ...messageProps,
       sessionId: this.data.id,

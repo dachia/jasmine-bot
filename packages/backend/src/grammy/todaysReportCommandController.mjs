@@ -2,12 +2,14 @@ import { mapNumberToDisplay } from "../mappers/mapNumberToDisplay.mjs";
 import { mapNutritionFactsCollectionToAsciiTable } from "../mappers/mapNutritionFactsCollectionToAsciiTable.mjs";
 import { getDailyReportQueryInstance } from "../queries/getInstance.mjs";
 import { translationService } from "../services/singletones.mjs";
+import { extractGrammyCtxData } from "../utils/extractGrammyCtxData.mjs";
 
 export const todaysReportCommandController = async (ctx, client) => {
   const trans = translationService.getTranslationsInstance(ctx)
   const date = new Date();
   date.setHours(0, 0, 0, 0);
-  const report = await getDailyReportQueryInstance(client).execute({ userId: ctx.from.id, date })
+  const { userId } = extractGrammyCtxData(ctx)
+  const report = await getDailyReportQueryInstance(client).execute({ userId, date })
   const text = mapNutritionFactsCollectionToAsciiTable(report.logs.asNutritionFactsCollection(), trans).toString()
   ctx.reply(`<pre>${text}</pre>
 ${trans.t("food_log.total_calories_consumed")}: <i>${mapNumberToDisplay(report.computed.total?.kcal)}</i>

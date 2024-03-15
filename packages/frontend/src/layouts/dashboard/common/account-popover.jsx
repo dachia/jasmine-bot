@@ -39,11 +39,17 @@ export default function AccountPopover() {
   const setAuthState = useSetRecoilState(authAtom);
 
   const [user, setUser] = useRecoilState(userAtom);
-  
+
   useEffect(() => {
     const fetchUser = async () => {
-      const user_ = await getCurrentUser();
-      setUser(user_.data);
+      try {
+        const user_ = await getCurrentUser();
+        setUser(user_.data);
+      } catch (error) {
+        setUser(null);
+        setAuthState(null);
+        console.error(error);
+      }
     };
     fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps

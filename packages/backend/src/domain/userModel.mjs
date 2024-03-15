@@ -20,8 +20,13 @@ export class UserModel extends BaseModel {
     createBaseClassGettersAndSetters(this)
   }
   
+  addAccount(account) {
+    this.accounts.push(new AccountModel({ ...this.data, ...account }))
+    this.isUpdated = true
+  }
+  
   async setPassword(password) {
-    this.data.hashedPassword = await bcrypt.hash(password, 10)
+    this.hashedPassword = await bcrypt.hash(password, 10)
   }
   
   async validatePassword(password) {

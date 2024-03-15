@@ -6,14 +6,16 @@ export function extractGrammyCtxData(ctx) {
   const message = ctx.message?.text;
   const name = ctx.from?.first_name;
   const callbackData = ctx.callbackQuery?.data;
-  const userId = ctx.from.id;
+  const telegramId = ctx.from.id;
+  const userId = ctx.session.userId;
   const state = ctx.session.state;
   return {
     name,
     chatId,
-    userId,
+    telegramId,
     message,
     callbackData,
-    state
+    state,
+    userId,
   };
 }

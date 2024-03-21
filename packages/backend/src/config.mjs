@@ -8,5 +8,5 @@ export default {
   JWT_SECRET: process.env.JWT_SECRET ?? "test-secret",
   FRONTEND_URL: process.env.FRONTEND_URL ?? "http://localhost:3000",
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-  DOMAIN: process.env.DOMAIN ?? "http://localhost:3000",
+  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 }

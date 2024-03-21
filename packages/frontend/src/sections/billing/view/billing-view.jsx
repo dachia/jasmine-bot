@@ -5,6 +5,8 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
+import config from 'src/config';
+
 import ProductDisplay from 'src/sections/billing/product-display';
 
 // ----------------------------------------------------------------------
@@ -59,7 +61,7 @@ const SuccessDisplay = ({ sessionId }) => (
         <h3>Subscription to starter plan successful!</h3>
       </div>
     </div>
-    <form action="/create-portal-session" method="POST">
+    <form action={`${config.API_ENDPOINT}/stripe/create-portal-session`} method="POST">
       <input
         type="hidden"
         id="session-id"

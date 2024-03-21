@@ -40,7 +40,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const [user,] = useRecoilState(userAtom);
   const hasTelegramIntegration = user?.accounts?.find(account => account.data.accountType === 'telegram');
   const telegramLink = !hasTelegramIntegration ? `${config.TELEGRAM_BOT_ENDPOINT}?start=${user?.id}` : config.TELEGRAM_BOT_ENDPOINT;
-  const telegramButtonText = !hasTelegramIntegration ? 'Connect Telegram' : 'Open Telegram';
+  const telegramButtonText = "Open Bot" // !hasTelegramIntegration ? 'Connect Telegram' : 'Open Telegram';
 
   useEffect(() => {
     if (openNav) {

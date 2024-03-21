@@ -11,7 +11,18 @@
     "button_login": "Login"
   },
   "billing": {
-    "page_title": "Billing"
+    "page_title": "Billing",
+    "per_month": " / month",
+    "usd": "USD",
+    "plan_nutrition": {
+      "title": "Early adopter",
+      "description_title": "Get the ability to:",
+      "first": "Log food via telegram messages",
+      "second": "Know the macronutrients and calories you are consuming",
+      "third": "Check daily consumption and available macros/calories for the day",
+      "fourth": "Seek advice on fight food cravings and stress eating with Cognitive Behaviourial Therapy"
+    },
+    "subscribe": "Subscribe now"
   },
   "dashboard": {
     "page_title": "Dashboard"

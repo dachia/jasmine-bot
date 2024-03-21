@@ -5,6 +5,10 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
+import config from 'src/config';
+
+import "./billing-view.css";
+
 // ----------------------------------------------------------------------
 
 export default function BillingView() {
@@ -44,7 +48,7 @@ export default function BillingView() {
         Hi, Welcome back 👋
       </Typography>
 
-      <Grid container spacing={3}>
+      <Grid container spacing={3} alignItems="center">
         {component}
       </Grid>
     </Container>
@@ -52,7 +56,7 @@ export default function BillingView() {
 }
 
 const ProductDisplay = () => (
-  <section>
+  <section className='section'>
     <div className="product">
       <Logo />
       <div className="description">
@@ -60,10 +64,10 @@ const ProductDisplay = () => (
         <h5>$20.00 / month</h5>
       </div>
     </div>
-    <form action="/create-checkout-session" method="POST">
+    <form action={`${config.API_ENDPOINT}/stripe/create-checkout-session`} method="POST">
       {/* Add a hidden field with the lookup_key of your Price */}
       <input type="hidden" name="lookup_key" value="premium" />
-      <button id="checkout-and-portal-button" type="submit">
+      <button className='button' id="checkout-and-portal-button" type="submit">
         Checkout
       </button>
     </form>
@@ -71,7 +75,7 @@ const ProductDisplay = () => (
 );
 
 const SuccessDisplay = ({ sessionId }) => (
-  <section>
+  <section className='section'>
     <div className="product Box-root">
       <Logo />
       <div className="description Box-root">
@@ -85,7 +89,7 @@ const SuccessDisplay = ({ sessionId }) => (
         name="session_id"
         value={sessionId}
       />
-      <button id="checkout-and-portal-button" type="submit">
+      <button className="button" id="checkout-and-portal-button" type="submit">
         Manage your billing information
       </button>
     </form>
@@ -97,8 +101,8 @@ SuccessDisplay.propTypes = {
 };
 
 const Message = ({ message }) => (
-  <section>
-    <p>{message}</p>
+  <section className='section'>
+    <p className='text'>{message}</p>
   </section>
 );
 
@@ -108,6 +112,7 @@ Message.propTypes = {
 
 const Logo = () => (
   <svg
+    className='image'
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
     width="14px"

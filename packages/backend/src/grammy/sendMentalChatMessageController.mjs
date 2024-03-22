@@ -9,5 +9,5 @@ export async function sendMentalChatMessageController(ctx, client) {
   ctx.replyWithChatAction('typing');
   ctx.session.id = ctx.session.id ?? newId();
   const response = await mentalChatUseCase.processMessage({ sessionId: ctx.session.id, userId, message, name });
-  ctx.reply(response);
+  await ctx.reply(response);
 }

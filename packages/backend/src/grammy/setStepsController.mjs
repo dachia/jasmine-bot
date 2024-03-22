@@ -14,7 +14,7 @@ export async function setStepsController(ctx, client) {
     yup.number().validateSync(message);
   } catch (error) {
     console.error(error);
-    ctx.reply(trans.t("errors.invalid_number_format"))
+    await ctx.reply(trans.t("errors.invalid_number_format"))
     return
   }
 

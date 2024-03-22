@@ -13,7 +13,7 @@ export async function chooseGenderController(ctx, client) {
   try {
     genderSchema.validateSync(gender_);
   } catch (error) {
-    ctx.reply(`Invalid gender. Please choose one of ${GENDER_CHOICES.map(m => m.name).join(', ')}`)
+    await ctx.reply(`Invalid gender. Please choose one of ${GENDER_CHOICES.map(m => m.name).join(', ')}`)
     return
   }
   await updateProfileUseCase.execute({ userId, gender: gender_ });

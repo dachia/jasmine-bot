@@ -11,7 +11,7 @@ export const todaysReportCommandController = async (ctx, client) => {
   const { userId } = extractGrammyCtxData(ctx)
   const report = await getDailyReportQueryInstance(client).execute({ userId, date })
   const text = mapNutritionFactsCollectionToAsciiTable(report.logs.asNutritionFactsCollection(), trans).toString()
-  ctx.reply(`<pre>${text}</pre>
+  await ctx.reply(`<pre>${text}</pre>
 ${trans.t("food_log.total_calories_consumed")}: <i>${mapNumberToDisplay(report.computed.total?.kcal)}</i>
 ${trans.t("food_log.total_calories_left")}: <b>${mapNumberToDisplay(report.computed.calorieDeficit)}</b>
 ${trans.t("food_log.total_protein_consumed")}: <i>${mapNumberToDisplay(report.computed.total?.protein)}</i>

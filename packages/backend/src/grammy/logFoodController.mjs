@@ -13,9 +13,9 @@ export async function logFoodController(ctx, client) {
   ctx.replyWithChatAction('typing');
   const foodLog = await logFoodUseCase.execute({ userId, prompt: message, date });
   if (foodLog == null) {
-    ctx.reply(trans.t("food_log.not_found"))
+    await ctx.reply(trans.t("food_log.not_found"))
     return
   }
   const text = mapNutritionFactsCollectionToAsciiTable(foodLog.perItemNutritionFacts, trans).toString()
-  ctx.reply(`<pre>${text}</pre>`, { parse_mode: "HTML", reply_markup: new InlineKeyboard().text(trans.t("food_log.delete_entry"), `deleteLog:${foodLog.id}`) });
+  await ctx.reply(`<pre>${text}</pre>`, { parse_mode: "HTML", reply_markup: new InlineKeyboard().text(trans.t("food_log.delete_entry"), `deleteLog:${foodLog.id}`) });
 }

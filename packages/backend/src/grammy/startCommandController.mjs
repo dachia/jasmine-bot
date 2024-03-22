@@ -11,7 +11,7 @@ export const startCommandController = async (ctx, client) => {
   const userId = msg?.split(" ")[1]
   await addTelegramAccountUseCase.execute({ userId, accountId: telegramId })
   const trans = translationService.getTranslationsInstance(ctx)
-  ctx.reply(trans.t("profile.onboarding_start", { name }))
+  await ctx.reply(trans.t("profile.onboarding_start", { name }))
   if (!ctx.session) {
     ctx.session = {};
   }

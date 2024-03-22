@@ -7,5 +7,5 @@ export const deleteLogCommandController = async (ctx, client, id) => {
   const trans = translationService.getTranslationsInstance(ctx)
   const { userId } = extractGrammyCtxData(ctx)
   await getDeleteLogUseCaseInstance(client).execute({ userId, id})
-  ctx.reply(trans.t("food_log.delete_success"))
+  await ctx.reply(trans.t("food_log.delete_success"))
 }

@@ -12,7 +12,7 @@ export async function setBirthDateController(ctx, client) {
   try {
     birthDateSchema.validateSync(message);
   } catch (error) {
-    ctx.reply(trans.t("errors.invalid_date_format"))
+    await ctx.reply(trans.t("errors.invalid_date_format"))
     return
   }
   await updateProfileUseCase.execute({ userId, birthDate: new Date(message)});

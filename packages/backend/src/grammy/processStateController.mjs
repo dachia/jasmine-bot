@@ -52,7 +52,7 @@ export const processStateController = async (ctx, client) => {
       ctx.replyWithChatAction('typing');
       await estimatedBurnPerDayUseCase.execute({ userId });
       const profile = await estimatedBurnPerDayUseCase.execute({ userId });
-      ctx.reply(trans.t("profile.estimated_tdd_explanation", {
+      await ctx.reply(trans.t("profile.estimated_tdd_explanation", {
         kcal: profile.estimatedBurnPerDay,
         weight: profile.weight,
       }));
@@ -64,7 +64,7 @@ export const processStateController = async (ctx, client) => {
       await sendMentalChatMessageController(ctx, client);
       break;
     case ACTIVITY_LEVEL_GREETING:
-      ctx.reply(trans.t("profile.activity_level_question"), {
+      await ctx.reply(trans.t("profile.activity_level_question"), {
         reply_markup: new InlineKeyboard()
           .text(trans.t("general.skip_button"), "skip-state")
         // .text("Sedentary")
@@ -75,25 +75,25 @@ export const processStateController = async (ctx, client) => {
       });
       break
     case BIRTH_DATE_GREETING:
-      ctx.reply(trans.t("profile.birth_date_question"));
+      await ctx.reply(trans.t("profile.birth_date_question"));
       break
     case MENTAL_INPUT_GREETING:
-      ctx.reply(trans.t("mental.greeting_question", { name }));
+      await ctx.reply(trans.t("mental.greeting_question", { name }));
       break
     case FOOD_INPUT_GREETING:
-      ctx.reply(trans.t("food_log.greeting_question"));
+      await ctx.reply(trans.t("food_log.greeting_question"));
       break
     case WEIGHT_GREETING:
-      ctx.reply(trans.t("profile.weight_question"));
+      await ctx.reply(trans.t("profile.weight_question"));
       break;
     case HEIGHT_GREETING:
-      ctx.reply(trans.t("profile.height_question"));
+      await ctx.reply(trans.t("profile.height_question"));
       break
     case GENDER_GREETING:
-      ctx.reply(trans.t("profile.gender_question"), { reply_markup: new InlineKeyboard().text(GENDER_MALE.name, GENDER_MALE.value).text(GENDER_FEMAIL.name, GENDER_FEMAIL.value) });
+      await ctx.reply(trans.t("profile.gender_question"), { reply_markup: new InlineKeyboard().text(GENDER_MALE.name, GENDER_MALE.value).text(GENDER_FEMAIL.name, GENDER_FEMAIL.value) });
       break;
     case STEPS_GREETING:
-      ctx.reply(trans.t("profile.steps_question"), { reply_markup: new InlineKeyboard().text(trans.t("general.skip_button"), "skip-state") });
+      await ctx.reply(trans.t("profile.steps_question"), { reply_markup: new InlineKeyboard().text(trans.t("general.skip_button"), "skip-state") });
       break
     default:
       return;

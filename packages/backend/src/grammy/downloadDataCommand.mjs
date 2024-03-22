@@ -39,13 +39,13 @@ export async function downloadDataCommand(ctx, client) {
         log.sugar,
       ]
     })]
-  stringify(dataMatrix, (err, output) => {
+  stringify(dataMatrix, async (err, output) => {
     if (err) {
-      ctx.reply(trans.t("export.error_generating_csv"));
+      await ctx.reply(trans.t("export.error_generating_csv"));
       return;
     }
 
     // Send the CSV data as a message
-    ctx.replyWithDocument(new InputFile(Buffer.from(output), `jasmine-export.csv` ));
+    await ctx.replyWithDocument(new InputFile(Buffer.from(output), `jasmine-export.csv` ));
   });
 }

@@ -12,7 +12,7 @@ export async function setWeightController(ctx, client) {
   try {
     numberSchema.validateSync(message);
   } catch (error) {
-    ctx.reply(trans.t("errors.invalid_number_format"))
+    await ctx.reply(trans.t("errors.invalid_number_format"))
     return
   }
   await updateProfileUseCase.execute({ userId, weight: Number(message)});

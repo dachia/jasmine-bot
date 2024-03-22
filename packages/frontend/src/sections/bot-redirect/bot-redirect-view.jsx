@@ -19,11 +19,20 @@ export default function BotRedirectView() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 1);
+      setCountdown((prevCountdown) => {
+        let res;
+        if (prevCountdown <= 1) {
+          clearInterval(timer);
+          res = 0;
+        } else {
+          res = prevCountdown - 1;
+        }
+        return res
+      });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [])
 
   useEffect(() => {
     if (countdown === 0) {

@@ -15,7 +15,7 @@ export class UserModel extends BaseModel {
     super(baseProps); // Call to the base class constructor
     this.data.userId = this.data.id
     this.data.accounts = accounts?.map(account => new AccountModel(account)) ?? []
-    this.data.email = email
+    this.data.email = email?.toLowerCase()
     this.data.hashedPassword = hashedPassword
     this.data.isEmailValidated = isEmailValidated ?? false
     createBaseClassGettersAndSetters(this)

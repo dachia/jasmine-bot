@@ -13,7 +13,7 @@ export class UserRepo extends GenericMongoRepo {
     return null;
   }
   async getByEmail(email) {
-    const users = await this.find({ email });
+    const users = await this.find({ email: email?.toLowerCase() });
     if (users.length > 0) {
       return users[0];
     }

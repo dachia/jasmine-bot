@@ -17,6 +17,7 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const SignUpPage = lazy(() => import('src/pages/sign-up'));
 export const TermsPage = lazy(() => import('src/pages/terms'));
 export const PrivacyPage = lazy(() => import('src/pages/privacy'));
+export const BotRedirectPage = lazy(() => import('src/pages/bot-redirect'));
 
 // ----------------------------------------------------------------------
 
@@ -69,13 +70,20 @@ export default function Router() {
       </LegalLayout>
     },
     {
+      path: '/telegram-redirect',
+      element:
+        <DashboardLayout>
+          <BotRedirectPage />,
+        </DashboardLayout>
+    },
+    {
       path: '404',
       element: <Page404 />,
     },
     {
       path: '*',
       element: <Navigate to="/404" replace />,
-    },
+    }
   ]);
 
   return routes;

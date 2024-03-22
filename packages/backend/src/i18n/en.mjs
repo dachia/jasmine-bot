@@ -49,5 +49,4 @@ export default {
     "invalid_date_format": "Invalid date format. Please use YYYY-MM-DD",
     "invalid_number_format": "Invalid number format. Please use a positive number",
   }
-
 }

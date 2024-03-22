@@ -46,5 +46,11 @@
   "privacy": {
     "page_title": "Privacy policy",
     "title": "Jasmine Telegram Bot Privacy Policy"
+  },
+  "bot_redirect": {
+    "page_title": "Start Jasmine",
+    "title": "Opening...",
+    "redirecting": "Redirecting to Jasmine bot in %{countdown} seconds...",
+    "click_here": "Click here if you are not redirected"
   }
 }

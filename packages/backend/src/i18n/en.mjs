@@ -21,7 +21,7 @@ export default {
     "error_generating_csv": "Error generating CSV"
   },
   "profile": {
-    "onboarding_start": "Hello, %{name}! I am your personal nutritionist. Let's start by setting up your profile.",
+    "onboarding_start": "Hi %{name},Jasmine here - your personal nutritionist! Your free 7-day trial has started. If you like my help around your nutrition planning, you can later subscribe to my paid plan of just $5 per month. Let’s get you onboarded! Super excited to get fit and healthy, together",
     "estimated_tdd_explanation": `You need %{kcal} calories per day to keep your weight at %{weight}Kg (Maintenance). If you like to reduce your weight, start consuming less calories per day.`,
     "activity_level_question": "What is your activity level?",
     "birth_date_question": "What is your birth date? (YYYY-MM-DD)",

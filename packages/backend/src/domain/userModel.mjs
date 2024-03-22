@@ -13,6 +13,7 @@ export class AccountModel extends BaseModel {
 export class UserModel extends BaseModel {
   constructor({ accounts, email, hashedPassword, isEmailValidated, ...baseProps}) {
     super(baseProps); // Call to the base class constructor
+    this.data.userId = this.data.id
     this.data.accounts = accounts?.map(account => new AccountModel(account)) ?? []
     this.data.email = email
     this.data.hashedPassword = hashedPassword

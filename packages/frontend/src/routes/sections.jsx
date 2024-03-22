@@ -72,9 +72,12 @@ export default function Router() {
     {
       path: '/telegram-redirect',
       element:
-        <DashboardLayout>
-          <BotRedirectPage />,
-        </DashboardLayout>
+
+        <RequireAuth redirectTo="/login">
+          <AuthLayout>
+            <BotRedirectPage />,
+          </AuthLayout>
+        </RequireAuth>
     },
     {
       path: '404',

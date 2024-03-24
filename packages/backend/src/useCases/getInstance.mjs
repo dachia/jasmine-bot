@@ -13,6 +13,7 @@ import { UserRepo } from "../repos/userRepo.mjs";
 import { LoginUseCase } from "./loginUseCase.mjs";
 import { authService } from "../services/singletones.mjs";
 import { AddTelegramAccountUseCase } from "./addTelegramAccountUseCase.mjs";
+import { extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService } from "../services/singletones.mjs"
 
 export function getAddTelegramAccountUseCaseInstance(client) {
   const userRepo = new UserRepo(client);
@@ -47,7 +48,7 @@ export function getUpdateProfileUseCaseInstance(client) {
 export function getLogFoodUseCaseInstance(client) {
   const chatSessionRepo = new ChatSessionRepo(client);
   const foodLogRepo = new FoodLogRepo(client);
-  return new LogFoodUseCase(nutritionInfoService, foodLogRepo, chatSessionRepo);
+  return new LogFoodUseCase(extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService, foodLogRepo, chatSessionRepo);
 }
 
 export function getEstimatedBurnPerDayInstance(client) {

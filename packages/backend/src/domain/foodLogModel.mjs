@@ -1,10 +1,10 @@
 import { BaseModel } from './baseModel.mjs';
 import { createBaseClassGettersAndSetters } from '../utils/baseClassSetter.mjs';
 export class ExtractedAmountModel extends BaseModel {
-  constructor({ grams, type, ...baseProps }) {
+  constructor({ grams, name, ...baseProps }) {
     super(baseProps); // Call to the base class constructor
     this.data.grams = grams
-    this.data.type = type
+    this.data.name = name
     createBaseClassGettersAndSetters(this)
   }
 }
@@ -63,16 +63,22 @@ export class FoodChoices extends BaseModel {
   constructor({ food, amounts, facts, chosenAmountId, chosenFactId, ...baseProps }) {
     super(baseProps); // Call to the base class constructor
     this.data.food = food
-    this.data.amounts = amounts.map(item => new ExtractedAmountModel({ ...item, ...baseProps }))
-    this.data.facts = facts.map(item => new NutritionFactsModel({ ...item, ...baseProps }))
+    this.data.amounts = amounts.map(item => item instanceof BaseModel ? item : new ExtractedAmountModel({ ...item, ...baseProps }))
+    this.data.facts = facts.map(item => item instanceof BaseModel ? item : new NutritionFactsModel({ ...item, ...baseProps }))
     this.data.chosenAmountId = chosenAmountId ?? this.data.amounts[0].id
     this.data.chosenFactId = chosenFactId ?? this.data.facts[0].id
     createBaseClassGettersAndSetters(this)
   }
+  get chosenFacts() {
+    return this.data.facts.find(item => item.id === this.data.chosenFactId)
+  }
+  get chosenAmounts() {
+    return this.data.amounts.find(item => item.id === this.data.chosenAmountId)
+  }
 
   get nutritionFacts() {
-    const fact = this.data.facts.find(item => item.id === this.data.chosenFactId)
-    const amount = this.data.amounts.find(item => item.id === this.data.chosenAmountId)
+    const fact = this.chosenFacts
+    const amount = this.chosenAmounts
     return fact.getPerGrams(amount.grams)
   }
 }
@@ -82,11 +88,11 @@ export class FoodLogModel extends BaseModel {
     this.data.prompt = prompt
     this.data.sessionId = sessionId
     this.data.date = date
-    this.data.foodChoices = foodChoices?.map(item => new FoodChoices({ ...item, ...baseProps }))
+    this.data.foodChoices = foodChoices?.map(item => item instanceof BaseModel ? item : new FoodChoices({ ...item, ...baseProps }))
 
     createBaseClassGettersAndSetters(this)
   }
-  
+
   get perItemNutritionFacts() {
     return new NutritionFactsCollection(...this.data.foodChoices.map(item => item.nutritionFacts))
   }

@@ -1,10 +1,7 @@
 export function mapFoodItemsToSpecificFoodArray(foods) {
   const allSpecificFoods = []
   for (const food of foods) {
-    if (food.specificVariety) {
-      allSpecificFoods.push({ input: food.inputTerm, food: food.specificVariety })
-    }
-    allSpecificFoods.push(...food.variations.map(variation => ({ input: food.inputTerm, food: variation })))
+    allSpecificFoods.push(...food.variations.map(variation => ({ generalTerm: food.generalTerm, input: food.inputFood, food: variation })))
   }
   return allSpecificFoods
 }

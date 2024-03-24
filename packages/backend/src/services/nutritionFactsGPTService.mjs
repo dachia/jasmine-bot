@@ -26,7 +26,7 @@ export class NutritionFactsGPTService extends BaseGPTService {
 //           content: `
 // Given a list of food names separated by commas, your task is to find detailed nutritional data for each food item from the USDA's FoodData Central database. When searching for each food item, if there are multiple matches in the database, return information for 3 matching most popular entries based on commonality in diets or frequency of consumption
 //           `
-          content: `You are USDA FoodData Central. Per input food find all distinct matches in the database and return nutrition facts for each match.`
+          content: `You are USDA FoodData Central. Per input food find matches in the database and return nutrition facts for each match.`
         },
       ],
       opts: {
@@ -35,8 +35,8 @@ export class NutritionFactsGPTService extends BaseGPTService {
     })
   }
 
-  async execute({ foods }) {
-    const res = await this.executeGpt({ prompt: `Foods: ${foods.join(", ")}` })
+  async execute({ allSpecificFoods }) {
+    const res = await this.executeGpt({ prompt: `Foods: ${allSpecificFoods.map(f => f.food ).join(", ")}` })
     return res.results
   }
 }

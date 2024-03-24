@@ -3,7 +3,7 @@ import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
 import { FoodLogRepo } from '../../repos/foodLogRepo.mjs';
 import { client } from '../../utils/testDatabase.mjs';
 import { mapNutritionFactsCollectionToAsciiTable } from '../../mappers/mapNutritionFactsCollectionToAsciiTable.mjs';
-import { translationService } from '../../services/singletones.mjs';
+import { convertToGramsService, translationService } from '../../services/singletones.mjs';
 import { extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService } from "../../services/singletones.mjs"
 
 describe('LogFoodUseCase', () => {
@@ -16,20 +16,21 @@ describe('LogFoodUseCase', () => {
   beforeEach(() => {
     chatSessionRepo = new ChatSessionRepo(client);
     foodLogRepo = new FoodLogRepo(client);
-    logFoodUseCase = new LogFoodUseCase(extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService, foodLogRepo, chatSessionRepo);
+    logFoodUseCase = new LogFoodUseCase(extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService, convertToGramsService, foodLogRepo, chatSessionRepo);
   })
   describe('execute', () => {
     let result
     const userId = 'userId'
     const date = new Date();
     // const prompt = '160g Steak lean, basted in butter, medium rare. Standard seasoning';
-        const prompt = `61g oatmeaal
-    2 dates
-    230glow fat milk`
+    //     const prompt = `61g oatmeaal
+    // 2 dates
+    // 230g low fat milk`
     // const prompt = 'Single mcdonalds cheeseburger, small fries and diet coke';
     // const prompt = 'Single mcdonalds cheeseburger and diet coke';
     // const prompt = 'small fries and diet coke';
     // const prompt = 'lean steak basted in butter'
+    const prompt = 'lean steak basted in butter, milka max one square'
     beforeEach(async () => {
       result = await logFoodUseCase.execute({
         userId,
@@ -42,7 +43,7 @@ describe('LogFoodUseCase', () => {
       const table = mapNutritionFactsCollectionToAsciiTable(colletion, translationService.en);
       const text = table.toString()
       console.log(text)
-      expect(text).include('Oatmeal');
+      expect(text).include('Oats');
     });
     it.skip("should save log", async () => {
       const logs = await foodLogRepo.find();

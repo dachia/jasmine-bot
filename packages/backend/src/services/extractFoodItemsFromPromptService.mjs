@@ -4,7 +4,7 @@ const foodItemsStructure = {
   foods: [{
     generalTerm: "string",
     specificVariety: "string|null",
-    inputTerm: "string",
+    inputFoodName: "string",
     type: "general term|specific variety",
     variations: ["string"]
   }]
@@ -37,6 +37,19 @@ step by step:
 
   async execute({ prompt }) {
     const resp = await this.executeGpt({ prompt })
-    return resp.foods
+    const foods = []
+    for (const food of resp.foods) {
+      const variations = []
+      if (food.type === "specific variety") {
+        variations.push(food.specificVariety)
+      }
+      variations.push(...food.variations)
+      foods.push({
+        generalTerm: food.generalTerm,
+        inputFood: food.inputFoodName,
+        variations
+      })
+    }
+    return foods
   }
 }

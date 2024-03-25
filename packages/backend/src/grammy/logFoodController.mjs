@@ -1,8 +1,9 @@
 import { InlineKeyboard } from 'grammy';
 import { getProcessAmountsAndSpecificFoodsUseCaseInstance } from '../useCases/getInstance.mjs';
 import { extractGrammyCtxData } from "../utils/extractGrammyCtxData.mjs";
-import { mapNutritionFactsCollectionToAsciiTable } from "../mappers/mapNutritionFactsCollectionToAsciiTable.mjs";
+// import { mapNutritionFactsCollectionToAsciiTable } from "../mappers/mapNutritionFactsCollectionToAsciiTable.mjs";
 import { translationService } from '../services/singletones.mjs';
+import { mapFoodLogToConfirmResponse } from '../mappers/mapFoodLogToConfirmResponse.mjs';
 
 export async function logFoodController(ctx, client) {
   const trans = translationService.getTranslationsInstance(ctx)
@@ -16,17 +17,10 @@ export async function logFoodController(ctx, client) {
     await ctx.reply(trans.t("food_log.not_found"))
     return
   }
-  await ctx.reply(`Foods in the meal:`)
-  for (const foodChoice of foodLog.foodChoices) {
-    let kb = new InlineKeyboard()
-    for (const fact of foodChoice.facts) {
-      kb = kb.text(fact.name, fact.id)
-    }
-
-    await ctx.reply(`${foodChoice.chosenFacts.name}, ${foodChoice.chosenAmounts.grams}g`, {
-      reply_markup: kb
-    })
-  }
-  const text = mapNutritionFactsCollectionToAsciiTable(foodLog.perItemNutritionFacts, trans).toString()
-  await ctx.reply(`<pre>${text}</pre>`, { parse_mode: "HTML", reply_markup: new InlineKeyboard().text(trans.t("food_log.delete_entry"), `deleteLog:${foodLog.id}`) });
+  const text = mapFoodLogToConfirmResponse(foodLog, trans)
+  await ctx.reply(text, { reply_markup: new InlineKeyboard()
+    .text(trans.t("food_log.confirm_entry"), `confirmLog:${foodLog.id}`) 
+    .text(trans.t("food_log.edit_entry"), `editLog:${foodLog.id}`) 
+  });
+  // await ctx.reply(`<pre>${text}</pre>`, { parse_mode: "HTML", reply_markup: new InlineKeyboard().text(trans.t("food_log.delete_entry"), `deleteLog:${foodLog.id}`) });
 }

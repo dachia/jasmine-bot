@@ -6,11 +6,13 @@ import { mapNutritionFactsCollectionToAsciiTable } from '../../mappers/mapNutrit
 import { convertToGramsService, translationService } from '../../services/singletones.mjs';
 import { extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService } from "../../services/singletones.mjs"
 import { mapFoodLogToConfirmResponse } from '../../mappers/mapFoodLogToConfirmResponse.mjs';
+import { GetNutritionFactsUseCase } from '../getNutritionFactsUseCase.mjs';
 
 describe('ProcessAmountsAndSpecificFoodsUseCase', () => {
   let nutritionInfoService
   let chatSessionRepo
   let processAmountsAndSpecificFoodsUseCase
+  let nutritionFactsUseCase
   let foodLogRepo
   let idx = 0
 
@@ -18,17 +20,19 @@ describe('ProcessAmountsAndSpecificFoodsUseCase', () => {
     chatSessionRepo = new ChatSessionRepo(client);
     foodLogRepo = new FoodLogRepo(client);
     processAmountsAndSpecificFoodsUseCase = new ProcessAmountsAndSpecificFoodsUseCase(extractAmountsFromPromptService, extractFoodItemsFromPromptService, convertToGramsService, foodLogRepo, chatSessionRepo);
+    nutritionFactsUseCase = new GetNutritionFactsUseCase(nutritionFactsGPTService, foodLogRepo);
   })
 
   const prompts = [
-    '160g Steak lean, basted in butter, medium rare. Standard seasoning',
-    '61g oatmeal\n2 dates\n230g low fat milk',
+    // '160g Steak lean, basted in butter, medium rare. Standard seasoning',
+    // '61g oatmeal\n2 dates\n230g low fat milk',
     'Single mcdonalds cheeseburger, small fries and diet coke',
-    'lean steak basted in butter, milka max one square'
+    // 'lean steak basted in butter, milka max one square'
   ];
   prompts.forEach((prompt) => {
     describe(`execute with ${prompt}`, () => {
       let result
+      let result2
       const userId = 'userId'
       const date = new Date();
 
@@ -38,11 +42,18 @@ describe('ProcessAmountsAndSpecificFoodsUseCase', () => {
           date,
           prompt
         });
+        result2 = await nutritionFactsUseCase.execute({
+          userId,
+          foodLogId: result.id
+        });
       });
       it('should process message', () => {
         const message = mapFoodLogToConfirmResponse(result, translationService.en);
         console.log(message)
         expect(message).to.not.be.undefined;
+
+        const table = mapNutritionFactsCollectionToAsciiTable(result2.perItemNutritionFacts, translationService.en);
+        console.log(table.toString())
       });
       it.skip("should save log", async () => {
         const logs = await foodLogRepo.find();

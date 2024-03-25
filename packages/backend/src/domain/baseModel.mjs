@@ -2,9 +2,9 @@ import { newId } from "../utils/genId.mjs"
 
 // Base class
 export class BaseModel {
-  constructor({ id, userId, createdAt, updatedAt }, opts = {}) {
+  constructor({ id, _id, userId, createdAt, updatedAt }, opts = {}) {
     this.data = {
-      id: id ?? newId(),
+      id: _id ?? id ?? newId(),
       userId: userId,
       createdAt: createdAt ?? new Date(),
       updatedAt: this.isNew ? null : (updatedAt ?? new Date())

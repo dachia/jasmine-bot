@@ -63,8 +63,8 @@ export class FoodChoices extends BaseModel {
   constructor({ food, amounts, facts, chosenAmountId, chosenFactId, ...baseProps }) {
     super(baseProps); // Call to the base class constructor
     this.data.food = food
-    this.data.amounts = amounts.map(item => item instanceof BaseModel ? item : new ExtractedAmountModel({ ...item, ...baseProps }))
-    this.data.facts = facts.map(item => item instanceof BaseModel ? item : new NutritionFactsModel({ ...item, ...baseProps }))
+    this.data.amounts = amounts.map(item => item instanceof BaseModel ? item : new ExtractedAmountModel({ ...baseProps, ...item }))
+    this.data.facts = facts.map(item => item instanceof BaseModel ? item : new NutritionFactsModel({ ...baseProps, ...item }))
     this.data.chosenAmountId = chosenAmountId ?? this.data.amounts?.[0]?.id
     this.data.chosenFactId = chosenFactId ?? this.data.facts?.[0]?.id
     createBaseClassGettersAndSetters(this)
@@ -79,16 +79,19 @@ export class FoodChoices extends BaseModel {
   get nutritionFacts() {
     const fact = this.chosenFacts
     const amount = this.chosenAmounts
-    return fact.getPerGrams(amount.grams)
+    const perGrams = fact.getPerGrams(amount.grams)
+    perGrams.name = this.data.food
+    return perGrams
   }
 }
 export class FoodLogModel extends BaseModel {
-  constructor({ date, prompt, sessionId, foodChoices, ...baseProps }) {
+  constructor({ date, prompt, sessionId, foodChoices, state, ...baseProps }) {
     super(baseProps); // Call to the base class constructor
     this.data.prompt = prompt
     this.data.sessionId = sessionId
     this.data.date = date
-    this.data.foodChoices = foodChoices?.map(item => item instanceof BaseModel ? item : new FoodChoices({ ...item, ...baseProps }))
+    this.data.foodChoices = foodChoices?.map(item => item instanceof BaseModel ? item : new FoodChoices({ ...baseProps, ...item }))
+    this.data.state = state ?? 'pre-prompt'
 
     createBaseClassGettersAndSetters(this)
   }

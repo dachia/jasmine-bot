@@ -12,7 +12,12 @@ export class ProcessAmountsAndSpecificFoodsUseCase {
     const foods = await this.extractFoodItemsFromPromptService.execute({ prompt });
     const allSpecificFoods = mapFoodItemsToSpecificFoodArray(foods)
     const amounts = await this.extractAmountsFromPromptService.execute({ prompt, allSpecificFoods })
-    const grams = await this.convertToGramsService.execute({ amounts });
+    let grams = []
+    let state = 'completed'
+    if (amounts.find(i => i.unitOfMeasurement !== 'g')) {
+      grams = await this.convertToGramsService.execute({ amounts });
+      state = 'pre-prompt'
+    }
 
     if (!foods || !amounts) {
       return null;
@@ -37,7 +42,8 @@ export class ProcessAmountsAndSpecificFoodsUseCase {
       userId,
       prompt,
       date,
-      foodChoices
+      foodChoices,
+      state
     });
     await this.foodLogRepo.save(foodLog);
     return foodLog

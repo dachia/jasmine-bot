@@ -1,4 +1,4 @@
-import { FoodLogModel, NutritionFactsModel } from "../domain/foodLogModel.mjs";
+import { FoodLogModel, NutritionFactsModel, STATE_COMPLETED } from "../domain/foodLogModel.mjs";
 import { ChatSessionModel } from "../domain/chatSessionModel.mjs";
 import { mapFoodItemsToSpecificFoodArray } from "../mappers/mapFoodItemsToSpecificFoodArray.mjs";
 import { mapNutritionFactsServiceResponseToFoodLogFacts } from "../mappers/mapNutritionFactsServiceResponseToFoodLogFacts.mjs";
@@ -22,7 +22,7 @@ export class GetNutritionFactsUseCase {
       }
     })
     foodLog.isUpdated = true
-    foodLog.data.state = "completed"
+    foodLog.data.state = STATE_COMPLETED
     await this.foodLogRepo.save(foodLog);
     return foodLog
   }

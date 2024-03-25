@@ -47,7 +47,7 @@ export function getUpdateProfileUseCaseInstance(client) {
 }
 
 
-export function getGetNutritionFactsUseCase(client) {
+export function getGetNutritionFactsUseCaseInstance(client) {
   const foodLogRepo = new FoodLogRepo(client);
   return new GetNutritionFactsUseCase(nutritionFactsGPTService, foodLogRepo);
 }

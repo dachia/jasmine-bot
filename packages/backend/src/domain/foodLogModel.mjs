@@ -1,5 +1,7 @@
 import { BaseModel } from './baseModel.mjs';
 import { createBaseClassGettersAndSetters } from '../utils/baseClassSetter.mjs';
+export const STATE_COMPLETED = 'completed'
+export const STATE_PRE_PROMPT = 'pre-prompt'
 export class ExtractedAmountModel extends BaseModel {
   constructor({ grams, name, ...baseProps }) {
     super(baseProps); // Call to the base class constructor
@@ -91,7 +93,7 @@ export class FoodLogModel extends BaseModel {
     this.data.sessionId = sessionId
     this.data.date = date
     this.data.foodChoices = foodChoices?.map(item => item instanceof BaseModel ? item : new FoodChoices({ ...baseProps, ...item }))
-    this.data.state = state ?? 'pre-prompt'
+    this.data.state = state ?? STATE_PRE_PROMPT
 
     createBaseClassGettersAndSetters(this)
   }

@@ -1,4 +1,4 @@
-import { FoodLogModel } from "../domain/foodLogModel.mjs";
+import { FoodLogModel, STATE_COMPLETED, STATE_PRE_PROMPT } from "../domain/foodLogModel.mjs";
 import { mapFoodItemsToSpecificFoodArray } from "../mappers/mapFoodItemsToSpecificFoodArray.mjs";
 
 export class ProcessAmountsAndSpecificFoodsUseCase {
@@ -13,10 +13,10 @@ export class ProcessAmountsAndSpecificFoodsUseCase {
     const allSpecificFoods = mapFoodItemsToSpecificFoodArray(foods)
     const amounts = await this.extractAmountsFromPromptService.execute({ prompt, allSpecificFoods })
     let grams = []
-    let state = 'completed'
+    let state = STATE_COMPLETED
     if (amounts.find(i => i.unitOfMeasurement !== 'g')) {
       grams = await this.convertToGramsService.execute({ amounts });
-      state = 'pre-prompt'
+      state = STATE_PRE_PROMPT
     }
 
     if (!foods || !amounts) {

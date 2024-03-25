@@ -8,13 +8,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+// import Button from '@mui/material/Button';
+// import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { alpha, useTheme } from '@mui/material/styles';
+// import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
@@ -34,7 +34,7 @@ const schema = yup.object().shape({
 
 export default function LoginView() {
   const t = useTranslate();
-  const theme = useTheme();
+  // const theme = useTheme();
   const setAuthState = useSetRecoilState(authAtom);
 
 
@@ -120,7 +120,7 @@ export default function LoginView() {
         </Link>
       </Typography>
 
-      <Stack direction="row" spacing={2}>
+      {/* <Stack direction="row" spacing={2}>
         <Button
           fullWidth
           size="large"
@@ -156,7 +156,7 @@ export default function LoginView() {
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           OR
         </Typography>
-      </Divider>
+      </Divider> */}
 
       {renderForm}
     </Card>

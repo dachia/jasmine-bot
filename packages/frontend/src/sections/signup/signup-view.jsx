@@ -8,15 +8,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Card from '@mui/material/Card';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+// import Button from '@mui/material/Button';
+// import Divider from '@mui/material/Divider';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import FormControl from '@mui/material/FormControl';
-import { alpha, useTheme } from '@mui/material/styles';
+// import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -42,7 +42,7 @@ const schema = yup.object().shape({
 
 export default function SignUpView() {
   const t = useTranslate();
-  const theme = useTheme();
+  // const theme = useTheme();
   const setAuthState = useSetRecoilState(authAtom);
 
   const router = useRouter();
@@ -156,7 +156,7 @@ export default function SignUpView() {
         </Link>
       </Typography>
 
-      <Stack direction="row" spacing={2}>
+      {/* <Stack direction="row" spacing={2}>
         <Button
           fullWidth
           size="large"
@@ -192,7 +192,7 @@ export default function SignUpView() {
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           OR
         </Typography>
-      </Divider>
+      </Divider> */}
 
       {renderForm}
     </Card>

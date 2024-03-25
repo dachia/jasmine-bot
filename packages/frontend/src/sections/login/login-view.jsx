@@ -36,7 +36,7 @@ export default function LoginView() {
   const t = useTranslate();
   // const theme = useTheme();
   const setAuthState = useSetRecoilState(authAtom);
-
+  const [error, setError] = useState(null);
 
   const { handleSubmit, control, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
@@ -46,9 +46,14 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = async (data) => {
-    const token = await loginUser(data);
-    setAuthState(token);
-    router.push('/');
+    setError(null);
+    try {
+      const token = await loginUser(data);
+      setAuthState(token);
+      router.push('/');
+    } catch (e) {
+      setError(t("login.incorrect_username_or_password"))
+    }
   };
 
   const handleSignUpClick = () => {
@@ -83,6 +88,11 @@ export default function LoginView() {
           }}
         />
       </Stack>
+      {error && (
+        <Typography variant="subtitle2" sx={{ color: 'error.main' }}>
+          {error}
+        </Typography>
+      )}
 
       <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
         <Link variant="subtitle2" underline="hover">
@@ -159,6 +169,7 @@ export default function LoginView() {
       </Divider> */}
 
       {renderForm}
+
     </Card>
   );
 }

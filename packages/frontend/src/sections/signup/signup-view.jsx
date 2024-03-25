@@ -44,6 +44,7 @@ export default function SignUpView() {
   const t = useTranslate();
   // const theme = useTheme();
   const setAuthState = useSetRecoilState(authAtom);
+  const [error, setError] = useState(null);
 
   const router = useRouter();
   const { handleSubmit, control, formState: { errors } } = useForm({
@@ -53,9 +54,14 @@ export default function SignUpView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = async (data) => {
-    const token = await registerUser(data);
-    setAuthState(token);
-    router.push('/');
+    setError(null);
+    try {
+      const token = await registerUser(data);
+      setAuthState(token);
+      router.push('/telegram-redirect');
+    } catch (e) {
+      setError(t("sign_up.signup_error"))
+    }
   };
 
   const handleLoginClick = () => {
@@ -123,6 +129,11 @@ export default function SignUpView() {
             </FormControl>
           )} />
       </Stack>
+      {error && (
+        <Typography variant="subtitle2" sx={{ color: 'error.main' }}>
+          {error}
+        </Typography>
+      )}
 
       <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }} />
 

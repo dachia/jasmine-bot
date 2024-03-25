@@ -24,13 +24,21 @@ describe('ProcessAmountsAndSpecificFoodsUseCase', () => {
   })
 
   const prompts = [
-    '2 cups of gignger tea with honey',
+    // '2 cups of gignger tea with honey',
     // '160g Steak lean, basted in butter, medium rare. Standard seasoning',
-    '61g oatmeal\n2 dates\n230g low fat milk',
-    'Single mcdonalds cheeseburger, small fries and diet coke',
+    // '61g oatmeal\n2 dates\n230g low fat milk',
+    // 'Single mcdonalds cheeseburger, small fries and diet coke',
     // 'Single burger king cheeseburger, small fries and diet coke',
     // // 'lean steak basted in butter, milka max one square'.
-    'lean steak basted in butter, milka max one small square'
+    // 'lean steak basted in butter, milka max one small square'
+    `150g karak chaiV
+Half roti
+100g chicken curry
+50g chicken biryani
+100g fruit chaat
+100g dahi hulking
+50g dry fruits
+2 samosas`
   ];
   prompts.forEach((prompt) => {
     describe(`execute with ${prompt}`, () => {

@@ -5,7 +5,7 @@ const foodItemsStructure = {
     // generalTerm: "string",
     // moreSpecificFood: "string|null",
     food: "string",
-    mostPopularVariety: "string",
+    fullNameMostPopularVariety: "string",
     // type: "general term|specific variety",
     // variations: ["string"]
   }]
@@ -16,8 +16,8 @@ export class ExtractFoodItemsFromPromptService extends BaseGPTService {
       basePromps: [
         {
           role: 'system',
-          content: `Act as a nutritionist to identify food from a meal prompt that will later be used to query nutrition facts.
-Use most popular specific food variety. Use your expertise as nutritionist.
+          content: `Act as a nutritionist to identify all foods from a meal prompt that will later be used to query nutrition facts.
+Find full name most popular food to enchance food prompt. Use your expertise as nutritionist.
 json response: ${JSON.stringify(foodItemsStructure, null, 2)}
           `
           
@@ -57,7 +57,7 @@ json response: ${JSON.stringify(foodItemsStructure, null, 2)}
       foods.push({
         generalTerm: food.food,
         inputFood: food.food,
-        variations: [food.mostPopularVariety ?? food.food]
+        variations: [food.fullNameMostPopularVariety ?? food.food]
       })
     }
     return foods

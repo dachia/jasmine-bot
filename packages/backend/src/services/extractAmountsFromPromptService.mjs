@@ -43,7 +43,7 @@ const units = [
 const foodAmountStr = {
   foods: [{
     input: "",
-    quantity: 0,
+    quantity: 1,
     unitOfMeasurement: units.join("|"),
     // type: "extracted|estimated",
     // rangeOfPossibleWeightInGrams: [0],
@@ -53,15 +53,16 @@ export class ExtractAmountsFromPromptService extends BaseGPTService {
   constructor(client) {
     // 2. If portion units arent weight(grams, kg, etc), then it's estimated, if weight then extracted.
     super(client, {
-      jsonStructure: foodAmountStr,
       basePromps: [
         {
           role: 'system',
-          content: `Step by step:
-1. Extract food quantity and unit of measurement
-2. Map extracted units to units of measurement
-3. If units aren't provided, guess them based on the input and prompt context
-4. Quanity is a postive number`
+          content: `Act as a service to identify quntity and units of measurement from a prompt. Prompt is a meal description.
+Return following JSON structure:
+${JSON.stringify(foodAmountStr, null, 2)}
+Step by step:
+1. Extract food quantity into quantity attribute
+2. Exract food unit of measurement into unitOfMeasurement attribute
+3. If units aren't provided, do an educated guess based on the prompt context`
           //           content: `
           // Process the prompt and extract information about food amounts and provide data to convert it to grams.
           // Step by step:
@@ -79,7 +80,7 @@ export class ExtractAmountsFromPromptService extends BaseGPTService {
   async execute({ prompt, allSpecificFoods }) {
     // let prompt_ = allSpecificFoods.map(food => `${prompt}(replace food name ${food.input} with ${food.food})`).join("\n")
     const uniqueInputs = allSpecificFoods.map(f => f.input).filter((v, i, a) => a.indexOf(v) === i)
-    const resp = await this.executeGpt({ prompt: `${prompt}. Map items to input: ${uniqueInputs.join(", ")}` })
+    const resp = await this.executeGpt({ prompt: `${prompt}. Possible inputs: ${uniqueInputs.join(", ")}` })
     const amounts = resp.foods
     const foods = allSpecificFoods.map(f => {
       const foundAmount = amounts.find(a => a.input === f.input)

@@ -1,12 +1,12 @@
 import { InlineKeyboard } from 'grammy';
-import { getLogFoodUseCaseInstance } from '../useCases/getInstance.mjs';
+import { getProcessAmountsAndSpecificFoodsUseCaseInstance } from '../useCases/getInstance.mjs';
 import { extractGrammyCtxData } from "../utils/extractGrammyCtxData.mjs";
 import { mapNutritionFactsCollectionToAsciiTable } from "../mappers/mapNutritionFactsCollectionToAsciiTable.mjs";
 import { translationService } from '../services/singletones.mjs';
 
 export async function logFoodController(ctx, client) {
   const trans = translationService.getTranslationsInstance(ctx)
-  const logFoodUseCase = getLogFoodUseCaseInstance(client);
+  const logFoodUseCase = getProcessAmountsAndSpecificFoodsUseCaseInstance(client);
   const { message, userId } = extractGrammyCtxData(ctx);
   const date = new Date();
   date.setHours(0, 0, 0, 0);

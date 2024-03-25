@@ -4,7 +4,7 @@ import { MentalChatUseCase } from "./mentalChatUseCase.mjs"
 import { ProfileRepo } from "../repos/profileRepo.mjs";
 import { UpdateProfileUseCase } from "./updateProfileUseCase.mjs";
 import { FoodLogRepo } from "../repos/foodLogRepo.mjs";
-import { LogFoodUseCase } from "./logFoodUseCase.mjs";
+import { ProcessAmountsAndSpecificFoodsUseCase } from "./processAmountsAndSpecificFoodsUseCase.mjs";
 import { EstimateBurnPerDayUseCase } from "./estimeBurnPerDayUseCase.mjs";
 import { DeleteLogUseCase} from "./deleteLogUseCase.mjs";
 import { ProfileStatsLogRepo } from "../repos/profileStatsLogRepo.mjs";
@@ -45,10 +45,10 @@ export function getUpdateProfileUseCaseInstance(client) {
   return new UpdateProfileUseCase(profileRepo, profileStatsLogRepo);
 }
 
-export function getLogFoodUseCaseInstance(client) {
+export function getProcessAmountsAndSpecificFoodsUseCaseInstance(client) {
   const chatSessionRepo = new ChatSessionRepo(client);
   const foodLogRepo = new FoodLogRepo(client);
-  return new LogFoodUseCase(extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService, convertToGramsService, foodLogRepo, chatSessionRepo);
+  return new ProcessAmountsAndSpecificFoodsUseCase(extractAmountsFromPromptService, extractFoodItemsFromPromptService, convertToGramsService, foodLogRepo, chatSessionRepo);
 }
 
 export function getEstimatedBurnPerDayInstance(client) {

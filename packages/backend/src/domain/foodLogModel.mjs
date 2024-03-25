@@ -65,8 +65,8 @@ export class FoodChoices extends BaseModel {
     this.data.food = food
     this.data.amounts = amounts.map(item => item instanceof BaseModel ? item : new ExtractedAmountModel({ ...item, ...baseProps }))
     this.data.facts = facts.map(item => item instanceof BaseModel ? item : new NutritionFactsModel({ ...item, ...baseProps }))
-    this.data.chosenAmountId = chosenAmountId ?? this.data.amounts[0].id
-    this.data.chosenFactId = chosenFactId ?? this.data.facts[0].id
+    this.data.chosenAmountId = chosenAmountId ?? this.data.amounts?.[0]?.id
+    this.data.chosenFactId = chosenFactId ?? this.data.facts?.[0]?.id
     createBaseClassGettersAndSetters(this)
   }
   get chosenFacts() {

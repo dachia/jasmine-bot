@@ -82,8 +82,13 @@ Step by step:
     const uniqueInputs = allSpecificFoods.map(f => f.input).filter((v, i, a) => a.indexOf(v) === i)
     const resp = await this.executeGpt({ prompt: `${prompt}. Possible inputs: ${uniqueInputs.join(", ")}` })
     const amounts = resp.foods
+    let error = false
     const foods = allSpecificFoods.map(f => {
       const foundAmount = amounts.find(a => a.input === f.input)
+      if (!foundAmount) {
+        error = true
+        return 
+      }
       return {
         inputFood: f.input,
         food: f.food,
@@ -91,6 +96,9 @@ Step by step:
         unitOfMeasurement: foundAmount.unitOfMeasurement
       }
     })
+    if (error) {
+      return null
+    }
     return foods
   }
 }

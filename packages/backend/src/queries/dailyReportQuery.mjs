@@ -1,3 +1,5 @@
+import { STATE_COMPLETED } from "../domain/foodLogModel.mjs";
+
 export class DailyReportQuery {
   constructor(foodLogRepo, profileRepo) {
     this.foodLogRepo = foodLogRepo;
@@ -5,7 +7,7 @@ export class DailyReportQuery {
   }
 
   async execute({ userId, date }) {
-    const logs = await this.foodLogRepo.find({ userId, date });
+    const logs = await this.foodLogRepo.find({ userId, date, state: STATE_COMPLETED });
     const profile = (await this.profileRepo.find({ userId }))[0];
     const total = logs.asNutritionFactsCollection().sum()
     const estimatedBurnPerDay = profile?.estimatedBurnPerDay ?? null

@@ -17,14 +17,14 @@ export class ProcessAmountsAndSpecificFoodsUseCase {
     const amounts = await this.extractAmountsFromPromptService.execute({ prompt, allSpecificFoods })
     let grams = []
     let state = STATE_COMPLETED
-    if (amounts.find(i => i.unitOfMeasurement !== 'g')) {
+    if (!foods || !amounts) {
+      return null;
+    }
+    if (amounts?.find(i => i.unitOfMeasurement !== 'g')) {
       grams = await this.convertToGramsService.execute({ amounts });
       state = STATE_PRE_PROMPT
     }
 
-    if (!foods || !amounts) {
-      return null;
-    }
     const foodChoices = foods.map((food) => {
       const amountsPerFood = amounts.filter((amount) => food.variations.includes(amount.food)).map((amount) => {
         const conversions = grams.find((g) => g.food === amount.food);

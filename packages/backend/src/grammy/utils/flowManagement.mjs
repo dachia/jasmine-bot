@@ -1,5 +1,5 @@
 import { getNextState } from "../../domain/states.mjs";
-export function setCtxState(ctx) {
+export function setNextCtxState(ctx) {
   if (!ctx.session) {
     ctx.session = {};
   }

@@ -9,12 +9,14 @@ import { skipButtonController } from './grammy/skipButtonController.mjs';
 import { chooseGenderController } from './grammy/chooseGenderController.mjs';
 import { GENDER_CHOICES } from './domain/genders.mjs';
 import { ACTION_USER, DEFAULT_FLOW, getStateConfig } from './domain/states.mjs';
-import { setCtxState, setFlow } from './grammy/utils/flowManagement.mjs';
+import { setNextCtxState, setFlow } from './grammy/utils/flowManagement.mjs';
 import { deleteLogCommandController } from './grammy/deleteLogCommandController.mjs';
 import { downloadDataCommand } from './grammy/downloadDataCommand.mjs';
 import { updateWeightCommandController } from './grammy/updateWeightCommandController.mjs';
 import { translationService } from "./services/singletones.mjs";
 import { authMiddleware } from './grammy/utils/authMiddleware.mjs';
+import { editLogCommandController } from './grammy/editLogCommandController.mjs';
+import { confirmLogCommandController } from './grammy/confirmLogCommandController.mjs';
 
 
 export function createBot() {
@@ -27,11 +29,11 @@ export async function stateMachine(ctx, client) {
     if (ctx.session?.currentFlow == null) {
       setFlow(ctx, DEFAULT_FLOW)
     }
-    setCtxState(ctx)
+    setNextCtxState(ctx)
     const state = ctx.session.state
     if (state == null) {
       setFlow(ctx, DEFAULT_FLOW)
-      setCtxState(ctx)
+      setNextCtxState(ctx)
     }
     action = getStateConfig(ctx.session.state).action
     if (action === ACTION_USER) {
@@ -54,6 +56,11 @@ const executeMiddlewareWrapper = (middleware, client) => async (ctx, next) => {
   await middleware(ctx, client, next)
 }
 const executeNextWrapper = (command, client) => async (ctx) => {
+  const state = ctx.session.state
+  if (state == null) {
+    setFlow(ctx, DEFAULT_FLOW)
+    setNextCtxState(ctx)
+  }
   await command(ctx, client)
   await stateMachine(ctx, client)
 }
@@ -87,6 +94,16 @@ export function registerBotCommandHandlers(bot, client) {
     if (ctx.callbackQuery.data.includes("deleteLog")) {
       const id = ctx.callbackQuery.data.split(":")[1]
       await deleteLogCommandController(ctx, client, id)
+      return
+    }
+    if (ctx.callbackQuery.data.includes("editLog")) {
+      const id = ctx.callbackQuery.data.split(":")[1]
+      await editLogCommandController(ctx, client, id)
+      return
+    }
+    if (ctx.callbackQuery.data.includes("confirmLog")) {
+      const id = ctx.callbackQuery.data.split(":")[1]
+      await confirmLogCommandController(ctx, client, id)
       return
     }
   })

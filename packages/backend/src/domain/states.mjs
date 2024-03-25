@@ -16,6 +16,8 @@ export const REGISTRATION_GREETING = "registration-greeting"
 export const WAITING_FOR_EMAIL = "waiting-for-email"
 export const EMAIL_VALIDATION_GREETING = "email-validation-greeting"
 export const WAITING_FOR_EMAIL_VALIDATION = "waiting-for-email-validation"
+
+export const GET_NUTRITION_FACTS = "get-nutrition-facts"
 export const REGISTRATION_FLOW = [
 ]
 
@@ -43,8 +45,12 @@ export const ONBOARDING_FLOW = [
 
 export const WAITING_FOR_FOOD = "waiting-for-food"
 export const FOOD_INPUT_GREETING = "food-input-greeting"
-export const LOG_FOOD_FLOW = [
+export const LOG_FOOD_FLOW_CMD = [
   FOOD_INPUT_GREETING,
+  WAITING_FOR_FOOD,
+]
+
+export const PROCESS_FOOD_FLOW = [
   WAITING_FOR_FOOD,
 ]
 
@@ -115,7 +121,7 @@ export const STATE_CONFIG = {
   },
 }
 
-export const DEFAULT_FLOW = LOG_FOOD_FLOW
+export const DEFAULT_FLOW = PROCESS_FOOD_FLOW
 
 export function getStateConfig(state) {
   return STATE_CONFIG[state]

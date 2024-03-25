@@ -8,7 +8,10 @@ export class ProcessAmountsAndSpecificFoodsUseCase {
     this.convertToGramsService = convertToGramsService
     this.foodLogRepo = foodLogRepo;
   }
-  async execute({ userId, prompt, date }) {
+  async execute({ userId, prompt, date, foodLogId }) {
+    if (foodLogId) {
+      await this.foodLogRepo.delete({ userId, id: foodLogId });
+    }
     const foods = await this.extractFoodItemsFromPromptService.execute({ prompt });
     const allSpecificFoods = mapFoodItemsToSpecificFoodArray(foods)
     const amounts = await this.extractAmountsFromPromptService.execute({ prompt, allSpecificFoods })

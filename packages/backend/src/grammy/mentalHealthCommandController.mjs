@@ -1,5 +1,5 @@
 import { MENTAL_HEALTH_FLOW } from '../domain/states.mjs';
-import { setCtxState, setFlow } from './utils/flowManagement.mjs';
+import { setNextCtxState, setFlow } from './utils/flowManagement.mjs';
 
 export const mentalHealthCommandController = (ctx) => {
   if (!ctx.session) {

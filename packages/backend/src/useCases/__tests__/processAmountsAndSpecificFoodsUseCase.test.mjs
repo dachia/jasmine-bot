@@ -27,7 +27,8 @@ describe('ProcessAmountsAndSpecificFoodsUseCase', () => {
     '160g Steak lean, basted in butter, medium rare. Standard seasoning',
     '61g oatmeal\n2 dates\n230g low fat milk',
     'Single mcdonalds cheeseburger, small fries and diet coke',
-    'lean steak basted in butter, milka max one square'
+    // 'lean steak basted in butter, milka max one square'.
+    'lean steak basted in butter, milka max one small square'
   ];
   prompts.forEach((prompt) => {
     describe(`execute with ${prompt}`, () => {

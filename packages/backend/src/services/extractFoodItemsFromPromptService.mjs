@@ -20,7 +20,7 @@ Return json response ${JSON.stringify(foodItemsStructure)}
 step by step:
 1. Parse the user input to extract every food. All foods in the prompt must be present.
 2. Identify if the food item is a general term or a specific variety.
-3. specificVarietyFoodName is the full name of the food if it's a specific variety.
+3. specificVarietyFoodName is the full name of the food when specific variety.
 4. For each get the most popular varieties of each food item. Must fit the context of the prompt.
 `
 // 3. For each generate a list of the most popular of specific variaties of each food item.

@@ -2,11 +2,12 @@ import { BaseGPTService } from "./utils/baseGptService.mjs"
 
 const foodItemsStructure = {
   foods: [{
-    generalTerm: "string",
-    specificVarietyFoodName: "string|null",
-    exactInputWithoutAmounts: "string",
-    type: "general term|specific variety",
-    variations: ["string"]
+    // generalTerm: "string",
+    // moreSpecificFood: "string|null",
+    food: "string",
+    mostPopularVariety: "string",
+    // type: "general term|specific variety",
+    // variations: ["string"]
   }]
 }
 export class ExtractFoodItemsFromPromptService extends BaseGPTService {
@@ -15,14 +16,21 @@ export class ExtractFoodItemsFromPromptService extends BaseGPTService {
       basePromps: [
         {
           role: 'system',
-          content: `Act as a service to extrat foods and specific varieties from a promp. The prompt is a meal description. Be precise. 
-Return json response ${JSON.stringify(foodItemsStructure)}
-step by step:
-1. Parse the user input to extract every food. All foods in the prompt must be present.
-2. Identify if the food item is a general term or a specific variety.
-3. specificVarietyFoodName is the full name of the food when specific variety.
-4. For each get the most popular varieties of each food item. Use common sense in the context of whole prompt.
-`
+          content: `Act as a nutritionist to identify food from a meal prompt that will later be used to query nutrition facts.
+Use most popular specific food variety. Use your expertise as nutritionist.
+json response: ${JSON.stringify(foodItemsStructure, null, 2)}
+          `
+          
+          
+          
+//           `Act as nutritionist to identify food items from a meal prompt.
+// If food item isn't specific too get nutrition facts, provide most popular specific food. Use common sense.
+// Return json response ${JSON.stringify(foodItemsStructure)}
+// `
+// step by step:
+// 1. Parse the user input to extract parts of meal if they make sense to be separate in the context of meal.
+// 2. specificVarietyFoodName can either be part of meal or most popular variety that makes sense in context of meal.
+// 4. for each identify best context fitting specific variety of food or meal.
 // 3. For each generate a list of the most popular of specific variaties of each food item.
 
           //
@@ -41,15 +49,15 @@ step by step:
     const resp = await this.executeGpt({ prompt })
     const foods = []
     for (const food of resp.foods) {
-      const variations = []
-      if (food.specificVarietyFoodName) {
-        variations.push(food.specificVarietyFoodName)
-      }
-      variations.push(...food.variations)
+      // const variations = []
+      // if (food.specificVarietyFoodName) {
+      //   variations.push(food.specificVarietyFoodName)
+      // }
+      // variations.push(...food.variations)
       foods.push({
-        generalTerm: food.generalTerm,
-        inputFood: food.exactInputWithoutAmounts,
-        variations
+        generalTerm: food.food,
+        inputFood: food.food,
+        variations: [food.mostPopularVariety ?? food.food]
       })
     }
     return foods

@@ -9,4 +9,10 @@ export default {
   FRONTEND_URL: process.env.FRONTEND_URL ?? "http://localhost:3000",
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+  SMTP_SERVER: process.env.SMTP_SERVER,
+  SMTP_PORT: process.env.SMTP_PORT,
+  SMTP_LOGIN: process.env.SMTP_LOGIN,
+  SMTP_PASSWORD: process.env.SMTP_PASSWORD,
+  FROM_EMAIL: process.env.FROM_EMAIL,
+  TELEGRAM_BOT_ENDPOINT: process.env.TELEGRAM_BOT_ENDPOINT,
 }

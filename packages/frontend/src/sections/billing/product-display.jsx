@@ -44,7 +44,7 @@ export default () => {
           </Typography>
           {/* Add a hidden field with the lookup_key of your Price */}
           <input type="hidden" name="token" value={token} />
-          <input type="hidden" name="lookup_key" value="early-adopter" />
+          <input type="hidden" name="lookup_key" value="price_1OyY1RP8e7yXnsQACqGggFzh" />
         </CardContent>
         <CardActions>
           <Button color='primary' variant='contained' fullWidth type='submit' endIcon={<NavigateNextIcon/>}>{t("billing.subscribe")}</Button>

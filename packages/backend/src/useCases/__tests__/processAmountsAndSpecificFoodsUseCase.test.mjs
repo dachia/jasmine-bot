@@ -31,14 +31,15 @@ describe('ProcessAmountsAndSpecificFoodsUseCase', () => {
     // 'Single burger king cheeseburger, small fries and diet coke',
     // // 'lean steak basted in butter, milka max one square'.
     // 'lean steak basted in butter, milka max one small square'
-    `150g karak chaiV
-Half roti
-100g chicken curry
-50g chicken biryani
-100g fruit chaat
-100g dahi hulking
-50g dry fruits
-2 samosas`
+    `8 squares of milka max`
+//     `150g karak chaiV
+// Half roti
+// 100g chicken curry
+// 50g chicken biryani
+// 100g fruit chaat
+// 100g dahi hulking
+// 50g dry fruits
+// 2 samosas`
   ];
   prompts.forEach((prompt) => {
     describe(`execute with ${prompt}`, () => {

@@ -107,10 +107,8 @@ export function registerExpressRoutes(app, client) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
     const { userId } = tokenData;
-    const prices = await stripe.prices.list({
-      lookup_keys: [req.body.lookup_key],
-      expand: ['data.product'],
-    });
+    const prices = await stripe.prices.list();
+    // console.log(prices)
     const session = await stripe.checkout.sessions.create({
       client_reference_id: userId,
       billing_address_collection: 'auto',

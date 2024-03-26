@@ -1,4 +1,4 @@
-import { Bot, session } from 'grammy';
+import { Bot, session, HttpError, GrammyError } from 'grammy';
 import config from './config.mjs';
 import { startCommandController } from "./grammy/startCommandController.mjs"
 import { processStateController } from "./grammy/processStateController.mjs"
@@ -107,5 +107,21 @@ export function registerBotCommandHandlers(bot, client) {
       return
     }
   })
+  bot.catch((err) => {
+    const ctx = err.ctx;
+    console.error(`Error while handling update ${ctx.update.update_id}:`);
+    const errorRes = () => ctx.reply(`Ooops, something went wrong!\nPlease contact us at:\n- ${config.SUPPORT_EMAIL}\n- ${config.TELEGRAM_SUPPORT_CHANNEL}`)
+    const e = err.error;
+    if (e instanceof GrammyError) {
+      console.error("Error in request:", e.description);
+    } else if (e instanceof HttpError) {
+      console.error("Could not contact Telegram:", e);
+      errorRes()
+      throw e;
+    } else {
+      console.error("Unknown error:", e);
+    }
+    errorRes()
+  });
   // bot.on('sticker', (ctx) => ctx.reply('👍'));
 }

@@ -18,6 +18,7 @@ export const SignUpPage = lazy(() => import('src/pages/sign-up'));
 export const TermsPage = lazy(() => import('src/pages/terms'));
 export const PrivacyPage = lazy(() => import('src/pages/privacy'));
 export const BotRedirectPage = lazy(() => import('src/pages/bot-redirect'));
+export const ServerErrorPage = lazy(() => import('src/pages/server-error'));
 
 // ----------------------------------------------------------------------
 
@@ -78,6 +79,10 @@ export default function Router() {
             <BotRedirectPage />,
           </AuthLayout>
         </RequireAuth>
+    },
+    {
+      path: '500',
+      element: <ServerErrorPage />,
     },
     {
       path: '404',

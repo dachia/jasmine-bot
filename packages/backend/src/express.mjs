@@ -124,33 +124,27 @@ export function registerExpressRoutes(app, client) {
       success_url: `${YOUR_DOMAIN}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${YOUR_DOMAIN}?canceled=true`,
     });
-    console.log(session)
 
     res.redirect(303, session.url);
   })
   app.post('/stripe/create-portal-session', async (req, res) => {
     // For demonstration purposes, we're using the Checkout session to retrieve the customer ID.
     // Typically this is stored alongside the authenticated user in your database.
-    try {
-      const { session_id } = req.body;
-      const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
+    const { session_id } = req.body;
+    const checkoutSession = await stripe.checkout.sessions.retrieve(session_id);
 
-      // This is the url to which the customer will be redirected when they are done
-      // managing their billing with the portal.
-      const returnUrl = YOUR_DOMAIN;
+    // This is the url to which the customer will be redirected when they are done
+    // managing their billing with the portal.
+    const returnUrl = YOUR_DOMAIN;
 
-      const portalSession = await stripe.billingPortal.sessions.create({
-        customer: checkoutSession.customer,
-        return_url: returnUrl,
-      });
-      res.redirect(303, portalSession.url);
-
-    } catch (e) {
-      res.redirect(303, '/')
-    }
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: checkoutSession.customer,
+      return_url: returnUrl,
+    });
+    res.redirect(303, portalSession.url);
 
   })
-  app.get('*', (req, res) => {
+  app.get('(.*)', (req, res) => {
     res.sendFile(path.join(__dirname, '../../frontend/dist', 'index.html'));
   });
   // app.use(function (error, request, response) {
@@ -161,6 +155,10 @@ export function registerExpressRoutes(app, client) {
   //   console.error(response);
   //   response.status(500).send('Internal Server Error');
   // });
+  app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.redirect('/500')
+  })
 }
 
 export function buildExpressApp(client) {

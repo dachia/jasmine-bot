@@ -23,6 +23,34 @@ export async function sendMail({ to, subject, text, html }) {
   console.log("Message sent: %s", info.messageId);
 }
 
+export const helloEmailTemplateText = (link) => `
+Hi,
+
+I'm Jasmine, your nutrition coach! I will help you log your daily food intake,
+monitor your macronutrients count and fight your unhealthy food cravings!
+
+Jasmine helps you navigate through different use-cases through the side-menu in
+our telegram conversation window as below:
+
+----------------
+
+Whenever you are craving unhealthy food options or are stress eating, reach out
+to Jasmine to get actionable advice to fight your cravings and alter your
+behaviour through cognitive behavioural advice
+
+Easily log your food with just sending in whatever you ate! Jasmine will keep a
+track of your daily food log and macronutrients consumed.
+
+Get your on-demand nutrition report on how much calories & macronutrients are
+consumed, & how much calories are left for the day!
+
+Follow the link to chat with Jasmine now: ${link}
+Thanks and looking forward to interacting with you,
+
+Jasmine
+
+jasmine 2024 © All Rights Reserved`
+
 export const helloEmailTemplate = (link) => `
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -163,7 +191,6 @@ export const helloEmailTemplate = (link) => `
                             <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Cabin',sans-serif;" align="left">
 
                               <div style="font-size: 14px; color: #afb0c7; line-height: 170%; text-align: center; word-wrap: break-word;">
-                                <p style="font-size: 14px; line-height: 170%;"><span style="font-size: 14px; line-height: 23.8px;">View Email in Browser</span></p>
                               </div>
 
                             </td>

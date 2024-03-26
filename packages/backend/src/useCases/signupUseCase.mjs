@@ -1,5 +1,5 @@
 import { UserModel } from '../domain/userModel.mjs';
-import { helloEmailTemplate, sendMail } from '../services/sendMail.mjs';
+import { helloEmailTemplate, helloEmailTemplateText, sendMail } from '../services/sendMail.mjs';
 import config from '../config.mjs';
 
 export class SignupUseCase {
@@ -15,7 +15,8 @@ export class SignupUseCase {
     const user = new UserModel({ id, email }, { isNew: true });
     await user.setPassword(password);
     await this.userRepo.save(user);
-    await sendMail({ to: email, subject: 'Welcome', html: helloEmailTemplate(`${config.TELEGRAM_BOT_ENDPOINT}?start=${user?.userId}`)})
+    const tgLink = `${config.TELEGRAM_BOT_ENDPOINT}?start=${user?.userId}`
+    await sendMail({ to: email, subject: 'Welcome', text: helloEmailTemplateText(tgLink), html: helloEmailTemplate(tgLink)})
     return user
   }
 }

@@ -31,7 +31,12 @@ describe('ProcessAmountsAndSpecificFoodsUseCase', () => {
     // 'Single burger king cheeseburger, small fries and diet coke',
     // // 'lean steak basted in butter, milka max one square'.
     // 'lean steak basted in butter, milka max one small square'
-    `8 squares of milka max`
+    // `8 squares of milka max`,
+'A bit of fried lean beef with onion, a bit of cauliflower and some nut',
+
+
+
+
 //     `150g karak chaiV
 // Half roti
 // 100g chicken curry

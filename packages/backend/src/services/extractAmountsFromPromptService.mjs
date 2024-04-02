@@ -60,9 +60,9 @@ export class ExtractAmountsFromPromptService extends BaseGPTService {
 Return following JSON structure:
 ${JSON.stringify(foodAmountStr, null, 2)}
 Step by step:
-1. Extract food quantity into quantity attribute
-2. Exract food unit of measurement into unitOfMeasurement attribute
-3. If units aren't provided, do an educated guess based on the prompt context.`
+1. Extract food quantity into quantity attribute. Quantity is always a number.
+2. Extract food unit of measurement into unitOfMeasurement attribute
+3. If units aren't provided, do an educated guess based on the prompt context and common sense.`
           //           content: `
           // Process the prompt and extract information about food amounts and provide data to convert it to grams.
           // Step by step:

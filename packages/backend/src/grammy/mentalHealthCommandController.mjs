@@ -5,7 +5,8 @@ export const mentalHealthCommandController = (ctx) => {
   if (!ctx.session) {
     ctx.session = {};
   }
-
+  
+  ctx.session.id = null
   setFlow(ctx, MENTAL_HEALTH_FLOW)
   return
 }

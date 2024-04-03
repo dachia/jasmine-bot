@@ -6,7 +6,8 @@ export class ChatSessionModel extends BaseModel {
   constructor({ problemStatement, messages, ...baseProps}, opts = {}) {
     super(baseProps, opts); // Call to the base class constructor
     this.data.problemStatement = problemStatement;
-    this.data.messages = messages ?? [];
+
+    this.data.messages = messages?.map(item => item instanceof BaseModel ? item : new ChatMessageModel({ ...baseProps, ...item })) ?? []
     createBaseClassGettersAndSetters(this)
   }
   

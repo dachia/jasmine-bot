@@ -2,6 +2,10 @@
   "app": {
     "name": "Jasmine"
   },
+  "config": {
+    "page_title": "Settings",
+    "page_greeting": "Let's get you setup and ready to go!"
+  },
   "login": {
     "page_title": "Login",
     "title": "Sign in to %{name}",
@@ -39,7 +43,8 @@
   "general": {
     "email_address": "Email address",
     "password": "Password",
-    "repeat_password": "Repeat password"
+    "repeat_password": "Repeat password",
+    "save": "Save"
   },
   "terms": {
     "page_title": "Terms and conditions",

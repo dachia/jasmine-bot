@@ -42,6 +42,11 @@
         "MONGODB_URI": "mongodb://localhost:27017/",
         "OPENAI_ORG_ID": "org-kOKAkLRRdYnotnGyd0tA4Tc3",
         "OPENAI_API_KEY": "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",
+        "SMTP_SERVER": "smtp-relay.brevo.com",
+        "SMTP_PORT": "587",
+        "SMTP_LOGIN": "hello@jasmine.fitness",
+        "SMTP_PASSWORD": "q540C9wjtRmZGJ6d",
+        "FROM_EMAIL": "Jasmine Fitness <hello@jasmine.fitness>",
       },
       "cwd": "${workspaceFolder}",
       "type": "node"

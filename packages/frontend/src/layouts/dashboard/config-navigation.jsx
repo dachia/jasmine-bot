@@ -1,4 +1,5 @@
 import PaymentIcon from '@mui/icons-material/Payment';
+import SettingsIcon from '@mui/icons-material/Settings';
 // import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -13,6 +14,11 @@ const navConfig = [
     path: '/',
     icon: <PaymentIcon/>
   },
+  {
+    title: 'settings',
+    path: '/config',
+    icon: <SettingsIcon/>
+  }
   // {
   //   title: 'user',
   //   path: '/user',

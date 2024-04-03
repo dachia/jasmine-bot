@@ -19,6 +19,7 @@ export const TermsPage = lazy(() => import('src/pages/terms'));
 export const PrivacyPage = lazy(() => import('src/pages/privacy'));
 export const BotRedirectPage = lazy(() => import('src/pages/bot-redirect'));
 export const ServerErrorPage = lazy(() => import('src/pages/server-error'));
+export const ConfigPage = lazy(() => import('src/pages/config'));
 
 // ----------------------------------------------------------------------
 
@@ -71,7 +72,17 @@ export default function Router() {
       </LegalLayout>
     },
     {
-      path: '/telegram-redirect',
+      path: 'config',
+      element:
+
+        <RequireAuth redirectTo="/login">
+          <DashboardLayout>
+            <ConfigPage />,
+          </DashboardLayout>
+        </RequireAuth>
+    },
+    {
+      path: 'telegram-redirect',
       element:
 
         <RequireAuth redirectTo="/login">

@@ -6,6 +6,7 @@ import Stripe from 'stripe';
 import { signupController } from './http/signupController.mjs';
 import { loginController } from './http/loginController.mjs';
 import { userQueryController } from './http/userQueryController.mjs';
+import { updateCurrentUserController } from './http/updateCurrentUserController.mjs';
 import { authMiddleware } from './http/utils/authMiddleware.mjs';
 import cors from 'cors';
 import config from './config.mjs';
@@ -100,6 +101,7 @@ export function registerExpressRoutes(app, client) {
   app.post('/api/sign-up', (req, res) => signupController(req, res, client))
   app.post('/api/login', (req, res) => loginController(req, res, client))
   app.get('/api/current-user', authMiddleware, (req, res) => userQueryController(req, res, client))
+  app.post('/api/update-current-user', authMiddleware, (req, res) => updateCurrentUserController(req, res, client))
   app.post('/stripe/create-checkout-session', async (req, res) => {
     const token = req.body.token;
     const tokenData = await authService.verify(token);

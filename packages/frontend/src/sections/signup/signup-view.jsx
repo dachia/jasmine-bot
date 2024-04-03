@@ -56,7 +56,11 @@ export default function SignUpView() {
   const handleClick = async (data) => {
     setError(null);
     try {
-      const token = await registerUser(data);
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const token = await registerUser({
+        ...data,
+        timezone
+      });
       setAuthState(token);
       router.push('/telegram-redirect');
     } catch (e) {

@@ -15,6 +15,12 @@ import { authService } from "../services/singletones.mjs";
 import { AddTelegramAccountUseCase } from "./addTelegramAccountUseCase.mjs";
 import { extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService } from "../services/singletones.mjs"
 import { GetNutritionFactsUseCase } from "./getNutritionFactsUseCase.mjs";
+import { UpdateUserUseCase } from "./updateUserUseCase.mjs";
+
+export function getUpdateUserUseCaseInstance(client) {
+  const userRepo = new UserRepo(client);
+  return new UpdateUserUseCase(userRepo);
+}
 
 export function getAddTelegramAccountUseCaseInstance(client) {
   const userRepo = new UserRepo(client);

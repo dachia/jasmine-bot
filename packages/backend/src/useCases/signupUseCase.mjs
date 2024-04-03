@@ -7,12 +7,12 @@ export class SignupUseCase {
     this.userRepo = userRepo;
   }
 
-  async execute({ id, email, password }) {
+  async execute({ id, email, password, timezone }) {
     const userExists = await this.userRepo.getByEmail(email);
     if (userExists) {
       throw new Error('User already exists');
     }
-    const user = new UserModel({ id, email }, { isNew: true });
+    const user = new UserModel({ id, email, timezone }, { isNew: true });
     await user.setPassword(password);
     await this.userRepo.save(user);
     const tgLink = `${config.TELEGRAM_BOT_ENDPOINT}?start=${user?.userId}`

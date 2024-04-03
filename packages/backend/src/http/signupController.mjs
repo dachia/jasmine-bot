@@ -3,8 +3,8 @@ import { getSignupUseCase } from "../useCases/getInstance.mjs";
 export async function signupController(req, res, client) {
   try {
     const signupUseCase = getSignupUseCase(client)
-    const { email, password } = req.body;
-    const user = await signupUseCase.execute({ email, password });
+    const { email, password, timezone } = req.body;
+    const user = await signupUseCase.execute({ email, password, timezone});
     return res.json({ user });
 
   } catch (error) {

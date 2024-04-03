@@ -2,4 +2,5 @@ export default {
   API_ENDPOINT: import.meta.env.VITE_APP_API_ENDPOINT,
   FRONTEND_URL: import.meta.env.VITE_APP_FRONTEND_URL,
   TELEGRAM_BOT_ENDPOINT: import.meta.env.VITE_APP_TELEGRAM_BOT_ENDPOINT,
+  POSTHOG_KEY: import.meta.env.VITE_APP_POSTHOG_KEY,
 }

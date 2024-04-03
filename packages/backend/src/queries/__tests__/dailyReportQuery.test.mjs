@@ -1,4 +1,4 @@
-import { LogFoodUseCase } from '../../useCases/logFoodUseCase.mjs'
+import { ProcessAmountsAndSpecificFoodsUseCase } from '../../useCases/processAmountsAndSpecificFoodsUseCase.mjs'
 import { NutritionInfoService } from '../../services/nutritionInfoService.mjs';
 import { ChatSessionRepo } from '../../repos/chatSessionRepo.mjs';
 import { FoodLogRepo } from '../../repos/foodLogRepo.mjs';
@@ -82,7 +82,7 @@ describe('DailyReportQuery', () => {
     });
     chatSessionRepo = new ChatSessionRepo(client);
     foodLogRepo = new FoodLogRepo(client);
-    logFoodUseCase = new LogFoodUseCase(nutritionInfoService, foodLogRepo, chatSessionRepo);
+    logFoodUseCase = new ProcessAmountsAndSpecificFoodsUseCase(nutritionInfoService, foodLogRepo, chatSessionRepo);
     profileRepo = new ProfileRepo(client);
     date.setHours(0, 0, 0, 0);
     await logFoodUseCase.execute({

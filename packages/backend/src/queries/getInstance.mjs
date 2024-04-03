@@ -16,7 +16,8 @@ export function getProfileQueryInstance(client) {
 }
 
 export function getDailyReportQueryInstance(client) {
+  const userRepo = new UserRepo(client);
   const profileRepo = new ProfileRepo(client);
   const foodLogRepo = new FoodLogRepo(client);
-  return new DailyReportQuery(foodLogRepo, profileRepo);
+  return new DailyReportQuery(foodLogRepo, profileRepo, userRepo);
 }

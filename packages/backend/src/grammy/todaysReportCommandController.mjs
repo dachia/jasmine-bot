@@ -7,7 +7,7 @@ import { extractGrammyCtxData } from "../utils/extractGrammyCtxData.mjs";
 export const todaysReportCommandController = async (ctx, client) => {
   const trans = translationService.getTranslationsInstance(ctx)
   const date = new Date();
-  date.setHours(0, 0, 0, 0);
+  // date.setHours(0, 0, 0, 0);
   const { userId } = extractGrammyCtxData(ctx)
   const report = await getDailyReportQueryInstance(client).execute({ userId, date })
   const text = mapNutritionFactsCollectionToAsciiTable(report.logs.asNutritionFactsCollection(), trans).toString()

@@ -56,7 +56,7 @@ const executeMiddlewareWrapper = (middleware, client) => async (ctx, next) => {
   await middleware(ctx, client, next)
 }
 const executeNextWrapper = (command, client) => async (ctx) => {
-  const state = ctx.session.state
+  const state = ctx.session?.state
   if (state == null) {
     setFlow(ctx, DEFAULT_FLOW)
     setNextCtxState(ctx)

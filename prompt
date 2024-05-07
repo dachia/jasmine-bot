@@ -1,0 +1,3 @@
+1. Add trial date
+2. Every time user does a request check if trial has ended
+3. If trial has ended return message that trial has ended and send a link to subscription page

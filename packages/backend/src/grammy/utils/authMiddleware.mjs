@@ -15,6 +15,7 @@ export async function authMiddleware(ctx, client, next) {
       return
     }
     ctx.session.userId = user.id;
+    ctx.session.user = user;
   }
   await next();
 }

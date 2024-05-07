@@ -11,7 +11,7 @@ export class AccountModel extends BaseModel {
 }
 // Derived class
 export class UserModel extends BaseModel {
-  constructor({ accounts, email, hashedPassword, isEmailValidated, timezone, ...baseProps}) {
+  constructor({ accounts, email, hashedPassword, isEmailValidated, timezone, isTrial, subscriptionEndAt, ...baseProps}) {
     super(baseProps); // Call to the base class constructor
     this.data.userId = this.data.id
     this.data.accounts = accounts?.map(account => new AccountModel(account)) ?? []
@@ -19,6 +19,8 @@ export class UserModel extends BaseModel {
     this.data.hashedPassword = hashedPassword
     this.data.isEmailValidated = isEmailValidated ?? false
     this.data.timezone = timezone
+    this.data.isTrial = !!isTrial
+    this.data.subscriptionEndAt = subscriptionEndAt
     createBaseClassGettersAndSetters(this)
   }
   

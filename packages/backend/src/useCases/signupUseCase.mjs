@@ -1,6 +1,7 @@
 import { UserModel } from '../domain/userModel.mjs';
 import { helloEmailTemplate, helloEmailTemplateText, sendMail } from '../services/sendMail.mjs';
 import config from '../config.mjs';
+import { addDays } from 'date-fns';
 
 export class SignupUseCase {
   constructor(userRepo) {
@@ -12,7 +13,7 @@ export class SignupUseCase {
     if (userExists) {
       throw new Error('User already exists');
     }
-    const user = new UserModel({ id, email, timezone }, { isNew: true });
+    const user = new UserModel({ id, email, timezone, isTrial: true, subscriptionEndAt: addDays(new Date(), 7)}, { isNew: true });
     await user.setPassword(password);
     await this.userRepo.save(user);
     const tgLink = `${config.TELEGRAM_BOT_ENDPOINT}?start=${user?.userId}`

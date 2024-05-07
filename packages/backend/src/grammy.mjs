@@ -17,6 +17,7 @@ import { translationService } from "./services/singletones.mjs";
 import { authMiddleware } from './grammy/utils/authMiddleware.mjs';
 import { editLogCommandController } from './grammy/editLogCommandController.mjs';
 import { confirmLogCommandController } from './grammy/confirmLogCommandController.mjs';
+import { subscriptionMiddleware } from './grammy/utils/subscriptionMiddleware.mjs';
 
 
 export function createBot() {
@@ -79,18 +80,20 @@ export async function registerBotCommands(bot) {
 export function registerBotCommandHandlers(bot, client) {
   bot.use(session({}))
   const authMiddlewareWithClient = executeMiddlewareWrapper(authMiddleware, client)
+  const subscriptionMiddlewareWithClient = executeMiddlewareWrapper(subscriptionMiddleware, client)
+  const middlewares = [authMiddlewareWithClient, subscriptionMiddlewareWithClient]
   bot.command('start', executeNextWrapper(startCommandController, client))
-  bot.command('report', authMiddlewareWithClient, executeNextWrapper(todaysReportCommandController, client))
-  bot.command('mental', authMiddlewareWithClient, executeNextWrapper(mentalHealthCommandController, client))
-  bot.command('food', authMiddlewareWithClient, executeNextWrapper(logFoodCommandController, client))
-  bot.command('export', authMiddlewareWithClient, executeNextWrapper(downloadDataCommand, client))
-  bot.command('set_weight', authMiddlewareWithClient, executeNextWrapper(updateWeightCommandController, client))
-  bot.callbackQuery('skip-state', authMiddlewareWithClient, executeNextWrapper(skipButtonController, client))
+  bot.command('report', ...middlewares, executeNextWrapper(todaysReportCommandController, client))
+  bot.command('mental', ...middlewares, executeNextWrapper(mentalHealthCommandController, client))
+  bot.command('food', ...middlewares, executeNextWrapper(logFoodCommandController, client))
+  bot.command('export', ...middlewares, executeNextWrapper(downloadDataCommand, client))
+  bot.command('set_weight', ...middlewares, executeNextWrapper(updateWeightCommandController, client))
+  bot.callbackQuery('skip-state', ...middlewares, executeNextWrapper(skipButtonController, client))
   for (const gender of GENDER_CHOICES) {
-    bot.callbackQuery(gender.value, authMiddlewareWithClient, executeNextWrapper(chooseGenderController, client))
+    bot.callbackQuery(gender.value, ...middlewares, executeNextWrapper(chooseGenderController, client))
   }
-  bot.on("message", authMiddlewareWithClient, executeNextWrapper(processStateController, client))
-  bot.on('callback_query:data', authMiddlewareWithClient, async (ctx) => {
+  bot.on("message", ...middlewares, executeNextWrapper(processStateController, client))
+  bot.on('callback_query:data', ...middlewares, async (ctx) => {
     if (ctx.callbackQuery.data.includes("deleteLog")) {
       const id = ctx.callbackQuery.data.split(":")[1]
       await deleteLogCommandController(ctx, client, id)

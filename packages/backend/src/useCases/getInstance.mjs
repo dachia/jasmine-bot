@@ -1,4 +1,4 @@
-import { mentalChat, nutritionInfoService, estimatedBurnPerDayService, convertToGramsService } from "../services/singletones.mjs"
+import { mentalChat, nutritionInfoService, estimatedBurnPerDayService, convertToGramsService, extractMealInputFromPromptService } from "../services/singletones.mjs"
 import { ChatSessionRepo } from "../repos/chatSessionRepo.mjs"
 import { MentalChatUseCase } from "./mentalChatUseCase.mjs"
 import { ProfileRepo } from "../repos/profileRepo.mjs";
@@ -67,4 +67,10 @@ export function getEstimatedBurnPerDayInstance(client) {
   const chatSessionRepo = new ChatSessionRepo(client);
   const profileRepo = new ProfileRepo(client);
   return new EstimateBurnPerDayUseCase(estimatedBurnPerDayService, profileRepo, chatSessionRepo);
+}
+
+export function getProcessAmountsAndSpecificFoodsUseCaseV2(client) {
+  const chatSessionRepo = new ChatSessionRepo(client);
+  const foodLogRepo = new FoodLogRepo(client);
+  return new ProcessAmountsAndSpecificFoodsUseCaseV2(extractMealInputFromPromptService, foodLogRepo, chatSessionRepo);
 }

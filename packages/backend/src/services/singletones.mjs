@@ -9,6 +9,7 @@ import { ExtractAmountsFromPromptService } from "./extractAmountsFromPromptServi
 import { ExtractFoodItemsFromPromptService } from "./extractFoodItemsFromPromptService.mjs"
 import { NutritionFactsGPTService } from "./nutritionFactsGPTService.mjs"
 import { ConvertToGramsService } from "./convertToGramsService.mjs";
+import { ExtractMealInputFromPromptService } from "./extractMealInputFromPromptService.mjs";
 
 export const chatGpt = new ChatGpt({
   apiKey: config.OPENAI_API_KEY,
@@ -23,3 +24,4 @@ export const extractAmountsFromPromptService = new ExtractAmountsFromPromptServi
 export const extractFoodItemsFromPromptService = new ExtractFoodItemsFromPromptService(chatGpt);
 export const nutritionFactsGPTService = new NutritionFactsGPTService(chatGpt);
 export const convertToGramsService = new ConvertToGramsService(chatGpt);
+export const extractMealInputFromPromptService = new ExtractMealInputFromPromptService(chatGpt);

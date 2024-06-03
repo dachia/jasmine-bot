@@ -14,112 +14,68 @@ export class ConvertToGramsService extends BaseGPTService {
         {
           role: 'system',
           content: `
-Act as a service to convert food amounts to grams. Use your expertise as a nutritionist.
-Your tasks are:
-1. Estimate and convert food amounts to grams, including vague units such as "a bit" or "some."
+Given the following list of foods with their respective units, estimate the weight in grams for each single unit of food and return the list with the estimated weight in grams for each food. If the unit is vague (e.g., "bit," "little"), make a reasonable assumption for the weight in grams.
 
-Input is JSON in the following format:
+**Input:**
+
 \`\`\`json
 {
   "foods": [
     {
       "food": "oatmeal",
-      "unit": "grams",
-      "amount": 1
+      "unit": "grams"
     },
     {
       "food": "barhi date",
-      "unit": "quantity",
-      "amount": 1
+      "unit": "quantity"
     },
     {
       "food": "low fat milk",
-      "unit": "grams",
-      "amount": 1
+      "unit": "grams"
+    },
+    {
+      "food": "peanut butter",
+      "unit": "bit"
+    },
+    {
+      "food": "honey",
+      "unit": "little"
     }
   ]
 }
 \`\`\`
 
-Output should be in the following format:
+**Output:**
+
 \`\`\`json
 {
   "foods": [
     {
       "food": "oatmeal",
-      "grams": 1
+      "grams_in_unit": 1
     },
     {
       "food": "barhi date",
-      "grams": 7
+      "grams_in_unit": 7
     },
     {
       "food": "low fat milk",
-      "grams": 1
+      "grams_in_unit": 1
+    },
+    {
+      "food": "peanut butter",
+      "grams_in_unit": 5
+    },
+    {
+      "food": "honey",
+      "grams_in_unit": 4
     }
   ]
 }
 \`\`\`
 
-### Example:
+Please estimate the weight in grams for each food item in the list. For foods measured in grams, the value should be 1 gram. For foods measured in quantity, provide an average estimated weight in grams per single unit. For vague units, provide a reasonable estimate based on common usage.
 
-#### Input:
-\`\`\`json
-{
-  "foods": [
-    {
-      "food": "fried lean beef",
-      "unit": "a bit",
-      "amount": 1
-    },
-    {
-      "food": "onion",
-      "unit": "a bit",
-      "amount": 1
-    },
-    {
-      "food": "cauliflower",
-      "unit": "a bit",
-      "amount": 1
-    },
-    {
-      "food": "nut",
-      "unit": "some",
-      "amount": 1
-    }
-  ]
-}
-\`\`\`
-
-#### Output:
-\`\`\`json
-{
-  "foods": [
-    {
-      "food": "fried lean beef",
-      "grams": 50
-    },
-    {
-      "food": "onion",
-      "grams": 30
-    },
-    {
-      "food": "cauliflower",
-      "grams": 40
-    },
-    {
-      "food": "nut",
-      "grams": 15
-    }
-  ]
-}
-\`\`\`
-
-### Notes:
-
-1. Ensure that vague units such as "a bit" or "some" are converted to grams using common sense and nutritional expertise.
-2. Provide accurate and reasonable estimates for the weight in grams for each food item based on typical serving sizes.
-3. Use reliable sources and nutritional knowledge to inform your estimates.
 `
         },
       ],
@@ -130,7 +86,7 @@ Output should be in the following format:
   }
 
   async execute({ foods }) {
-    const amounts = foods.map(f => ({ food: f.most_popular_variety, unit: f.parsed_amount_unit, amount: 1 }))
+    const amounts = foods.map(f => ({ food: f.most_popular_variety, unit: f.parsed_amount_unit }))
     const resp = await this.executeGpt({ prompt: JSON.stringify({ foods: amounts }) })
     return resp.foods
   }

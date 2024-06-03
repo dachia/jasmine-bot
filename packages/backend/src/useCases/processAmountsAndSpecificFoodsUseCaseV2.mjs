@@ -23,19 +23,15 @@ export class ProcessAmountsAndSpecificFoodsUseCaseV2 {
     }
 
     const foodChoices = foods.map((food) => {
-      const amountsPerFood = amounts.filter((amount) => food.variations.includes(amount.food)).map((amount) => {
-        const conversions = grams.find((g) => g.food === amount.food);
-        const grams_ = conversions ? conversions.grams[0] * amount.quantity : amount.quantity;
-        return {
-          name: amount.food,
-          grams: grams_,
-        }
-      });
-      const factsPerFood = []
+      const amountsPerFood = grams.find(g => g.food === food.most_popular_variety)
+      const amounts = amountsPerFood.grams_in_unit * food.parsed_amount_quantity
       return {
-        food: food.inputFood,
-        amounts: amountsPerFood,
-        facts: factsPerFood
+        food: food.most_popular_variety,
+        amounts: [{
+          name: food.most_popular_variety,
+          grams: amounts,
+        }],
+        facts: []
       }
     });
     const foodLog = new FoodLogModel({

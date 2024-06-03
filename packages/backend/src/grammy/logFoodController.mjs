@@ -1,5 +1,5 @@
 import { InlineKeyboard } from 'grammy';
-import { getProcessAmountsAndSpecificFoodsUseCaseInstance } from '../useCases/getInstance.mjs';
+import { getProcessAmountsAndSpecificFoodsUseCaseV2Instance } from '../useCases/getInstance.mjs';
 import { extractGrammyCtxData } from "../utils/extractGrammyCtxData.mjs";
 // import { mapNutritionFactsCollectionToAsciiTable } from "../mappers/mapNutritionFactsCollectionToAsciiTable.mjs";
 import { translationService } from '../services/singletones.mjs';
@@ -9,7 +9,7 @@ import { getFoodFactsRoutine } from './utils/getFoodFactsRoutine.mjs';
 
 export async function logFoodController(ctx, client) {
   const trans = translationService.getTranslationsInstance(ctx)
-  const processAmountsUseCase = getProcessAmountsAndSpecificFoodsUseCaseInstance(client);
+  const processAmountsUseCase = getProcessAmountsAndSpecificFoodsUseCaseV2Instance(client);
   const { message, userId } = extractGrammyCtxData(ctx);
   const date = new Date();
   date.setHours(0, 0, 0, 0);

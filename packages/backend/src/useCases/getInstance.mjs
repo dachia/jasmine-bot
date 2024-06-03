@@ -1,4 +1,4 @@
-import { mentalChat, nutritionInfoService, estimatedBurnPerDayService, convertToGramsService } from "../services/singletones.mjs"
+import { mentalChat, nutritionInfoService, estimatedBurnPerDayService, convertToGramsService, parseFreeTextPromptService } from "../services/singletones.mjs"
 import { ChatSessionRepo } from "../repos/chatSessionRepo.mjs"
 import { MentalChatUseCase } from "./mentalChatUseCase.mjs"
 import { ProfileRepo } from "../repos/profileRepo.mjs";
@@ -16,6 +16,7 @@ import { AddTelegramAccountUseCase } from "./addTelegramAccountUseCase.mjs";
 import { extractAmountsFromPromptService, extractFoodItemsFromPromptService, nutritionFactsGPTService } from "../services/singletones.mjs"
 import { GetNutritionFactsUseCase } from "./getNutritionFactsUseCase.mjs";
 import { UpdateUserUseCase } from "./updateUserUseCase.mjs";
+import { ProcessAmountsAndSpecificFoodsUseCaseV2 } from "./processAmountsAndSpecificFoodsUseCaseV2.mjs";
 
 export function getUpdateUserUseCaseInstance(client) {
   const userRepo = new UserRepo(client);
@@ -67,4 +68,9 @@ export function getEstimatedBurnPerDayInstance(client) {
   const chatSessionRepo = new ChatSessionRepo(client);
   const profileRepo = new ProfileRepo(client);
   return new EstimateBurnPerDayUseCase(estimatedBurnPerDayService, profileRepo, chatSessionRepo);
+}
+export function getProcessAmountsAndSpecificFoodsUseCaseV2Instance(client) {
+  const chatSessionRepo = new ChatSessionRepo(client);
+  const foodLogRepo = new FoodLogRepo(client);
+  return new ProcessAmountsAndSpecificFoodsUseCaseV2(parseFreeTextPromptService, convertToGramsService, foodLogRepo, chatSessionRepo);
 }

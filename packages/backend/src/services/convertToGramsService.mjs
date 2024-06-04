@@ -15,7 +15,18 @@ export class ConvertToGramsService extends BaseGPTService {
           role: 'system',
           content: `
 Given the following list of foods with their respective units, estimate the weight in grams for each single unit of food and return the list with the estimated weight in grams for each food. If the unit is vague (e.g., "bit," "little"), make a reasonable assumption for the weight in grams.
+Return following JSON:
+{
+  "foods": [
+    {
+      "food": string,
+      "grams_in_unit": number
+    },
+    ...
+  ]
+}
 
+Example:
 **Input:**
 
 \`\`\`json

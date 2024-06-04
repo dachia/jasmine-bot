@@ -26,7 +26,7 @@ export class NutritionFactsModel extends BaseModel {
     createBaseClassGettersAndSetters(this)
   }
   getPerGrams(grams) {
-    const calcPerGrams = (value) => value * grams / this.data.grams
+    const calcPerGrams = (value) => this.data.grams ? (value * grams / this.data.grams) : 0
     return new NutritionFactsModel({
       protein: calcPerGrams(this.data.protein),
       fat: calcPerGrams(this.data.fat),

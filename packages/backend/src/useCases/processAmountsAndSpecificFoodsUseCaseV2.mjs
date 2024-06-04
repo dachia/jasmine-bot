@@ -17,8 +17,8 @@ export class ProcessAmountsAndSpecificFoodsUseCaseV2 {
     if (!foods) {
       return null;
     }
+    grams = await this.convertToGramsService.execute({ foods });
     if (foods?.find(i => !['g', 'grams'].includes(i.parsed_amount_unit))) {
-      grams = await this.convertToGramsService.execute({ foods });
       state = STATE_PRE_PROMPT
     }
 

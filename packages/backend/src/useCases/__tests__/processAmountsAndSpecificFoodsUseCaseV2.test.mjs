@@ -31,17 +31,31 @@ describe('ProcessAmountsAndSpecificFoodsUseCaseV2', () => {
     // `8 squares of milka max`,
 // 'A bit of fried lean beef with onion, a bit of cauliflower and some nut',
 
-
-
-
-    `150g karak chaiV
-Half roti
-100g chicken curry
-50g chicken biryani
-100g fruit chaat
-100g dahi hulking
-50g dry fruits
-2 samosas`
+//     `150g karak chaiV
+// Half roti
+// 100g chicken curry
+// 50g chicken biryani
+// 100g fruit chaat
+// 100g dahi hulking
+// 50g dry fruits
+// 2 samosas`
+// `
+// 130g boneless chicken
+// 50g vegetable
+// 15g honey
+// 200g karak chai
+// `
+`
+200g tea
+50g milk
+`
+// `
+// 2 egg whites
+// 1 egg yolk
+// 20g vegetables
+// 12g bran bread
+// 200g karak chai
+// `
   ];
   prompts.forEach((prompt) => {
     describe(`execute with ${prompt}`, () => {
